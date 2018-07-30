@@ -1,0 +1,29 @@
+# This file is part of network. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT. No part of network, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2018 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
+
+
+[package]
+name = "network-ethernet"
+description = "A domain model of ethernet and virtual LAN packets and associated types."
+keywords = ["network", "ethernet", "packet", "vlan"]
+categories = ["network-programming"]
+license = "AGPL-3.0"
+authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
+homepage = "https://github.com/lemonrock/network"
+repository = "https://github.com/lemonrock/network.git"
+exclude = ["*"]
+include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
+readme = "README.md"
+publish = true
+version = "0.1.0"
+
+[features]
+default = ["dpdk-sys"]
+
+[dependencies]
+arrayref = "^0.3"
+dpdk-sys = { version = "0.0.6", optional = true }
+hyper-thread-random = "^0.4"
+network-endian = { path = "../network-endian", version = "^0.1" }
+serde = "1.0"
+serde_derive = "1.0"

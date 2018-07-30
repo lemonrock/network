@@ -7,5 +7,6 @@ members = [
     "network-check-sum",
     "network-collections",
     "network-endian",
+    "network-ethernet",
     "network-time",
 ]
