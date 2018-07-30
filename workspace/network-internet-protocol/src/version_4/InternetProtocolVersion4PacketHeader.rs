@@ -29,7 +29,7 @@ pub struct InternetProtocolVersion4PacketHeader
 	pub next_proto_id: Layer4ProtocolNumber,
 	
 	/// Check sum.
-	pub check_sum: InternetChecksum,
+	pub check_sum: InternetCheckSum,
 	
 	/// Source address.
 	pub source_address: InternetProtocolVersion4HostAddress,

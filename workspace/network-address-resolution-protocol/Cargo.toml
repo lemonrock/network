@@ -3,10 +3,10 @@
 
 
 [package]
-name = "network-check-sum"
-description = "RFC 1141 / RFC 1071 check sums, psuedo-headers and cryptographic authentication"
-keywords = ["network", "checksum"]
-categories = ["authentication", "network-programming"]
+name = "network-address-resolution-protocol"
+description = "A domain model of Address Resolution Protocol (ARP) packets and associated types."
+keywords = ["network", "ARP", "protocol", "packet", "ipv4"]
+categories = ["data-structures", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
 homepage = "https://github.com/lemonrock/network"
@@ -18,8 +18,10 @@ publish = true
 version = "0.1.1"
 
 [dependencies]
-digest = "^0.7"
+dpdk-sys = { version = "0.0.6", optional = true }
+libc = { version = "^0.2", optional = true }
 network-endian = { path = "../network-endian", version = "^0.1" }
+network-ethernet = { path = "../network-ethernet", version = "^0.1" }
+network-internet-protocol = { path = "../network-internet-protocol", version = "^0.1" }
 serde = "1.0"
 serde_derive = "1.0"
-

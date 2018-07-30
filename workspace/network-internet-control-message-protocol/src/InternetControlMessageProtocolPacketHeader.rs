@@ -14,7 +14,7 @@ pub struct InternetControlMessageProtocolPacketHeader
 	pub code: u8,
 	
 	/// The checksum includes the payload.
-	pub checksum: InternetChecksum,
+	pub checksum: InternetCheckSum,
 	
 	/// Rest-of-header.
 	pub rest_of_header: RestOfHeader,

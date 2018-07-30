@@ -4,6 +4,7 @@
 
 [workspace]
 members = [
+    "network-address-resolution-protocol",
     "network-check-sum",
     "network-collections",
     "network-endian",

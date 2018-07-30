@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/.cargo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace/network-address-resolution-protocol/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-check-sum/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-collections/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-endian/.cargo" vcs="Git" />

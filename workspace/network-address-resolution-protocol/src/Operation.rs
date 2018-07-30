@@ -2,13 +2,12 @@
 // Copyright © 2017 The developers of dpdk. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/dpdk/master/COPYRIGHT.
 
 
-/// This is a RFC 1071 internet checksum.
-#[repr(C, packed)]
+/// Address resolution protocol (ARP) hardware type.
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
-#[derive(Deserialize, Serialize)]
-pub struct InternetChecksum(NetworkEndianU16);
+#[repr(C, packed)]
+pub struct Operation(NetworkEndianU16);
 
-impl Into<NetworkEndianU16> for InternetChecksum
+impl Into<NetworkEndianU16> for Operation
 {
 	#[inline(always)]
 	fn into(self) -> NetworkEndianU16
@@ -17,7 +16,7 @@ impl Into<NetworkEndianU16> for InternetChecksum
 	}
 }
 
-impl Into<u16> for InternetChecksum
+impl Into<u16> for Operation
 {
 	#[inline(always)]
 	fn into(self) -> u16
@@ -26,25 +25,25 @@ impl Into<u16> for InternetChecksum
 	}
 }
 
-impl From<NetworkEndianU16> for InternetChecksum
+impl From<NetworkEndianU16> for Operation
 {
 	#[inline(always)]
 	fn from(value: NetworkEndianU16) -> Self
 	{
-		InternetChecksum(value)
+		Operation(value)
 	}
 }
 
-impl From<u16> for InternetChecksum
+impl From<u16> for Operation
 {
 	#[inline(always)]
 	fn from(value: u16) -> Self
 	{
-		InternetChecksum(NetworkEndianU16::from_native_endian(value))
+		Operation(NetworkEndianU16::from_network_endian(value))
 	}
 }
 
-impl Display for InternetChecksum
+impl Display for Operation
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -53,7 +52,7 @@ impl Display for InternetChecksum
 	}
 }
 
-impl Debug for InternetChecksum
+impl Debug for Operation
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -62,11 +61,11 @@ impl Debug for InternetChecksum
 	}
 }
 
-impl Default for InternetChecksum
+impl Operation
 {
-	#[inline(always)]
-	fn default() -> Self
-	{
-		InternetChecksum(NetworkEndianU16::Zero)
-	}
+	/// Request.
+	pub const Request: Self = Operation(NetworkEndianU16::from_network_endian([0x00, 0x01]));
+	
+	/// Reply.
+	pub const Reply: Self = Operation(NetworkEndianU16::from_network_endian([0x00, 0x02]));
 }

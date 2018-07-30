@@ -13,10 +13,13 @@
 
 extern crate digest;
 extern crate network_endian;
+extern crate serde;
+#[macro_use] extern crate serde_derive;
 
 
 pub use ::digest::Digest;
 use ::std::fmt;
+use ::std::fmt::Debug;
 use ::std::fmt::Display;
 use ::std::fmt::Formatter;
 use ::std::mem::size_of;
@@ -25,6 +28,7 @@ use ::std::ptr::NonNull;
 use ::network_endian::*;
 
 
+include!("InternetCheckSum.rs");
 include!("InternetProtocolVersion4PseudoHeader.rs");
 include!("InternetProtocolVersion6PseudoHeader.rs");
 include!("Layer4ProtocolNumber.rs");

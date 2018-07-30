@@ -18,6 +18,7 @@
 #[macro_use] extern crate arrayref;
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
 extern crate libc;
+extern crate network_check_sum;
 extern crate network_endian;
 extern crate network_ethernet;
 extern crate serde;
@@ -36,6 +37,7 @@ use self::version_4::*;
 use self::version_6::*;
 #[cfg(feature = "dpdk-sys")]  use ::dpdk_sys::*;
 use ::libc::*;
+use ::network_check_sum::InternetCheckSum;
 use ::network_endian::*;
 use ::network_ethernet::*;
 use ::network_ethernet::virtual_lans::DifferentiatedServiceCodePoint;
@@ -60,7 +62,6 @@ use ::std::ptr::copy_nonoverlapping;
 
 
 include!("ExplicitCongestionNotification.rs");
-include!("InternetChecksum.rs");
 include!("InternetHeaderLength.rs");
 include!("InternetProtocolHostAddress.rs");
 include!("InternetProtocolMaskBits.rs");
