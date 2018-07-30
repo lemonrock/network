@@ -9,6 +9,23 @@
 #[derive(Serialize, Deserialize)]
 pub struct MaximumTransmissionUnitSize(u16);
 
+impl TryFrom<NetworkEndianU16> for MaximumTransmissionUnitSize
+{
+	type Error = ();
+	
+	#[inline(always)]
+	fn try_from(value: NetworkEndianU16) -> Result<Self, Self::Error>
+	{
+		if value.bytes()[1] < (Self::Rfc791Minimum as u8)
+		{
+			Err(())
+		}
+		else
+		{
+			Ok(MaximumTransmissionUnitSize(value.to_native_endian()))
+		}
+	}
+}
 impl TryFrom<u16> for MaximumTransmissionUnitSize
 {
 	type Error = ();

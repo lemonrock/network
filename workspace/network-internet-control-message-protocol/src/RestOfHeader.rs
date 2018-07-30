@@ -2,17 +2,80 @@
 // Copyright © 2017 The developers of dpdk. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/dpdk/master/COPYRIGHT.
 
 
-/// Represents rest of header.
+/// Represents variants of the rest of the header.
 #[repr(C, packed)]
-#[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
-#[derive(Deserialize, Serialize)]
-pub struct RestOfHeader
+pub union RestOfHeader
 {
-	/// Ident.
-	pub ident: NetworkEndianU16,
+	/// Ident and sequence.
+	pub ident_and_sequence: IdentAndSequence,
 	
-	/// Sequence number.
-	pub sequence_number: NetworkEndianU16,
+	/// Gateway.
+	pub gateway: InternetProtocolVersion4HostAddress,
+
+	/// Path Maximum Transmission Unit (Path MTU or PMTU).
+	pub path_maximum_transmission_unit: PathMaximumTransmissionUnit,
+
+	/// Router advertisement.
+	pub router_advertisement: RouterAdvertisement,
+	
+	/// Other.
+	pub unused: NetworkEndianU32,
+}
+
+impl Clone for RestOfHeader
+{
+	#[inline(always)]
+	fn clone(&self) -> Self
+	{
+		Self
+		{
+			unused: unsafe { self.unused },
+		}
+	}
+}
+
+impl Copy for RestOfHeader
+{
+}
+
+impl PartialEq for RestOfHeader
+{
+	#[inline(always)]
+	fn eq(&self, other: &Self) -> bool
+	{
+		unsafe { self.unused == other.unused }
+	}
+}
+
+impl Eq for RestOfHeader
+{
+}
+
+impl PartialOrd for RestOfHeader
+{
+	#[inline(always)]
+	fn partial_cmp(&self, other: &Self) -> Option<Ordering>
+	{
+		unsafe { self.unused.partial_cmp(other.unused) }
+	}
+}
+
+impl Ord for RestOfHeader
+{
+	#[inline(always)]
+	fn _cmp(&self, other: &Self) -> Ordering
+	{
+		unsafe { self.unused.cmp(other.unused) }
+	}
+}
+
+impl Hash for RestOfHeader
+{
+	#[inline(always)]
+	fn hash<H: Hasher>(&self, hasher: &mut H)
+	{
+		hasher.hash(unsafe { self.unused })
+	}
 }
 
 impl Display for RestOfHeader
@@ -21,5 +84,14 @@ impl Display for RestOfHeader
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
 		Debug::fmt(self, f)
+	}
+}
+
+impl Debug for RestOfHeader
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result
+	{
+		write!(f, "{}", unsafe { self.unused })
 	}
 }

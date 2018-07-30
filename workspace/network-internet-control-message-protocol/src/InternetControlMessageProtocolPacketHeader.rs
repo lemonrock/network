@@ -119,3 +119,93 @@ impl<'a> From<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolPacket
 		unsafe { transmute(value) }
 	}
 }
+
+#[cfg(feature = "libc")]
+impl Into<icmphdr> for InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> icmphdr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> &'a icmphdr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<NonNull<icmphdr>> for &'a mut InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> NonNull<icmphdr>
+	{
+		unsafe { NonNull::new_unchecked(self as *mut InternetControlMessageProtocolPacketHeader as *mut icmphdr) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*const icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> *const icmphdr
+	{
+		self as *const InternetControlMessageProtocolPacketHeader as *const _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> *mut icmphdr
+	{
+		self as *mut InternetControlMessageProtocolPacketHeader as *mut _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> &'a mut icmphdr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl From<icmphdr> for InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn from(value: icmphdr) -> Self
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn from(value: &'a icmphdr) -> &'a InternetControlMessageProtocolPacketHeader
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+{
+	#[inline(always)]
+	fn from(value: &'a mut icmphdr) -> &'a mut InternetControlMessageProtocolPacketHeader
+	{
+		unsafe { transmute(value) }
+	}
+}

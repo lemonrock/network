@@ -10,9 +10,14 @@
 //! # network-internet-control-message-protocol
 //!
 //! A domain model of Internet Control Message Protocol (ICMP) packets and associated types.
+//!
+//! This crate has the optional feature `dpdk-sys`, which adds support for converting Into and From DPDK representations.
+//!
+//! It has an experimental feature `libc`, which does not compile as of libc 0.2.42 (libc is missing essential definitions).
 
 
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
+#[cfg(feature = "libc")] extern crate libc;
 extern crate network_endian;
 extern crate network_internet_protocol;
 extern crate serde;
@@ -20,19 +25,24 @@ extern crate serde;
 
 
 #[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
+#[cfg(feature = "libc")] use libc::*;
 use ::network_endian::*;
 use ::network_internet_protocol::*;
+use ::std::cmp::Ordering;
 use ::std::fmt;
 use ::std::fmt::Debug;
 use ::std::fmt::Display;
 use ::std::fmt::Formatter;
 use ::std::marker::PhantomData;
-#[cfg(feature = "dpdk-sys")] use ::std::mem::transmute;
-#[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
+#[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::mem::transmute;
+#[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::ptr::NonNull;
 
 
 include!("InternetControlMessageProtocolPacket.rs");
 include!("InternetControlMessageProtocolPacketHeader.rs");
 include!("InternetControlMessageProtocolPacketPayload.rs");
 include!("InternetControlMessageProtocolType.rs");
+include!("IdentAndSequence.rs");
+include!("PathMaximumTransmissionUnit.rs");
 include!("RestOfHeader.rs");
+include!("RouterAdvertisement.rs");
