@@ -2,17 +2,24 @@
 // Copyright © 2017 The developers of dpdk. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/dpdk/master/COPYRIGHT.
 
 
-/// Supported address kinds required for Layer 4 protocol based on destination internet protocol address.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+/// Represents rest of header.
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
 #[derive(Deserialize, Serialize)]
-pub enum Layer4ProtocolNeedsToSupport
+pub struct RestOfHeader
 {
-	/// Unicast.
-	Unicast,
+	/// Ident.
+	pub ident: NetworkEndianU16,
 	
-	/// Multicast.
-	Multicast,
-	
-	/// Broadcast.
-	Broadcast,
+	/// Sequence number.
+	pub sequence_number: NetworkEndianU16,
+}
+
+impl Display for RestOfHeader
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result
+	{
+		Debug::fmt(self, f)
+	}
 }

@@ -3,9 +3,9 @@
 
 
 [package]
-name = "network-endian"
-description = "Unsigned integers to make it easier and more efficient to work with network endian data."
-keywords = ["bytes", "endian"]
+name = "network-internet-control-message-protocol"
+description = "A domain model of Internet Control Message Protocol (ICMP) packets and associated types."
+keywords = ["network", "ICMP", "protocol", "packet", "ipv4"]
 categories = ["data-structures", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
@@ -15,8 +15,11 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.2"
+version = "0.1.0"
 
 [dependencies]
+dpdk-sys = { version = "0.0.6", optional = true }
+network-endian = { path = "../network-endian", version = "^0.1" }
+network-internet-protocol = { path = "../network-internet-protocol", version = "^0.1" }
 serde = "1.0"
 serde_derive = "1.0"

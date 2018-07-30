@@ -7,31 +7,32 @@
 #![feature(const_fn)]
 
 
-//! # network-endian
+//! # network-internet-control-message-protocol
 //!
-//! Unsigned integers to make it easier and more efficient to work with network endian data.
+//! A domain model of Internet Control Message Protocol (ICMP) packets and associated types.
 
 
+#[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
+extern crate network_endian;
+extern crate network_internet_protocol;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
-use ::serde::Serialize;
-use ::serde::de::DeserializeOwned;
-use ::std::cmp::Eq;
-use ::std::cmp::Ord;
-use ::std::cmp::Ordering;
-use ::std::cmp::PartialOrd;
+#[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
+use ::network_endian::*;
+use ::network_internet_protocol::*;
 use ::std::fmt;
 use ::std::fmt::Debug;
 use ::std::fmt::Display;
 use ::std::fmt::Formatter;
-use ::std::mem::transmute_copy;
-use ::std::hash::Hash;
-use ::std::hash::Hasher;
+use ::std::marker::PhantomData;
+#[cfg(feature = "dpdk-sys")] use ::std::mem::transmute;
+#[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 
 
-include!("NetworkEndian.rs");
-include!("NetworkEndianU16.rs");
-include!("NetworkEndianU32.rs");
-include!("NetworkEndianU128.rs");
+include!("InternetControlMessageProtocolPacket.rs");
+include!("InternetControlMessageProtocolPacketHeader.rs");
+include!("InternetControlMessageProtocolPacketPayload.rs");
+include!("InternetControlMessageProtocolType.rs");
+include!("RestOfHeader.rs");

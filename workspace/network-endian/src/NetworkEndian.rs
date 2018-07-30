@@ -3,7 +3,7 @@
 
 
 /// Abstract network endian data.
-pub trait NetworkEndian: Sized + Default + Debug + Copy + Clone + PartialOrd + Ord + PartialEq + Eq + Hash + Display
+pub trait NetworkEndian: Sized + Default + Debug + Copy + Clone + PartialOrd + Ord + PartialEq + Eq + Hash + Display + Serialize + DeserializeOwned
 {
 	/// Underlying bytes.
 	#[inline(always)]

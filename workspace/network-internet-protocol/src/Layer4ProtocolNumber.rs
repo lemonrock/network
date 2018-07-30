@@ -8,6 +8,7 @@
 ///
 /// See <https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml>.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 #[repr(u8)]
 pub enum Layer4ProtocolNumber
 {

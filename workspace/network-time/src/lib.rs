@@ -34,7 +34,6 @@ use ::std::thread::sleep;
 use ::std::time::Duration;
 
 
-
 include!("MillisecondDuration.rs");
 include!("MonotonicMillisecondTimestamp.rs");
 include!("RetransmissionTimeOutData.rs");

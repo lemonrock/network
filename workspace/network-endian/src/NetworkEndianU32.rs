@@ -4,6 +4,7 @@
 
 /// Modelled as a packed 4-byte array rather than an u32 because (a) it is not native endian and (b) its alignment is not necessary 4 bytes (it's actually 1).
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 #[repr(C, packed)]
 pub struct NetworkEndianU32([u8; 4]);
 

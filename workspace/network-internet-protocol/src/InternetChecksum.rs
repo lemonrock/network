@@ -5,6 +5,7 @@
 /// This is a RFC 1071 internet checksum.
 #[repr(C, packed)]
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct InternetChecksum(NetworkEndianU16);
 
 impl Into<NetworkEndianU16> for InternetChecksum

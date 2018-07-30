@@ -4,6 +4,7 @@
 
 /// Modelled as a packed 2-byte array rather than an u16 because (a) it is not native endian and (b) its alignment is not necessary 2 bytes (it's actually 1).
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 #[repr(C, packed)]
 pub struct NetworkEndianU16([u8; 2]);
 
