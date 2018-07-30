@@ -5,7 +5,7 @@
 [package]
 name = "network-check-sum"
 description = "RFC 1141 / RFC 1071 check sums, psuedo-headers and cryptographic authentication"
-keywords = ["network", "check sum", "checksum"]
+keywords = ["network", "checksum"]
 categories = ["authentication", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
