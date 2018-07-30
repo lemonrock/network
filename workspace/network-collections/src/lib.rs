@@ -15,6 +15,7 @@
 //! Collections suitable for use with networking, particularly when a fixed memory usage is required to prevent out-of-memory crashes. Includes two kinds of least recently used caches, a bounded hash map, a magic ring buffer (virtual ring buffer) and an arena allocator.
 
 
+extern crate arrayvec;
 #[cfg(any(os = "android", os = "linux"))] extern crate dpdk_unix;
 extern crate libc;
 #[macro_use] extern crate likely;
@@ -33,6 +34,7 @@ pub mod least_recently_used_cache;
 #[cfg(any(os = "android", os = "linux"))] pub mod magic_ring_buffer;
 
 
+use ::arrayvec::ArrayVec;
 use ::std::collections::HashMap;
 use ::std::cmp::Eq;
 use ::std::fmt;
@@ -43,6 +45,7 @@ use ::std::hash::Hasher;
 use ::std::mem::align_of;
 use ::std::mem::ManuallyDrop;
 use ::std::mem::size_of;
+use ::std::mem::transmute;
 #[allow(unused_imports)] use ::std::os::unix::ffi::OsStrExt;
 use ::std::ptr::NonNull;
 use ::std::ptr::null_mut;
@@ -51,3 +54,5 @@ use ::network_time::MonotonicMillisecondTimestamp;
 
 
 include!("BoundedHashMap.rs");
+include!("NonNullUnifiedArrayVecAndVec.rs");
+include!("UnifiedArrayVecAndVec.rs");
