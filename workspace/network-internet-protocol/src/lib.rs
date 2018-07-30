@@ -56,7 +56,7 @@ use ::std::mem::uninitialized;
 use ::std::net::Ipv4Addr;
 use ::std::net::Ipv6Addr;
 use ::std::ptr::copy_nonoverlapping;
-use ::std::ptr::NonNull;
+#[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 
 
 include!("ExplicitCongestionNotification.rs");

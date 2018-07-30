@@ -38,6 +38,7 @@ impl Display for InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl Into<ipv6_hdr> for InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -47,6 +48,7 @@ impl Into<ipv6_hdr> for InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<&'a ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -56,6 +58,7 @@ impl<'a> Into<&'a ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<&'a mut ipv6_hdr> for &'a mut InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -65,6 +68,7 @@ impl<'a> Into<&'a mut ipv6_hdr> for &'a mut InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<NonNull<ipv6_hdr>> for &'a mut InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -74,6 +78,7 @@ impl<'a> Into<NonNull<ipv6_hdr>> for &'a mut InternetProtocolVersion6PacketHeade
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<*const ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -83,6 +88,7 @@ impl<'a> Into<*const ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<*mut ipv6_hdr> for &'a mut InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -92,6 +98,7 @@ impl<'a> Into<*mut ipv6_hdr> for &'a mut InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl From<ipv6_hdr> for InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -101,6 +108,7 @@ impl From<ipv6_hdr> for InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> From<&'a ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]
@@ -110,6 +118,7 @@ impl<'a> From<&'a ipv6_hdr> for &'a InternetProtocolVersion6PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> From<&'a mut ipv6_hdr> for &'a mut InternetProtocolVersion6PacketHeader
 {
 	#[inline(always)]

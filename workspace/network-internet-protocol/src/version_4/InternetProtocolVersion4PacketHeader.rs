@@ -47,6 +47,7 @@ impl Display for InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl Into<ipv4_hdr> for InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -56,6 +57,7 @@ impl Into<ipv4_hdr> for InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<&'a ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -65,6 +67,7 @@ impl<'a> Into<&'a ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<NonNull<ipv4_hdr>> for &'a mut InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -74,6 +77,7 @@ impl<'a> Into<NonNull<ipv4_hdr>> for &'a mut InternetProtocolVersion4PacketHeade
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<*const ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -83,6 +87,7 @@ impl<'a> Into<*const ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<*mut ipv4_hdr> for &'a mut InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -92,6 +97,7 @@ impl<'a> Into<*mut ipv4_hdr> for &'a mut InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> Into<&'a mut ipv4_hdr> for &'a mut InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -101,6 +107,7 @@ impl<'a> Into<&'a mut ipv4_hdr> for &'a mut InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl From<ipv4_hdr> for InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -110,6 +117,7 @@ impl From<ipv4_hdr> for InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> From<&'a ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]
@@ -119,6 +127,7 @@ impl<'a> From<&'a ipv4_hdr> for &'a InternetProtocolVersion4PacketHeader
 	}
 }
 
+#[cfg(feature = "dpdk-sys")]
 impl<'a> From<&'a mut ipv4_hdr> for &'a mut InternetProtocolVersion4PacketHeader
 {
 	#[inline(always)]

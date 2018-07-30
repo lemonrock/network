@@ -24,90 +24,180 @@ impl Display for EthernetPacketHeader
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl Into<ether_hdr> for EthernetPacketHeader
+impl Into<::dpdk_sys::ether_hdr> for EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> ether_hdr
+	fn into(self) -> ::dpdk_sys::ether_hdr
 	{
 		unsafe { transmute(self) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<&'a ether_hdr> for &'a EthernetPacketHeader
+impl<'a> Into<&'a ::dpdk_sys::ether_hdr> for &'a EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> &'a ether_hdr
+	fn into(self) -> &'a ::dpdk_sys::ether_hdr
 	{
 		unsafe { transmute(self) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<&'a mut ether_hdr> for &'a mut EthernetPacketHeader
+impl<'a> Into<&'a mut ::dpdk_sys::ether_hdr> for &'a mut EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> &'a mut ether_hdr
+	fn into(self) -> &'a mut ::dpdk_sys::ether_hdr
 	{
 		unsafe { transmute(self) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<NonNull<ether_hdr>> for &'a mut EthernetPacketHeader
+impl<'a> Into<NonNull<::dpdk_sys::ether_hdr>> for &'a mut EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> NonNull<ether_hdr>
+	fn into(self) -> NonNull<::dpdk_sys::ether_hdr>
 	{
 		unsafe { NonNull::new_unchecked(self as *mut EthernetPacketHeader as *mut ether_hdr) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<*const ether_hdr> for &'a EthernetPacketHeader
+impl<'a> Into<*const ::dpdk_sys::ether_hdr> for &'a EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> *const ether_hdr
+	fn into(self) -> *const ::dpdk_sys::ether_hdr
 	{
 		self as *const EthernetPacketHeader as *const _
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<*mut ether_hdr> for &'a mut EthernetPacketHeader
+impl<'a> Into<*mut ::dpdk_sys::ether_hdr> for &'a mut EthernetPacketHeader
 {
 	#[inline(always)]
-	fn into(self) -> *mut ether_hdr
+	fn into(self) -> *mut ::dpdk_sys::ether_hdr
 	{
 		self as *mut EthernetPacketHeader as *mut _
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl From<ether_hdr> for EthernetPacketHeader
+impl From<::dpdk_sys::ether_hdr> for EthernetPacketHeader
 {
 	#[inline(always)]
-	fn from(value: ether_hdr) -> Self
+	fn from(value: ::dpdk_sys::ether_hdr) -> Self
 	{
 		unsafe { transmute(value) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> From<&'a ether_hdr> for &'a EthernetPacketHeader
+impl<'a> From<&'a ::dpdk_sys::ether_hdr> for &'a EthernetPacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a ether_hdr) -> &'a EthernetPacketHeader
+	fn from(value: &'a ::dpdk_sys::ether_hdr) -> &'a EthernetPacketHeader
 	{
 		unsafe { transmute(value) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> From<&'a mut ether_hdr> for &'a mut EthernetPacketHeader
+impl<'a> From<&'a mut ::dpdk_sys::ether_hdr> for &'a mut EthernetPacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a mut ether_hdr) -> &'a mut EthernetPacketHeader
+	fn from(value: &'a mut ::dpdk_sys::ether_hdr) -> &'a mut EthernetPacketHeader
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl Into<::libc::ether_header> for EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> ::libc::ether_header
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a ::libc::ether_header> for &'a EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> &'a ::libc::ether_header
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a mut ::libc::ether_header> for &'a mut EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> &'a mut ::libc::ether_header
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<NonNull<::libc::ether_header>> for &'a mut EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> NonNull<::libc::ether_header>
+	{
+		unsafe { NonNull::new_unchecked(self as *mut EthernetPacketHeader as *mut ether_header) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*const ::libc::ether_header> for &'a EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> *const ::libc::ether_header
+	{
+		self as *const EthernetPacketHeader as *const _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*mut ::libc::ether_header> for &'a mut EthernetPacketHeader
+{
+	#[inline(always)]
+	fn into(self) -> *mut ::libc::ether_header
+	{
+		self as *mut EthernetPacketHeader as *mut _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl From<::libc::ether_header> for EthernetPacketHeader
+{
+	#[inline(always)]
+	fn from(value: ::libc::ether_header) -> Self
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a ::libc::ether_header> for &'a EthernetPacketHeader
+{
+	#[inline(always)]
+	fn from(value: &'a ::libc::ether_header) -> &'a EthernetPacketHeader
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a mut ::libc::ether_header> for &'a mut EthernetPacketHeader
+{
+	#[inline(always)]
+	fn from(value: &'a mut ::libc::ether_header) -> &'a mut EthernetPacketHeader
 	{
 		unsafe { transmute(value) }
 	}

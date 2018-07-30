@@ -15,6 +15,186 @@
 #[repr(C, packed)]
 pub struct MediaAccessControlAddress([u8; MediaAccessControlAddress::Size]);
 
+#[cfg(feature = "dpdk-sys")]
+impl Into<::dpdk_sys::ether_addr> for MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> ::dpdk_sys::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> Into<&'a ::dpdk_sys::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> &'a ::dpdk_sys::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> Into<&'a mut ::dpdk_sys::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> &'a mut ::dpdk_sys::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> Into<NonNull<::dpdk_sys::ether_addr>> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> NonNull<::dpdk_sys::ether_addr>
+	{
+		unsafe { NonNull::new_unchecked(self as *mut MediaAccessControlAddress as *mut ether_addr) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> Into<*const ::dpdk_sys::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> *const ::dpdk_sys::ether_addr
+	{
+		self as *const MediaAccessControlAddress as *const _
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> Into<*mut ::dpdk_sys::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> *mut ::dpdk_sys::ether_addr
+	{
+		self as *mut MediaAccessControlAddress as *mut _
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl From<::dpdk_sys::ether_addr> for MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: ::dpdk_sys::ether_addr) -> Self
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> From<&'a ::dpdk_sys::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: &'a ::dpdk_sys::ether_addr) -> &'a MediaAccessControlAddress
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "dpdk-sys")]
+impl<'a> From<&'a mut ::dpdk_sys::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: &'a mut ::dpdk_sys::ether_addr) -> &'a mut MediaAccessControlAddress
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl Into<::libc::ether_addr> for MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> ::libc::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a ::libc::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> &'a ::libc::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<&'a mut ::libc::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> &'a mut ::libc::ether_addr
+	{
+		unsafe { transmute(self) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<NonNull<::libc::ether_addr>> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> NonNull<::libc::ether_addr>
+	{
+		unsafe { NonNull::new_unchecked(self as *mut MediaAccessControlAddress as *mut ether_addr) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*const ::libc::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> *const ::libc::ether_addr
+	{
+		self as *const MediaAccessControlAddress as *const _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> Into<*mut ::libc::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn into(self) -> *mut ::libc::ether_addr
+	{
+		self as *mut MediaAccessControlAddress as *mut _
+	}
+}
+
+#[cfg(feature = "libc")]
+impl From<::libc::ether_addr> for MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: ::libc::ether_addr) -> Self
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a ::libc::ether_addr> for &'a MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: &'a ::libc::ether_addr) -> &'a MediaAccessControlAddress
+	{
+		unsafe { transmute(value) }
+	}
+}
+
+#[cfg(feature = "libc")]
+impl<'a> From<&'a mut ::libc::ether_addr> for &'a mut MediaAccessControlAddress
+{
+	#[inline(always)]
+	fn from(value: &'a mut ::libc::ether_addr) -> &'a mut MediaAccessControlAddress
+	{
+		unsafe { transmute(value) }
+	}
+}
+
 impl Display for MediaAccessControlAddress
 {
 	#[inline(always)]
@@ -135,41 +315,6 @@ impl MediaAccessControlAddress
 	{
 		let bytes = &self.0;
 		write!(f, "{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}", bytes[5].reverse_bits(), bytes[4].reverse_bits(), bytes[3].reverse_bits(), bytes[2].reverse_bits(), bytes[1].reverse_bits(), bytes[0].reverse_bits())
-	}
-	
-	/// From DPDK type.
-	#[cfg(feature = "dpdk-sys")]
-	#[inline(always)]
-	pub fn from_ether_addr(dpdk_type: ether_addr) -> Self
-	{
-		MediaAccessControlAddress(dpdk_type.addr_bytes)
-	}
-	
-	/// To DPDK type.
-	#[cfg(feature = "dpdk-sys")]
-	#[inline(always)]
-	pub fn to_ether_addr(self) -> ether_addr
-	{
-		ether_addr
-		{
-			addr_bytes: self.0
-		}
-	}
-	
-	/// To DPDK type.
-	#[cfg(feature = "dpdk-sys")]
-	#[inline(always)]
-	pub fn to_ether_addr_reference(&self) -> &ether_addr
-	{
-		unsafe { transmute(self) }
-	}
-	
-	/// To DPDK type.
-	#[cfg(feature = "dpdk-sys")]
-	#[inline(always)]
-	pub fn to_ether_addr_mutable_reference(&mut self) -> &mut ether_addr
-	{
-		unsafe { transmute(self) }
 	}
 	
 	/// From octets.

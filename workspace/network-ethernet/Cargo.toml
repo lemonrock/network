@@ -15,11 +15,12 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.1"
+version = "0.1.2"
 
 [dependencies]
 arrayref = "^0.3"
 dpdk-sys = { version = "0.0.6", optional = true }
+libc = { version = "^0.2", optional = true }
 hyper-thread-random = "^0.4"
 network-endian = { path = "../network-endian", version = "^0.1" }
 serde = "1.0"

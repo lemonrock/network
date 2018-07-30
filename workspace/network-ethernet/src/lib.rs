@@ -15,11 +15,14 @@
 //! A domain model of ethernet and virtual LAN packets and associated types.
 //!
 //! This crate has the optional feature `dpdk-sys`, which adds support for converting Into and From DPDK representations.
+//!
+//! It has an experimental feature `libc`, which does not compile as of libc 0.2.42 (libc is missing essential definitions).
 
 
 #[macro_use] extern crate arrayref;
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
 extern crate hyper_thread_random;
+#[cfg(feature = "libc")] extern crate libc;
 extern crate network_endian;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
