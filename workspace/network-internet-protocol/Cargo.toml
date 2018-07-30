@@ -21,6 +21,7 @@ version = "0.1.4"
 arrayref = "^0.3"
 dpdk-sys = { version = "0.0.6", optional = true }
 libc = "^0.2"
+network-check-sum = { path = "../network-check-sum", version = "^0.1" }
 network-endian = { path = "../network-endian", version = "^0.1" }
 network-ethernet = { path = "../network-ethernet", version = "^0.1" }
 serde = "1.0"
