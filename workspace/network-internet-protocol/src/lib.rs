@@ -11,6 +11,8 @@
 //! # network-internet-protocol
 //!
 //! A domain model of internet protocol version 4 and version 6 host addresses, masks, network addresses and packets and associated types.
+//!
+//! This crate has the optional feature `dpdk-sys`, which adds support for converting Into and From DPDK representations.
 
 
 #[macro_use] extern crate arrayref;
