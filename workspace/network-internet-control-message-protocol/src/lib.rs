@@ -32,7 +32,6 @@ extern crate serde;
 use ::network_check_sum::InternetCheckSum;
 use ::network_endian::*;
 use ::network_ethernet::MaximumTransmissionUnitSize;
-use ::network_internet_protocol::*;
 use ::network_internet_protocol::version_4::*;
 use ::std::cmp::Ordering;
 use ::std::convert::TryFrom;
