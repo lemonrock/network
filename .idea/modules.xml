@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/workspace/network/network-check-sum.iml" filepath="$PROJECT_DIR$/workspace/network/network-check-sum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workspace/network/network-collections.iml" filepath="$PROJECT_DIR$/workspace/network/network-collections.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workspace/network/network-endian.iml" filepath="$PROJECT_DIR$/workspace/network/network-endian.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workspace/network/network-time.iml" filepath="$PROJECT_DIR$/workspace/network/network-time.iml" />
+    </modules>
+  </component>
+</project>
