@@ -13,6 +13,8 @@
 //! # network-ethernet
 //!
 //! A domain model of ethernet and virtual LAN packets and associated types.
+//!
+//! This crate has the optional feature `dpdk-sys`, which adds support for converting Into and From DPDK representations.
 
 
 #[macro_use] extern crate arrayref;
@@ -48,7 +50,7 @@ use ::std::mem::size_of;
 use ::std::mem::transmute;
 use ::std::mem::uninitialized;
 use ::std::ptr::copy_nonoverlapping;
-use ::std::ptr::NonNull;
+#[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 use ::std::str::SplitN;
 
 
