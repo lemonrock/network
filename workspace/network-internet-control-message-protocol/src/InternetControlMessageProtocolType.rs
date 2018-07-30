@@ -14,7 +14,7 @@ impl Display for InternetControlMessageProtocolType
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
-		write!(f, "{}", self.into())
+		write!(f, "{}", self.0)
 	}
 }
 
