@@ -5,6 +5,7 @@
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
 #![feature(const_fn)]
+#![feature(try_from)]
 
 
 //! # network-internet-control-message-protocol
@@ -19,6 +20,7 @@
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
 #[cfg(feature = "libc")] extern crate libc;
 extern crate network_endian;
+extern crate network_ethernet;
 extern crate network_internet_protocol;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
@@ -27,12 +29,17 @@ extern crate serde;
 #[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
 #[cfg(feature = "libc")] use libc::*;
 use ::network_endian::*;
+use ::network_ethernet::MaximumTransmissionUnitSize;
 use ::network_internet_protocol::*;
+use ::network_internet_protocol::version_4::*;
 use ::std::cmp::Ordering;
+use ::std::convert::TryFrom;
 use ::std::fmt;
 use ::std::fmt::Debug;
 use ::std::fmt::Display;
 use ::std::fmt::Formatter;
+use ::std::hash::Hash;
+use ::std::hash::Hasher;
 use ::std::marker::PhantomData;
 #[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::mem::transmute;
 #[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::ptr::NonNull;

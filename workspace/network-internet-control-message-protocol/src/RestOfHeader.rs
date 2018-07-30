@@ -56,16 +56,16 @@ impl PartialOrd for RestOfHeader
 	#[inline(always)]
 	fn partial_cmp(&self, other: &Self) -> Option<Ordering>
 	{
-		unsafe { self.unused.partial_cmp(other.unused) }
+		unsafe { self.unused.partial_cmp(&other.unused) }
 	}
 }
 
 impl Ord for RestOfHeader
 {
 	#[inline(always)]
-	fn _cmp(&self, other: &Self) -> Ordering
+	fn cmp(&self, other: &Self) -> Ordering
 	{
-		unsafe { self.unused.cmp(other.unused) }
+		unsafe { self.unused.cmp(&other.unused) }
 	}
 }
 
@@ -74,7 +74,7 @@ impl Hash for RestOfHeader
 	#[inline(always)]
 	fn hash<H: Hasher>(&self, hasher: &mut H)
 	{
-		hasher.hash(unsafe { self.unused })
+		(unsafe { self.unused }).hash(hasher)
 	}
 }
 
