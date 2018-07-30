@@ -63,6 +63,13 @@ impl NetworkEndianU128
 		NetworkEndianU128(network_endian)
 	}
 	
+	/// To network endian.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u128
+	{
+		self.big_endian_from_bytes()
+	}
+	
 	/// To native endian.
 	#[inline(always)]
 	pub fn to_native_endian(self) -> u128

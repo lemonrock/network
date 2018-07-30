@@ -121,10 +121,11 @@ impl MediaAccessControlAddress
 	/// An address that is all zeros.
 	pub const Zero: Self = MediaAccessControlAddress([0; Self::Size]);
 	
-	// Also known as a Multicast or Broadcast address.
-	pub(crate) const GroupAddressBitFlag: u8 = 0x01;
+	/// Also known as a Multicast or Broadcast address.
+	pub const GroupAddressBitFlag: u8 = 0x01;
 	
-	pub(crate) const LocallyAdministeredAddressBitFlag: u8 = 0x02;
+	/// Locally administered, ie uses an OUI assigned by IANA.
+	pub const LocallyAdministeredAddressBitFlag: u8 = 0x02;
 	
 	/// Alternative formatting to debug and display format.
 	///

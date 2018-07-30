@@ -6,7 +6,7 @@
 name = "network-ethernet"
 description = "A domain model of ethernet and virtual LAN packets and associated types."
 keywords = ["network", "ethernet", "packet", "vlan"]
-categories = ["network-programming"]
+categories = ["data-structures", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
 homepage = "https://github.com/lemonrock/network"

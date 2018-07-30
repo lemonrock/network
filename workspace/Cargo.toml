@@ -8,5 +8,6 @@ members = [
     "network-collections",
     "network-endian",
     "network-ethernet",
+    "network-internet-protocol",
     "network-time",
 ]

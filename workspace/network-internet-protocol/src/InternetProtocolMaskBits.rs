@@ -2,30 +2,10 @@
 // Copyright © 2017 The developers of dpdk. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/dpdk/master/COPYRIGHT.
 
 
-/// This is a specialized structure designed to represent a buffer of packet data.
-///
-/// Note that Internet protocol version 4 packet header checksums are not validated unless done by hardware offload.
-#[repr(C, packed)]
-pub struct Layer3Packet
+/// Mask bits.
+pub trait InternetProtocolMaskBits: Sized + Debug + Display + PartialOrd + Ord + PartialEq + Eq + Hash + Serialize + Clone + Copy
 {
-	/// Layer 3 packet.
-	pub other: PhantomData<u8>,
-}
-
-impl Display for Layer3Packet
-{
+	/// As depth, 0 to 32 for Internet Protocol Version 4 and 0 to 128 for Internet Protocol Version 6.
 	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
-	{
-		Debug::fmt(self, f)
-	}
-}
-
-impl Debug for Layer3Packet
-{
-	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
-	{
-		write!(f, "(layer 3 packet)")
-	}
+	fn as_depth(self) -> u8;
 }

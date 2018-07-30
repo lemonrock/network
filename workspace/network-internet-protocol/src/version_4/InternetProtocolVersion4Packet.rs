@@ -3,16 +3,21 @@
 
 
 /// This is a specialized structure designed to represent a buffer of packet data.
-///
-/// Note that Internet protocol version 4 packet header checksums are not validated unless done by hardware offload.
 #[repr(C, packed)]
-pub struct Layer3Packet
+#[derive(Debug)]
+pub struct InternetProtocolVersion4Packet
 {
-	/// Layer 3 packet.
-	pub other: PhantomData<u8>,
+	/// Header.
+	pub header: InternetProtocolVersion4PacketHeader,
+	
+	/// Options.
+	pub options: PhantomData<u8>,
+	
+	/// Payload.
+	pub payload: Layer4Packet,
 }
 
-impl Display for Layer3Packet
+impl Display for InternetProtocolVersion4Packet
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -21,11 +26,12 @@ impl Display for Layer3Packet
 	}
 }
 
-impl Debug for Layer3Packet
+impl InternetProtocolVersion4Packet
 {
+	/// Is the packet length too short?
 	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
+	pub fn is_packet_length_too_short(layer_3_length: u16) -> bool
 	{
-		write!(f, "(layer 3 packet)")
+		layer_3_length < InternetProtocolVersion4PacketHeader::HeaderSizeU16
 	}
 }

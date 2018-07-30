@@ -2,17 +2,18 @@
 // Copyright © 2017 The developers of dpdk. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/dpdk/master/COPYRIGHT.
 
 
-/// This is a specialized structure designed to represent a buffer of packet data.
-///
-/// Note that Internet protocol version 4 packet header checksums are not validated unless done by hardware offload.
-#[repr(C, packed)]
-pub struct Layer3Packet
+/// Cause of failure to parse.
+#[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
+pub enum InternetProtocolVersion6MulticastAddressParseError
 {
-	/// Layer 3 packet.
-	pub other: PhantomData<u8>,
+	#[allow(missing_docs)]
+	ReservedHighOrderFlag,
+	
+	#[allow(missing_docs)]
+	ReservedOrUnassignedScope(u8),
 }
 
-impl Display for Layer3Packet
+impl Display for InternetProtocolVersion6MulticastAddressParseError
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -21,11 +22,6 @@ impl Display for Layer3Packet
 	}
 }
 
-impl Debug for Layer3Packet
+impl ::std::error::Error for InternetProtocolVersion6MulticastAddressParseError
 {
-	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
-	{
-		write!(f, "(layer 3 packet)")
-	}
 }

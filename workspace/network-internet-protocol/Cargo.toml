@@ -3,9 +3,9 @@
 
 
 [package]
-name = "network-endian"
-description = "Unsigned integers to make it easier and more efficient to work with network endian data."
-keywords = ["bytes", "endian"]
+name = "network-internet-protocol"
+description = "A domain model of internet protocol version 4 and version 6 host addresses, masks, network addresses and packets and associated types."
+keywords = ["network", "internet", "protocol", "packet", "ipv4"]
 categories = ["data-structures", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
@@ -15,4 +15,16 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.1"
+version = "0.1.0"
+
+[features]
+default = ["dpdk-sys"]
+
+[dependencies]
+arrayref = "^0.3"
+dpdk-sys = { version = "0.0.6", optional = true }
+libc = "^0.2"
+network-endian = { path = "../network-endian", version = "^0.1" }
+network-ethernet = { path = "../network-ethernet", version = "^0.1" }
+serde = "1.0"
+serde_derive = "1.0"

@@ -3,16 +3,14 @@
 
 
 /// This is a specialized structure designed to represent a buffer of packet data.
-///
-/// Note that Internet protocol version 4 packet header checksums are not validated unless done by hardware offload.
 #[repr(C, packed)]
-pub struct Layer3Packet
+pub struct Layer4Packet
 {
-	/// Layer 3 packet.
+	/// Layer 4 packet.
 	pub other: PhantomData<u8>,
 }
 
-impl Display for Layer3Packet
+impl Display for Layer4Packet
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -21,11 +19,11 @@ impl Display for Layer3Packet
 	}
 }
 
-impl Debug for Layer3Packet
+impl Debug for Layer4Packet
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
-		write!(f, "(layer 3 packet)")
+		write!(f, "(layer 4 packet)")
 	}
 }
