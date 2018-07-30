@@ -12,10 +12,10 @@
 
 //! # network-collections
 //!
-//! Collections suitable for use with networking, particularly when a fixed memory usage is required to prevent out-of-memory crashes. Includes two kinds of least recently used caches, a bounded hash map, a magic ring buffer (virtual ring buffer) and an allocator.
+//! Collections suitable for use with networking, particularly when a fixed memory usage is required to prevent out-of-memory crashes. Includes two kinds of least recently used caches, a bounded hash map, a magic ring buffer (virtual ring buffer) and an arena allocator.
 
 
-extern crate dpdk_unix;
+#[cfg(any(os = "android", os = "linux"))] extern crate dpdk_unix;
 extern crate libc;
 #[macro_use] extern crate likely;
 extern crate network_time;
