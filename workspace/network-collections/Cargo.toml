@@ -5,7 +5,7 @@
 [package]
 name = "network-collections"
 description = "Collections suitable for use with networking, particularly when a fixed memory usage is required to prevent out-of-memory crashes. Includes two kinds of least recently used caches, a bounded hash map, a magic ring buffer (virtual ring buffer) and an allocator."
-keywords = ["network", "lru", "cache", "magic ring buffer"]
+keywords = ["network", "lru", "cache", "magic", "ring", "buffer"]
 categories = ["data-structures", "memory-management", "network-programming"]
 license = "AGPL-3.0"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
