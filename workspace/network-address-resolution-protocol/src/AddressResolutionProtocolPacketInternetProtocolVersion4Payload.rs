@@ -5,6 +5,7 @@
 /// Internet protocol (IP) version 4 payload of address resolution protocol (ARP) packet.
 #[repr(C, packed)]
 #[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize)]
 pub struct AddressResolutionProtocolPacketInternetProtocolVersion4Payload
 {
 	#[allow(missing_docs)]

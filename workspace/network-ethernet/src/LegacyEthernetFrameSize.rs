@@ -7,6 +7,7 @@
 /// Rare and of little value for typical DPDK usage.
 #[repr(C, packed)]
 #[derive(Default, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Serialize, Deserialize)]
 pub struct LegacyEthernetFrameSize(NetworkEndianU16);
 
 impl Into<NetworkEndianU16> for LegacyEthernetFrameSize

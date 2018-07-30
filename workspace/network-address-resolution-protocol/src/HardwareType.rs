@@ -5,6 +5,7 @@
 /// Address resolution protocol (ARP) hardware type.
 #[repr(C, packed)]
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize)]
 pub struct HardwareType(NetworkEndianU16);
 
 impl Into<NetworkEndianU16> for HardwareType
@@ -39,7 +40,7 @@ impl From<u16> for HardwareType
 	#[inline(always)]
 	fn from(value: u16) -> Self
 	{
-		HardwareType(NetworkEndianU16::from_network_endian(value))
+		HardwareType(NetworkEndianU16::from_native_endian(value))
 	}
 }
 

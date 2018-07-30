@@ -7,6 +7,7 @@
 /// Depending on the PacketProcessingDropReason, these may be invalid, inappropriate, not for our interface, etc.
 #[repr(C, packed)]
 #[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Serialize, Deserialize)]
 pub struct EthernetAddresses
 {
 	/// Source ethernet address.

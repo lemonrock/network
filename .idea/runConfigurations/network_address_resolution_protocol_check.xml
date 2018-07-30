@@ -4,7 +4,7 @@
     <option name="command" value="check --target x86_64-unknown-linux-musl" />
     <option name="nocapture" value="true" />
     <option name="backtrace" value="SHORT" />
-    <option name="workingDirectory" value="file://$PROJECT_DIR$/workspace/address-resolution-protocol" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$/workspace/network-address-resolution-protocol" />
     <envs>
       <env name="CROSS_COMPILE" value="x86_64-linux-musl-" />
     </envs>

@@ -5,6 +5,7 @@
 /// Represents an Ether type.
 #[repr(C, packed)]
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Serialize, Deserialize)]
 pub struct EtherType(NetworkEndianU16);
 
 impl Into<NetworkEndianU16> for EtherType
