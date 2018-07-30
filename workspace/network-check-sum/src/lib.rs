@@ -12,7 +12,7 @@
 
 
 extern crate digest;
-extern crate tcp_engine_network_endian;
+extern crate network_endian;
 
 
 pub use ::digest::Digest;
@@ -22,7 +22,7 @@ use ::std::fmt::Formatter;
 use ::std::mem::size_of;
 use ::std::mem::zeroed;
 use ::std::ptr::NonNull;
-use ::tcp_engine_network_endian::*;
+use ::network_endian::*;
 
 
 include!("InternetProtocolVersion4PseudoHeader.rs");
