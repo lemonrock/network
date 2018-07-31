@@ -15,11 +15,9 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.1"
+version = "0.1.2"
 
 [dependencies]
-digest = "^0.7"
 network-endian = { path = "../network-endian", version = "^0.1" }
 serde = "1.0"
 serde_derive = "1.0"
-

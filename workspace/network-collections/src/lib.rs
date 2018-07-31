@@ -34,7 +34,7 @@ pub mod least_recently_used_cache;
 #[cfg(any(os = "android", os = "linux"))] pub mod magic_ring_buffer;
 
 
-use ::arrayvec::ArrayVec;
+pub use ::arrayvec::ArrayVec;
 use ::std::collections::HashMap;
 use ::std::cmp::Eq;
 use ::std::fmt;

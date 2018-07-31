@@ -48,8 +48,11 @@ impl TryFrom<u8> for Layer4ProtocolNumber
 			
 			7 => UserDatagramProtocol,
 			
+			58 => InternetControlMessageProtocolIpV6,
+			
 			_ => return Err(()),
 		};
+		
 		Ok(this)
 	}
 }

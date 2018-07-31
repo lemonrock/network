@@ -10,3 +10,4 @@ include!("InternetProtocolVersion4MaskBits.rs");
 include!("InternetProtocolVersion4NetworkAddress.rs");
 include!("InternetProtocolVersion4Packet.rs");
 include!("InternetProtocolVersion4PacketHeader.rs");
+include!("InternetProtocolVersion4PseudoHeader.rs");

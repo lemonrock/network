@@ -6,12 +6,21 @@
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct Rfc1141CompliantCheckSum(u16);
 
-impl From<u16> for Rfc1141CompliantCheckSum
+impl Into<InternetCheckSum> for Rfc1141CompliantCheckSum
 {
 	#[inline(always)]
-	fn from(check_sum: u16) -> Self
+	fn into(self) -> InternetCheckSum
 	{
-		Rfc1141CompliantCheckSum(check_sum)
+		InternetCheckSum(NetworkEndianU16::from_native_endian(self.0))
+	}
+}
+
+impl Into<NetworkEndianU16> for Rfc1141CompliantCheckSum
+{
+	#[inline(always)]
+	fn into(self) -> NetworkEndianU16
+	{
+		NetworkEndianU16::from_native_endian(self.0)
 	}
 }
 
@@ -33,21 +42,30 @@ impl Into<u32> for Rfc1141CompliantCheckSum
 	}
 }
 
-impl From<NetworkEndianU16> for Rfc1141CompliantCheckSum
+impl From<InternetCheckSum> for Rfc1141CompliantCheckSum
 {
 	#[inline(always)]
-	fn from(check_sum: NetworkEndianU16) -> Self
+	fn from(value: InternetCheckSum) -> Self
 	{
-		Rfc1141CompliantCheckSum(check_sum.to_native_endian())
+		Rfc1141CompliantCheckSum(value.0.to_native_endian())
 	}
 }
 
-impl Into<NetworkEndianU16> for Rfc1141CompliantCheckSum
+impl From<NetworkEndianU16> for Rfc1141CompliantCheckSum
 {
 	#[inline(always)]
-	fn into(self) -> NetworkEndianU16
+	fn from(value: NetworkEndianU16) -> Self
 	{
-		NetworkEndianU16::from_native_endian(self.0)
+		Rfc1141CompliantCheckSum(value.to_native_endian())
+	}
+}
+
+impl From<u16> for Rfc1141CompliantCheckSum
+{
+	#[inline(always)]
+	fn from(value: u16) -> Self
+	{
+		Rfc1141CompliantCheckSum(value)
 	}
 }
 
@@ -69,62 +87,20 @@ impl Rfc1141CompliantCheckSum
 		NetworkEndianU16::from_native_endian(self.0)
 	}
 	
-	/// Internet Protocol (IP) version 4 check sum for Transmission Control Protocol (TCP) segments.
+	/// Partial check sum from a struct, such as a pseudo-header.
+	///
+	/// Call finalize() when finished.
 	#[inline(always)]
-	pub fn internet_protocol_version_4_tcp_check_sum(source_internet_protocol_version_4_address: &NetworkEndianU32, destination_internet_protocol_version_4_address: &NetworkEndianU32, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize) -> Self
-	{
-		Self::internet_protocol_version_4_layer_4_check_sum(source_internet_protocol_version_4_address, destination_internet_protocol_version_4_address, internet_packet_payload_pointer, layer_4_packet_size, Layer4ProtocolNumber::Tcp)
-	}
-	
-	/// Internet Protocol (IP) version 4 check sum.
-	#[inline(always)]
-	pub fn internet_protocol_version_4_layer_4_check_sum(source_internet_protocol_version_4_address: &NetworkEndianU32, destination_internet_protocol_version_4_address: &NetworkEndianU32, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> Self
-	{
-		let sum = Self::internet_protocol_version_4_pseudo_header_check_sum_partial(source_internet_protocol_version_4_address, destination_internet_protocol_version_4_address, layer_4_packet_size, layer_4_protocol_number);
-		let sum = Self::from_data_check_sum_partial(internet_packet_payload_pointer, layer_4_packet_size, sum);
-		Self::finalize(sum)
-	}
-	
-	#[inline(always)]
-	fn internet_protocol_version_4_pseudo_header_check_sum_partial(source_internet_protocol_version_4_address: &NetworkEndianU32, destination_internet_protocol_version_4_address: &NetworkEndianU32, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> u32
-	{
-		let pseudo_header = InternetProtocolVersion4PseudoHeader::new(source_internet_protocol_version_4_address, destination_internet_protocol_version_4_address, layer_4_protocol_number, layer_4_packet_size as u16);
-		
-		Self::from_struct_check_sum_partial(&pseudo_header, 0)
-	}
-	
-	/// Internet Protocol (IP) version 6 check sum for Transmission Control Protocol (TCP) segments.
-	#[inline(always)]
-	pub fn internet_protocol_version_6_tcp_check_sum(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize) -> Self
-	{
-		Self::internet_protocol_version_6_layer_4_check_sum(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, internet_packet_payload_pointer, layer_4_packet_size, Layer4ProtocolNumber::Tcp)
-	}
-	
-	/// Internet Protocol (IP) version 6 check sum.
-	#[inline(always)]
-	pub fn internet_protocol_version_6_layer_4_check_sum(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> Self
-	{
-		let sum = Self::internet_protocol_version_6_pseudo_header_check_sum_partial(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, layer_4_packet_size, layer_4_protocol_number);
-		let sum = Self::from_data_check_sum_partial(internet_packet_payload_pointer, layer_4_packet_size, sum);
-		Self::finalize(sum)
-	}
-	
-	#[inline(always)]
-	fn internet_protocol_version_6_pseudo_header_check_sum_partial(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> u32
-	{
-		let pseudo_header = InternetProtocolVersion6PseudoHeader::new(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, layer_4_protocol_number, layer_4_packet_size as u32);
-		
-		Self::from_struct_check_sum_partial(&pseudo_header, 0)
-	}
-	
-	#[inline(always)]
-	fn from_struct_check_sum_partial<T>(data: &T, initial_value: u32) -> u32
+	pub fn from_struct_check_sum_partial<T>(data: &T, initial_value: u32) -> u32
 	{
 		let data_pointer = unsafe { NonNull::new_unchecked(data as *const T as *const u8 as *mut u8) };
 		let data_length = size_of::<T>();
 		Self::from_data_check_sum_partial(data_pointer, data_length, initial_value)
 	}
 	
+	/// Partial check sum from data bytes.
+	///
+	/// Call finalize() when finished.
 	#[inline(always)]
 	fn from_data_check_sum_partial(data_pointer: NonNull<u8>, data_length: usize, initial_value: u32) -> u32
 	{
@@ -167,8 +143,9 @@ impl Rfc1141CompliantCheckSum
 		sum
 	}
 	
+	/// Finalize.
 	#[inline(always)]
-	fn finalize(mut sum: u32) -> Self
+	pub fn finalize(mut sum: u32) -> Self
 	{
 		while (sum >> 16) != 0
 		{

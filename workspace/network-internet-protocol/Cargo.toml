@@ -19,6 +19,7 @@ version = "0.1.4"
 
 [dependencies]
 arrayref = "^0.3"
+digest = "^0.7"
 dpdk-sys = { version = "0.0.6", optional = true }
 libc = "^0.2"
 network-check-sum = { path = "../network-check-sum", version = "^0.1" }

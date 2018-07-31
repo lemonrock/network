@@ -16,6 +16,7 @@
 
 
 #[macro_use] extern crate arrayref;
+extern crate digest;
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
 extern crate libc;
 extern crate network_check_sum;
@@ -35,6 +36,7 @@ pub mod version_6;
 
 use self::version_4::*;
 use self::version_6::*;
+pub use ::digest::Digest;
 #[cfg(feature = "dpdk-sys")]  use ::dpdk_sys::*;
 use ::libc::*;
 use ::network_check_sum::InternetCheckSum;

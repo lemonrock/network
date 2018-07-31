@@ -13,5 +13,6 @@ include!("InternetProtocolVersion6MulticastAddressScope.rs");
 include!("InternetProtocolVersion6NetworkAddress.rs");
 include!("InternetProtocolVersion6Packet.rs");
 include!("InternetProtocolVersion6PacketHeader.rs");
+include!("InternetProtocolVersion6PseudoHeader.rs");
 include!("ExtensionHeaderType.rs");
 include!("ExtensionHeaderTypeOrLayer4ProtocolNumber.rs");
