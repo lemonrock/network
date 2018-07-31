@@ -41,22 +41,22 @@ impl InternetProtocolVersion6PseudoHeader
 	
 	/// Internet Protocol (IP) version 6 check sum for Transmission Control Protocol (TCP) segments.
 	#[inline(always)]
-	pub fn internet_protocol_version_6_tcp_check_sum(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize) -> Self
+	pub fn internet_protocol_version_6_tcp_check_sum(source_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, destination_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize) -> Rfc1141CompliantCheckSum
 	{
 		Self::internet_protocol_version_6_layer_4_check_sum(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, internet_packet_payload_pointer, layer_4_packet_size, Layer4ProtocolNumber::TransmissionControlProtocol)
 	}
 	
 	/// Internet Protocol (IP) version 6 check sum.
 	#[inline(always)]
-	pub fn internet_protocol_version_6_layer_4_check_sum(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> Self
+	pub fn internet_protocol_version_6_layer_4_check_sum(source_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, destination_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, internet_packet_payload_pointer: NonNull<u8>, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> Rfc1141CompliantCheckSum
 	{
 		let sum = Self::internet_protocol_version_6_pseudo_header_check_sum_partial(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, layer_4_packet_size, layer_4_protocol_number);
-		let sum = Self::from_data_check_sum_partial(internet_packet_payload_pointer, layer_4_packet_size, sum);
+		let sum = Rfc1141CompliantCheckSum::from_data_check_sum_partial(internet_packet_payload_pointer, layer_4_packet_size, sum);
 		Rfc1141CompliantCheckSum::finalize(sum)
 	}
 	
 	#[inline(always)]
-	fn internet_protocol_version_6_pseudo_header_check_sum_partial(source_internet_protocol_version_6_address: &NetworkEndianU128, destination_internet_protocol_version_6_address: &NetworkEndianU128, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> u32
+	fn internet_protocol_version_6_pseudo_header_check_sum_partial(source_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, destination_internet_protocol_version_6_address: &InternetProtocolVersion6HostAddress, layer_4_packet_size: usize, layer_4_protocol_number: Layer4ProtocolNumber) -> u32
 	{
 		let pseudo_header = Self::new(source_internet_protocol_version_6_address, destination_internet_protocol_version_6_address, layer_4_protocol_number, layer_4_packet_size as u32);
 		

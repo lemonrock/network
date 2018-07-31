@@ -102,7 +102,7 @@ impl Rfc1141CompliantCheckSum
 	///
 	/// Call finalize() when finished.
 	#[inline(always)]
-	fn from_data_check_sum_partial(data_pointer: NonNull<u8>, data_length: usize, initial_value: u32) -> u32
+	pub fn from_data_check_sum_partial(data_pointer: NonNull<u8>, data_length: usize, initial_value: u32) -> u32
 	{
 		#[inline(always)]
 		fn accumulate_u16_chunks(mut data_pointer: usize, even_data_length: usize, initial_value: u32) -> (u32, usize)

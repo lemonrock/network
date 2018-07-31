@@ -41,6 +41,23 @@ impl Default for InternetProtocolVersion6HostAddress
 	}
 }
 
+impl NetworkEndian for InternetProtocolVersion6HostAddress
+{
+	/// Underlying bytes.
+	#[inline(always)]
+	fn bytes(&self) -> &[u8]
+	{
+		&self.0
+	}
+	
+	/// Writes to a hasher creating a hash.
+	#[inline(always)]
+	fn write_to_hash<H: Hasher>(&self, hasher: &mut H)
+	{
+		hasher.write_u128(unsafe { transmute_copy(&self.0) })
+	}
+}
+
 /// A trait abstracting the similarities between internet protocol (IP) version 4 and version 6 host addresses.
 impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 {

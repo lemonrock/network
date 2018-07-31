@@ -85,7 +85,7 @@ impl MediaAccessControlAddressAndInternetProtocolAddressOverlap for MediaAccessC
 		{
 			let bytes = this.to_octets_mutable_reference();
 			
-			unsafe { copy_nonoverlapping((&organizationally_unique_identifier[..]).as_ptr(), bytes.as_mut_ptr(), Self::OrganizationallyUniqueIdentifierSize) };
+			unsafe { copy_nonoverlapping((&organizationally_unique_identifier[..]).as_ptr(), bytes.as_mut_ptr(), OrganizationallyUniqueIdentifier::Size) };
 			
 			unsafe { copy_nonoverlapping((&internet_protocol_version_4_host_address.0[1..InternetProtocolVersion4HostAddress::Size]).as_ptr(), bytes.as_mut_ptr(), 3) };
 		}
@@ -108,7 +108,7 @@ impl MediaAccessControlAddressAndInternetProtocolAddressOverlap for MediaAccessC
 		{
 			let octets = &mut internet_protocol_version_4_host_address.0;
 			*unsafe { octets.get_unchecked_mut(0) } = first_octet;
-			unsafe { copy_nonoverlapping((&self.to_octets_reference()[Self::OrganizationallyUniqueIdentifierSize..6]).as_ptr(), (&mut octets[1..]).as_mut_ptr(), Self::OrganizationallyUniqueIdentifierSize) };
+			unsafe { copy_nonoverlapping((&self.to_octets_reference()[OrganizationallyUniqueIdentifier::Size..6]).as_ptr(), (&mut octets[1..]).as_mut_ptr(), OrganizationallyUniqueIdentifier::Size) };
 		}
 		Ok(internet_protocol_version_4_host_address)
 	}
@@ -127,7 +127,7 @@ impl MediaAccessControlAddressAndInternetProtocolAddressOverlap for MediaAccessC
 				return Err(())
 			}
 			
-			bytes[0] = octets[8] ^ Self::LocallyAdministeredAddressBitFlag;
+			bytes[0] = octets[8] ^ OrganizationallyUniqueIdentifier::LocallyAdministeredAddressBitFlag;
 			bytes[1] = octets[9];
 			bytes[2] = octets[10];
 			bytes[3] = octets[13];
@@ -148,7 +148,7 @@ impl MediaAccessControlAddressAndInternetProtocolAddressOverlap for MediaAccessC
 			
 			unsafe { *(octets.as_mut_ptr() as *mut u64) = *(internet_protocol_version_6_host_address_prefix.as_ptr() as *mut u64) };
 			let bytes = self.to_octets_reference();
-			octets[8] = bytes[0] ^ Self::LocallyAdministeredAddressBitFlag;
+			octets[8] = bytes[0] ^ OrganizationallyUniqueIdentifier::LocallyAdministeredAddressBitFlag;
 			octets[9] = bytes[1];
 			octets[10] = bytes[2];
 			octets[11] = 0xFF;
