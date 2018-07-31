@@ -301,12 +301,6 @@ impl MediaAccessControlAddress
 	/// An address that is all zeros.
 	pub const Zero: Self = MediaAccessControlAddress([0; Self::Size]);
 	
-	/// Also known as a Multicast or Broadcast address.
-	pub const GroupAddressBitFlag: u8 = 0x01;
-	
-	/// Locally administered, ie uses an OUI assigned by IANA.
-	pub const LocallyAdministeredAddressBitFlag: u8 = 0x02;
-	
 	/// Alternative formatting to debug and display format.
 	///
 	/// As per IEEE standard 802 (2001), ISBN 0-7381-2941-0.
@@ -345,9 +339,6 @@ impl MediaAccessControlAddress
 		&mut self.0
 	}
 	
-	/// Size (in bytes) of an Organizationally Unique Identifier (OUI).
-	pub const OrganizationallyUniqueIdentifierSize: usize = 3;
-	
 	/// Random locally administered unicast address.
 	#[inline(always)]
 	pub fn random_unicast_address() -> Self
@@ -360,8 +351,8 @@ impl MediaAccessControlAddress
 		{
 			let first_byte = unsafe { this.0.get_unchecked_mut(0) };
 			let mut first_byte_copy = *first_byte;
-			first_byte_copy &= !Self::GroupAddressBitFlag;
-			first_byte_copy |= Self::LocallyAdministeredAddressBitFlag;
+			first_byte_copy &= !OrganizationallyUniqueIdentifier::GroupAddressBitFlag;
+			first_byte_copy |= OrganizationallyUniqueIdentifier::LocallyAdministeredAddressBitFlag;
 			*first_byte = first_byte_copy;
 		}
 		
@@ -388,7 +379,7 @@ impl MediaAccessControlAddress
 	#[inline(always)]
 	pub fn is_unicast(&self) -> bool
 	{
-		self.get_first_byte() & Self::GroupAddressBitFlag == 0
+		self.get_first_byte() & OrganizationallyUniqueIdentifier::GroupAddressBitFlag == 0
 	}
 	
 	/// If this is an assigned address, is it valid?
@@ -413,7 +404,7 @@ impl MediaAccessControlAddress
 	#[inline(always)]
 	pub fn is_multicast_or_broadcast(&self) -> bool
 	{
-		self.get_first_byte() & Self::GroupAddressBitFlag == Self::GroupAddressBitFlag
+		self.get_first_byte() & OrganizationallyUniqueIdentifier::GroupAddressBitFlag != 0
 	}
 	
 	/// Is this a multicast address?
@@ -437,16 +428,12 @@ impl MediaAccessControlAddress
 	/// Will only return 3 bytes (23 bits) if the top bit of them is not set.
 	pub fn internet_protocol_version_4_multicast_23_bits(&self) -> Option<&[u8; 3]>
 	{
-		// Sanitized OUIs are available from https://linuxnet.ca/ieee/oui/
-		
-		const IanaSelf: [u8; 3] = [0x01, 0x00, 0x5E];
-		
 		match self.universally_administered_organizationally_unique_identifier()
 		{
 			None => None,
 			Some((organizationally_unique_identifier, lower_3_bytes)) =>
 			{
-				if organizationally_unique_identifier == &IanaSelf
+				if organizationally_unique_identifier == &OrganizationallyUniqueIdentifier::IanaSelf
 				{
 					const IsNotForMulticastBitFlag: u8 = 0b1000_0000;
 					if lower_3_bytes[0] & IsNotForMulticastBitFlag == IsNotForMulticastBitFlag
@@ -509,7 +496,7 @@ impl MediaAccessControlAddress
 	#[inline(always)]
 	pub fn is_universally_administered(&self) -> bool
 	{
-		self.get_first_byte() & Self::LocallyAdministeredAddressBitFlag == 0
+		self.get_first_byte() & OrganizationallyUniqueIdentifier::LocallyAdministeredAddressBitFlag == 0
 	}
 	
 	/// Is this address one that is locally administered?
@@ -518,7 +505,25 @@ impl MediaAccessControlAddress
 	#[inline(always)]
 	pub fn is_locally_administered(&self) -> bool
 	{
-		self.get_first_byte() & Self::LocallyAdministeredAddressBitFlag == Self::LocallyAdministeredAddressBitFlag
+		self.get_first_byte() & OrganizationallyUniqueIdentifier::LocallyAdministeredAddressBitFlag != 0
+	}
+	
+	/// Organizationally Unique Identifier (OUI) and MAC-48 (EUI-48) as a tuple.
+	///
+	/// Only present if this is an locally administered address.
+	///
+	/// From Wikipedia: "To convert a MAC-48 into an EUI-64, copy the OUI, append the two octets FF-FF and then copy the organization-specified extension identifier".
+	#[inline(always)]
+	pub fn locally_administered_organizationally_unique_identifier(&self) -> Option<(&OrganizationallyUniqueIdentifier, &[u8; 3])>
+	{
+		if self.is_locally_administered()
+		{
+			Some((unsafe { transmute(array_ref!(self.0, 0, OrganizationallyUniqueIdentifier::Size)) }, array_ref!(self.0, 3, 3)))
+		}
+		else
+		{
+			None
+		}
 	}
 	
 	/// Organizationally Unique Identifier (OUI) and MAC-48 (EUI-48) as a tuple.
@@ -527,11 +532,11 @@ impl MediaAccessControlAddress
 	///
 	/// From Wikipedia: "To convert a MAC-48 into an EUI-64, copy the OUI, append the two octets FF-FF and then copy the organization-specified extension identifier".
 	#[inline(always)]
-	pub fn universally_administered_organizationally_unique_identifier(&self) -> Option<(&[u8; Self::OrganizationallyUniqueIdentifierSize], &[u8; 3])>
+	pub fn universally_administered_organizationally_unique_identifier(&self) -> Option<(&OrganizationallyUniqueIdentifier, &[u8; 3])>
 	{
 		if self.is_universally_administered()
 		{
-			Some((array_ref!(self.0, 0, MediaAccessControlAddress::OrganizationallyUniqueIdentifierSize), array_ref!(self.0, 3, 3)))
+			Some((unsafe { transmute(array_ref!(self.0, 0, OrganizationallyUniqueIdentifier::Size)) }, array_ref!(self.0, 3, 3)))
 		}
 		else
 		{

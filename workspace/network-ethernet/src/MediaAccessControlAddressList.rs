@@ -17,7 +17,7 @@ pub enum MediaAccessControlAddressList
 	{
 		/// Organizationally Unique Identifiers (OUIs), universally administered.
 		#[serde(default)]
-		organizationally_unique_identifiers_in_network_byte_order: HashSet<[u8; 3]>,
+		organizationally_unique_identifiers_in_network_byte_order: HashSet<OrganizationallyUniqueIdentifier>,
 		
 		/// Unicast media access control addresses.
 		///
@@ -33,7 +33,7 @@ pub enum MediaAccessControlAddressList
 	{
 		/// Organizationally Unique Identifiers (OUIs), universally administered.
 		#[serde(default)]
-		organizationally_unique_identifiers_in_network_byte_order: HashSet<[u8; 3]>,
+		organizationally_unique_identifiers_in_network_byte_order: HashSet<OrganizationallyUniqueIdentifier>,
 		
 		/// Unicast media access control addresses.
 		///

@@ -74,4 +74,5 @@ include!("LegacyEthernetFrameSize.rs");
 include!("MaximumTransmissionUnitSize.rs");
 include!("MediaAccessControlAddress.rs");
 include!("MediaAccessControlAddressList.rs");
+include!("OrganizationallyUniqueIdentifier.rs");
 include!("SizeU16OfEthernetCyclicRedundancyCheck.rs");

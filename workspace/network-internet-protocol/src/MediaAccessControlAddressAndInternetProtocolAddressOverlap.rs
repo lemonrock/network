@@ -6,13 +6,13 @@
 pub trait MediaAccessControlAddressAndInternetProtocolAddressOverlap: Sized
 {
 	/// Currently, this is an identifier formerly used by Xerox.
-	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_10_0_0_0: [u8; MediaAccessControlAddress::OrganizationallyUniqueIdentifierSize] = [0x00, 0x00, 0x00];
+	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_10_0_0_0: [u8; OrganizationallyUniqueIdentifier::Size] = [0x00, 0x00, 0x00];
 	
 	/// Currently, this is an identifier formerly used by Xerox.
-	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_172_16_0_0: [u8; MediaAccessControlAddress::OrganizationallyUniqueIdentifierSize] = [0x00, 0x00, 0x01];
+	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_172_16_0_0: [u8; OrganizationallyUniqueIdentifier::Size] = [0x00, 0x00, 0x01];
 	
 	/// Currently, this is an identifier formerly used by Xerox.
-	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_192_168_0_0: [u8; MediaAccessControlAddress::OrganizationallyUniqueIdentifierSize] = [0x00, 0x00, 0x02];
+	const PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_192_168_0_0: [u8; OrganizationallyUniqueIdentifier::Size] = [0x00, 0x00, 0x02];
 
 	/// From an Internet Protocol (version 4) private host address.
 	///
@@ -96,7 +96,7 @@ impl MediaAccessControlAddressAndInternetProtocolAddressOverlap for MediaAccessC
 	#[inline(always)]
 	fn to_private_internet_protocol_version_4_host_address(&self) -> Result<InternetProtocolVersion4HostAddress, ()>
 	{
-		let first_octet = match array_ref!(self.to_octets_reference(), 0, MediaAccessControlAddress::OrganizationallyUniqueIdentifierSize)
+		let first_octet = match array_ref!(self.to_octets_reference(), 0, OrganizationallyUniqueIdentifier::Size)
 		{
 			&Self::PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_10_0_0_0 => 10,
 			&Self::PrivateInternetProtocolVersion4AddressOrganizationallyUniqueIdentifier_172_16_0_0 => 172,
