@@ -8,23 +8,27 @@ pub struct Layer3PacketProcessingImpl<EINPDO: EthernetIncomingNetworkPacketDropO
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
+	
+	
 	/// Our unicast internet protocol (IP) version 4 host addresses valid for this network interface.
 	///
 	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
 	our_valid_internet_protocol_version_4_host_addresses: HashSet<InternetProtocolVersion4HostAddress>,
-	
-	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
-	our_valid_internet_protocol_version_6_host_addresses: HashSet<InternetProtocolVersion6HostAddress>,
 	
 	/// Our multicast internet protocol (IP) version 4 host addresses valid for this network interface.
 	///
 	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
 	our_valid_internet_protocol_version_4_multicast_addresses: HashSet<InternetProtocolVersion4HostAddress>,
 	
+	denied_source_internet_protocol_version_4_host_addresses: InternetProtocolVersion4LongestPrefixMatchTable,
+	
+	
+	
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_6_host_addresses: HashSet<InternetProtocolVersion6HostAddress>,
+	
 	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
 	our_valid_internet_protocol_version_6_multicast_addresses: HashSet<InternetProtocolVersion6HostAddress>,
-	
-	denied_source_internet_protocol_version_4_host_addresses: InternetProtocolVersion4LongestPrefixMatchTable,
 	
 	denied_source_internet_protocol_version_6_host_addresses: InternetProtocolVersion6LongestPrefixMatchTable,
 }
@@ -46,6 +50,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessing f
 	#[inline(always)]
 	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
+		// TODO: This is decidely unpleasant to implement, as we do not know about ARP data structures here.
 		unimplemented!()
 	}
 }

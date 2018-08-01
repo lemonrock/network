@@ -10,6 +10,7 @@
     <mapping directory="$PROJECT_DIR$/workspace/network-ethernet/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-internet-control-message-protocol/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-internet-protocol/.cargo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace/network-internet-protocol/treebitmap" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-packet/.cargo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/workspace/network-time/.cargo" vcs="Git" />
   </component>

@@ -33,6 +33,9 @@ include!("arp_unsupported.rs");
 pub mod packet_processing;
 
 
+mod treebitmap;
+
+
 /// Internet Protocol (IP) version 4.
 pub mod version_4;
 

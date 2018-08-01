@@ -1,3 +1,6 @@
 [submodule ".cargo"]
 	path = .cargo
 	url = https://github.com/lemonrock/.cargo.git
+[submodule "workspace/network-internet-protocol/treebitmap"]
+	path = workspace/network-internet-protocol/treebitmap
+	url = https://github.com/lemonrock/treebitmap.git
