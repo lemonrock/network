@@ -43,8 +43,8 @@ impl VirtualLanPacket
 	
 	/// Inner layer 3 packet.
 	#[inline(always)]
-	pub fn layer_3_packet(&mut self) -> &mut Layer3Packet
+	pub fn layer_3_packet(&self) -> &Layer3Packet
 	{
-		&mut self.layer_3_packet
+		&self.layer_3_packet
 	}
 }

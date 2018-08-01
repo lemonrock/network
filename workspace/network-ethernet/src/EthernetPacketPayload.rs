@@ -43,20 +43,20 @@ impl Debug for EthernetPacketPayload
 impl EthernetPacketPayload
 {
 	#[inline(always)]
-	pub(crate) fn layer_3_packet(&mut self) -> &mut Layer3Packet
+	pub(crate) fn layer_3_packet(&self) -> &Layer3Packet
 	{
-		unsafe { &mut self.layer_3_packet }
+		unsafe { &self.layer_3_packet }
 	}
 	
 	#[inline(always)]
-	pub(crate) fn virtual_lan_packet(&mut self) -> &mut VirtualLanPacket
+	pub(crate) fn virtual_lan_packet(&self) -> &VirtualLanPacket
 	{
-		unsafe { &mut self.virtual_lan_packet }
+		unsafe { &self.virtual_lan_packet }
 	}
 	
 	#[inline(always)]
-	pub(crate) fn qinq_virtual_lan_packet(&mut self) -> &mut QinQVirtualLanPacket
+	pub(crate) fn qinq_virtual_lan_packet(&self) -> &QinQVirtualLanPacket
 	{
-		unsafe { &mut self.qinq_virtual_lan_packet }
+		unsafe { &self.qinq_virtual_lan_packet }
 	}
 }

@@ -47,8 +47,8 @@ impl QinQVirtualLanPacket
 	
 	/// Inner virtual LAN packet.
 	#[inline(always)]
-	pub fn virtual_lan_packet(&mut self) -> &mut VirtualLanPacket
+	pub fn virtual_lan_packet(&self) -> &VirtualLanPacket
 	{
-		&mut self.virtual_lan_packet
+		&self.virtual_lan_packet
 	}
 }

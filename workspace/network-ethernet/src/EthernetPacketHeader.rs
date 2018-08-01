@@ -231,7 +231,7 @@ impl EthernetPacketHeader
 		&self.ethernet_addresses
 	}
 	
-	/// Potentially invalid Ether type.
+	/// Ether type, potentially invalid as it could be a legacy ethernet frame size.
 	#[inline(always)]
 	pub fn potentially_invalid_ether_type(&self) -> EtherType
 	{

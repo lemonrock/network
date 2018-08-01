@@ -32,13 +32,13 @@ impl Layer3Packet
 {
 	/// Horrible method to cast to a specific implementation of a layer 3 packet.
 	#[inline(always)]
-	pub fn as_type<P>(&mut self) -> &mut P
+	pub fn as_type<P>(&self) -> &P
 	{
-		unsafe { transmute(&mut self.other) }
+		unsafe { transmute(&self.other) }
 	}
 	
 //	#[inline(always)]
-//	pub(crate) fn process_internet_protocol_version_4<'ethernet_addresses>(&'ethernet_addresses mut self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+//	pub(crate) fn process_internet_protocol_version_4<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 //	{
 //		if unlikely!(InternetProtocolVersion4Packet::is_packet_length_too_short(layer_3_length))
 //		{
@@ -51,7 +51,7 @@ impl Layer3Packet
 //	}
 //
 //	#[inline(always)]
-//	pub(crate) fn process_internet_protocol_version_6<'ethernet_addresses>(&'ethernet_addresses mut self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+//	pub(crate) fn process_internet_protocol_version_6<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 //	{
 //		if unlikely!(InternetProtocolVersion6Packet::is_packet_length_too_short(layer_3_length))
 //		{
@@ -64,7 +64,7 @@ impl Layer3Packet
 //	}
 //
 //	#[inline(always)]
-//	pub(crate) fn process_address_resolution_protocol<'ethernet_addresses>(&'ethernet_addresses mut self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+//	pub(crate) fn process_address_resolution_protocol<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 //	{
 //		if unlikely!(AddressResolutionProtocolPacket::is_packet_length_too_short(layer_3_length))
 //		{

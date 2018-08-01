@@ -7,13 +7,13 @@ pub trait Layer3PacketProcessing: Debug
 {
 	/// Process an internet protocol version 4 packet.
 	#[inline(always)]
-	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
+	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
 	
 	/// Process an internet protocol version 6 packet.
 	#[inline(always)]
-	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
+	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
 	
 	/// Process an address resolution protocol packet.
 	#[inline(always)]
-	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
+	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses);
 }

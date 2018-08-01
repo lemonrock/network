@@ -258,44 +258,44 @@ macro_rules! guard_ethernet_addresses_and_compute_packet_length
 
 impl EthernetPacket
 {
-	#[allow(missing_docs)]
+	/// Ethernet addresses.
 	#[inline(always)]
 	pub fn ethernet_addresses(&self) -> &EthernetAddresses
 	{
 		self.header.ethernet_addresses()
 	}
 	
-	#[allow(missing_docs)]
+	/// Ether type, potentially invalid as it could be a legacy ethernet frame size.
 	#[inline(always)]
 	pub fn potentially_invalid_ether_type(&self) -> EtherType
 	{
 		self.header.potentially_invalid_ether_type()
 	}
 	
-	#[allow(missing_docs)]
+	/// Payload as a layer 3 packet.
 	#[inline(always)]
-	pub fn layer_3_packet(&mut self) -> &mut Layer3Packet
+	pub fn layer_3_packet(&self) -> &Layer3Packet
 	{
 		self.payload.layer_3_packet()
 	}
 	
-	#[allow(missing_docs)]
+	/// Payload as a layer 2 IEEE 801.1Q Virtual LAN packet.
 	#[inline(always)]
-	pub fn virtual_lan_packet(&mut self) -> &mut VirtualLanPacket
+	pub fn virtual_lan_packet(&self) -> &VirtualLanPacket
 	{
 		self.payload.virtual_lan_packet()
 	}
 	
-	#[allow(missing_docs)]
+	/// Payload as a layer 2 IEEE 801.1ad Virtual LAN packet.
 	#[inline(always)]
-	pub fn qinq_virtual_lan_packet(&mut self) -> &mut QinQVirtualLanPacket
+	pub fn qinq_virtual_lan_packet(&self) -> &QinQVirtualLanPacket
 	{
 		self.payload.qinq_virtual_lan_packet()
 	}
 	
 	/// Process assuming the poll mode driver has hardware offloading for IEEE 802.1Q and IEEE 802.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn process_poll_mode_driver_offloads_qinq_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	pub fn process_poll_mode_driver_offloads_qinq_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		// TODO: Make use of packet.layer_4_hardware_packet_type() where hardware supports it - note that h/w may not support the L4_ICMP type.
 		// TODO: Make use of packet.is_encapsulated_in_a_tunnel_and_has_inner_layers() where hardware supports it to get rid of packets quickly.
@@ -323,7 +323,7 @@ impl EthernetPacket
 	
 	/// Process assuming the poll mode driver has hardware offloading only for IEEE 802.1Q Virtual LANs but not IEEE 801.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn process_poll_mode_driver_offloads_only_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	pub fn process_poll_mode_driver_offloads_only_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		guard_is_valid_ethernet_packet!(packet_processing_by_virtual_lan, packet);
 
@@ -366,7 +366,7 @@ impl EthernetPacket
 	
 	/// Process assuming the poll mode driver has no hardware offloading for IEEE 802.1Q and IEEE 802.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn poll_mode_driver_does_not_offload_any_vlan_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	pub fn poll_mode_driver_does_not_offload_any_vlan_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		guard_is_valid_ethernet_packet!(packet_processing_by_virtual_lan, packet);
 
@@ -407,9 +407,11 @@ impl EthernetPacket
 
 				let layer_3_length = packet.packet_length_if_contiguous_less_ethernet_packet_header() - VirtualLanPacketHeader::IEEE_802_1Q_SizeU16;
 				
+				let potentially_invalid_ether_type = virtual_lan_packet.potentially_invalid_ether_type();
+				
 				let layer_3_packet = virtual_lan_packet.layer_3_packet();
 				
-				Self::process_layer_3(layer_3_packet, packet, packet_processing, layer_3_length, virtual_lan_packet.potentially_invalid_ether_type())
+				Self::process_layer_3(layer_3_packet, packet, packet_processing, layer_3_length, potentially_invalid_ether_type)
 			}
 			
 			potentially_invalid_ether_type @ _ => drop!(Self::unsupported_ether_type::<EINPDO>(self.ethernet_addresses(), potentially_invalid_ether_type), packet_processing_by_virtual_lan, packet),
@@ -417,13 +419,13 @@ impl EthernetPacket
 	}
 
 	#[inline(always)]
-	fn process<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, L3PP>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
+	fn process<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, L3PP>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
 	{
 		Self::process_layer_3(self.layer_3_packet(), packet, packet_processing, layer_3_length, potentially_invalid_ether_type)
 	}
 
 	#[inline(always)]
-	fn process_layer_3<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(layer_3_packet: &mut Layer3Packet, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, L3PP>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
+	fn process_layer_3<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(layer_3_packet: &Layer3Packet, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, L3PP>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
 	{
 		let ethernet_packet = packet.ethernet_packet();
 		
@@ -442,21 +444,21 @@ impl EthernetPacket
 	}
 
 	#[inline(always)]
-	fn process_internet_protocol_version_4<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	fn process_internet_protocol_version_4<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_internet_protocol_version_4(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 
 	#[inline(always)]
-	fn process_internet_protocol_version_6<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	fn process_internet_protocol_version_6<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_internet_protocol_version_6(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 
 	#[inline(always)]
-	fn process_address_resolution_protocol<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses mut self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
+	fn process_address_resolution_protocol<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, L3PP>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_address_resolution_protocol(packet, layer_3_packet, layer_3_length, ethernet_addresses)
