@@ -4,10 +4,7 @@
 
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![feature(const_fn)]
-#![feature(reverse_bits)]
-#![feature(try_from)]
-#![feature(untagged_unions)]
+#![feature(const_fn, core_intrinsics, reverse_bits, try_from, untagged_unions)]
 
 
 //! # network-ethernet
@@ -23,22 +20,28 @@
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
 extern crate hyper_thread_random;
 #[cfg(feature = "libc")] extern crate libc;
+#[macro_use] extern crate likely;
 extern crate network_endian;
+#[macro_use] extern crate network_packet;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
+use self::packet_processing::*;
+use self::packet_processing::EthernetIncomingNetworkPacketDropReason::*;
 use self::virtual_lans::*;
 #[cfg(feature = "dpdk-sys")] use ::dpdk_sys::*;
 use ::hyper_thread_random::generate_hyper_thread_safe_random_u64;
 use ::network_endian::NetworkEndian;
 use ::network_endian::NetworkEndianU16;
+use ::network_packet::*;
 use ::serde::Deserialize;
 use ::serde::Deserializer;
 use ::serde::Serialize;
 use ::serde::Serializer;
 use ::serde::de;
 use ::serde::de::Visitor;
+use ::std::collections::HashMap;
 use ::std::collections::HashSet;
 use ::std::cmp::Ordering;
 use ::std::convert::TryFrom;
@@ -54,7 +57,12 @@ use ::std::mem::transmute;
 use ::std::mem::uninitialized;
 use ::std::ptr::copy_nonoverlapping;
 #[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
+use ::std::rc::Rc;
 use ::std::str::SplitN;
+
+
+/// Virtual LANs (VLANs).
+pub mod packet_processing;
 
 
 /// Virtual LANs (VLANs).

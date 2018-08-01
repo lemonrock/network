@@ -11,5 +11,6 @@ members = [
     "network-ethernet",
     "network-internet-control-message-protocol",
     "network-internet-protocol",
+    "network-packet",
     "network-time",
 ]

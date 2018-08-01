@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/workspace/network-ethernet/network-ethernet.iml" filepath="$PROJECT_DIR$/workspace/network-ethernet/network-ethernet.iml" />
       <module fileurl="file://$PROJECT_DIR$/workspace/network-internet-control-message-protocol/network-internet-control-message-protocol.iml" filepath="$PROJECT_DIR$/workspace/network-internet-control-message-protocol/network-internet-control-message-protocol.iml" />
       <module fileurl="file://$PROJECT_DIR$/workspace/network-internet-protocol/network-internet-protocol.iml" filepath="$PROJECT_DIR$/workspace/network-internet-protocol/network-internet-protocol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workspace/network-packet/network-packet.iml" filepath="$PROJECT_DIR$/workspace/network-packet/network-packet.iml" />
       <module fileurl="file://$PROJECT_DIR$/workspace/network-time/network-time.iml" filepath="$PROJECT_DIR$/workspace/network-time/network-time.iml" />
     </modules>
   </component>
