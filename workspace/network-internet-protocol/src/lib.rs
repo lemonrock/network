@@ -26,6 +26,13 @@ extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
+include!("arp_unsupported.rs");
+
+
+/// Incoming network packet processing.
+pub mod packet_processing;
+
+
 /// Internet Protocol (IP) version 4.
 pub mod version_4;
 
@@ -43,6 +50,8 @@ use ::network_check_sum::*;
 use ::network_endian::*;
 use ::network_ethernet::*;
 use ::network_ethernet::virtual_lans::DifferentiatedServiceCodePoint;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
 use ::serde::Serialize;
 use ::std::cmp::Ordering;
 use ::std::convert::TryFrom;

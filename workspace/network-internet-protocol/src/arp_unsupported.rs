@@ -3,7 +3,7 @@
 
 
 #[macro_export]
-macro_rules! unsupported
+macro_rules! arp_unsupported
 {
 	($message: expr) =>
 	{

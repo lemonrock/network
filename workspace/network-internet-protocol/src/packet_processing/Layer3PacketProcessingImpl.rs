@@ -11,7 +11,6 @@ pub struct Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, ARPINPDR>
 
 impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, ARPINPDR>
 {
-	//
 	/// In order to observe dropped packets.
 	#[inline(always)]
 	pub fn dropped_packet<'ethernet_addresses>(&self, _reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR, IPV6INPDR, ARPINPDR>)
@@ -31,7 +30,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 	pub fn reply_to_probe<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		// TODO: REPLY
-		unsupported!("replies to probes are not supported");
+		arp_unsupported!("replies to probes are not supported");
 	}
 	
 	/// Used to manage Address Resolution Protocol (ARP).
@@ -39,7 +38,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 	pub fn reply_to_broadcast<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		// TODO: REPLY
-		unsupported!("replies to broadcasts are not supported");
+		arp_unsupported!("replies to broadcasts are not supported");
 	}
 	
 	/// Used to manage Address Resolution Protocol (ARP).
@@ -47,7 +46,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 	pub fn add_to_address_resolution_cache(&self, _sender_hardware_address: &MediaAccessControlAddress, _sender_protocol_address: InternetProtocolVersion4HostAddress, packet: impl EthernetIncomingNetworkPacket)
 	{
 		// TODO: Manage an ARP cache.
-		unsupported!("adding to resolution cache");
+		arp_unsupported!("adding to resolution cache");
 		packet.free_direct_contiguous_packet();
 	}
 	
@@ -56,6 +55,6 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 	pub fn internet_protocol_version_4_host_address_conflict<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		// TODO: Handle ARP host address conflicts; see AddressResolutionProtocolAddressConflictState.rs.
-		unsupported!("host address conflict");
+		arp_unsupported!("host address conflict");
 	}
 }
