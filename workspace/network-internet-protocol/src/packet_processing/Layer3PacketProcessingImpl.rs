@@ -4,28 +4,130 @@
 
 /// Implementation of Layer 3 packet processing.
 #[derive(Debug)]
-pub struct Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, ARPINPDR>
+pub struct Layer3PacketProcessingImpl<EINPDO: EthernetIncomingNetworkPacketDropObserver>
 {
-	marker: (IPV4INPDR, IPV6INPDR, ARPINPDR),
+	dropped_packet_reporting: Rc<EINPDO>,
+	
+	/// Our unicast internet protocol (IP) version 4 host addresses valid for this network interface.
+	///
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_4_host_addresses: HashSet<InternetProtocolVersion4HostAddress>,
+	
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_6_host_addresses: HashSet<InternetProtocolVersion6HostAddress>,
+	
+	/// Our multicast internet protocol (IP) version 4 host addresses valid for this network interface.
+	///
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_4_multicast_addresses: HashSet<InternetProtocolVersion4HostAddress>,
+	
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_6_multicast_addresses: HashSet<InternetProtocolVersion6HostAddress>,
+	
+	denied_source_internet_protocol_version_4_host_addresses: InternetProtocolVersion4LongestPrefixMatchTable,
+	
+	denied_source_internet_protocol_version_6_host_addresses: InternetProtocolVersion6LongestPrefixMatchTable,
 }
 
-impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, ARPINPDR>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessing for Layer3PacketProcessingImpl<EINPDO>
+{
+	#[inline(always)]
+	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		unimplemented!()
+	}
+	
+	#[inline(always)]
+	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		unimplemented!()
+	}
+	
+	#[inline(always)]
+	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		unimplemented!()
+	}
+}
+
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessingImpl<EINPDO>
 {
 	/// In order to observe dropped packets.
 	#[inline(always)]
-	pub fn dropped_packet<'ethernet_addresses>(&self, _reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR, IPV6INPDR, ARPINPDR>)
+	pub fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR, EINPDO::ARPINPDR>)
 	{
-		panic!();
+		self.dropped_packet_reporting.dropped_packet(reason)
 	}
 	
-	/// Also used to manage Address Resolution Protocol (ARP).
+	/// Public because also used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
 	#[inline(always)]
-	pub fn is_internet_protocol_version_4_host_address_one_of_ours(&self, _internet_protocol_version_4_host_address: InternetProtocolVersion4HostAddress) -> bool
+	pub fn is_internet_protocol_version_4_host_address_one_of_ours(&self, internet_protocol_version_4_host_address: InternetProtocolVersion4HostAddress) -> bool
 	{
-		panic!();
+		debug_assert!(internet_protocol_version_4_host_address.is_valid_unicast(), "internet_protocol_version_4_host_address '{:?}' is not valid unicast", internet_protocol_version_4_host_address);
+		
+		self.our_valid_internet_protocol_version_4_host_addresses.contains(&internet_protocol_version_4_host_address)
 	}
 	
-	/// Used to manage Address Resolution Protocol (ARP).
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_4_multicast_address_not_one_of_ours(&self, internet_protocol_version_4_multicast_address: InternetProtocolVersion4HostAddress) -> bool
+	{
+		const MulticastIsUnsupportedAtThisTime: bool = false;
+		
+		MulticastIsUnsupportedAtThisTime
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_multicast_addresses(&self, internet_protocol_version_6_multicast_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		// TODO: solicited node check implicit group membership.
+		// TODO: all nodes (FF02::1); equivalent to 224.0.0.1 and 255.255.255.255.
+		
+		const MulticastIsUnsupportedAtThisTime: bool = false;
+		
+		MulticastIsUnsupportedAtThisTime
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_4_host_address_not_one_of_ours(&self, internet_protocol_version_4_host_address: InternetProtocolVersion4HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_4_host_address.is_valid_unicast(), "internet_protocol_version_4_host_address '{:?}' is not valid unicast", internet_protocol_version_4_host_address);
+		
+		!self.is_internet_protocol_version_4_host_address_one_of_ours(internet_protocol_version_4_host_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_one_of_ours(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		self.our_valid_internet_protocol_version_6_host_addresses.contains(&internet_protocol_version_6_host_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_unicast_addresses(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		!self.is_internet_protocol_version_6_host_address_one_of_ours(internet_protocol_version_6_host_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_source_internet_protocol_version_4_address_denied(&self, internet_protocol_version_4_host_address: &InternetProtocolVersion4HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_4_host_address.is_valid_unicast(), "internet_protocol_version_4_host_address '{:?}' is not valid unicast", internet_protocol_version_4_host_address);
+		
+		self.denied_source_internet_protocol_version_4_host_addresses.look_up(internet_protocol_version_4_host_address).is_some()
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_source_internet_protocol_version_6_address_denied(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		self.denied_source_internet_protocol_version_6_host_addresses.look_up(internet_protocol_version_6_host_address).is_some()
+	}
+	
+	/// Public because used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
 	#[inline(always)]
 	pub fn reply_to_probe<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
@@ -33,7 +135,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 		arp_unsupported!("replies to probes are not supported");
 	}
 	
-	/// Used to manage Address Resolution Protocol (ARP).
+	/// Public because used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
 	#[inline(always)]
 	pub fn reply_to_broadcast<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
@@ -41,7 +143,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 		arp_unsupported!("replies to broadcasts are not supported");
 	}
 	
-	/// Used to manage Address Resolution Protocol (ARP).
+	/// Public because used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
 	#[inline(always)]
 	pub fn add_to_address_resolution_cache(&self, _sender_hardware_address: &MediaAccessControlAddress, _sender_protocol_address: InternetProtocolVersion4HostAddress, packet: impl EthernetIncomingNetworkPacket)
 	{
@@ -50,7 +152,7 @@ impl<IPV4INPDR, IPV6INPDR, ARPINPDR> Layer3PacketProcessingImpl<IPV4INPDR, IPV6I
 		packet.free_direct_contiguous_packet();
 	}
 	
-	/// Used to manage Address Resolution Protocol (ARP).
+	/// Public because used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
 	#[inline(always)]
 	pub fn internet_protocol_version_4_host_address_conflict<'ethernet_addresses>(&self, _packet: impl EthernetIncomingNetworkPacket, _ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{

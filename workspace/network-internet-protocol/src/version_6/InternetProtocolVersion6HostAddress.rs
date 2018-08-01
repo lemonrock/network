@@ -166,6 +166,13 @@ impl InternetProtocolVersion6HostAddress
 		Self::from_octets(unsafe { transmute(big_endian_value) })
 	}
 	
+	/// Is this a valid unicast address?
+	#[inline(always)]
+	pub fn is_valid_unicast(&self) -> bool
+	{
+		!self.is_not_valid_unicast()
+	}
+	
 	/// Is this not a valid unicast address?
 	#[inline(always)]
 	pub fn is_not_valid_unicast(&self) -> bool

@@ -51,9 +51,12 @@ use ::network_endian::*;
 use ::network_ethernet::*;
 use ::network_ethernet::virtual_lans::DifferentiatedServiceCodePoint;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObserver;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
+use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::serde::Serialize;
 use ::std::cmp::Ordering;
+use ::std::collections::HashSet;
 use ::std::convert::TryFrom;
 use ::std::fmt;
 use ::std::fmt::Debug;
@@ -71,6 +74,7 @@ use ::std::net::Ipv4Addr;
 use ::std::net::Ipv6Addr;
 use ::std::ptr::copy_nonoverlapping;
 use ::std::ptr::NonNull;
+use ::std::rc::Rc;
 
 
 include!("ExplicitCongestionNotification.rs");

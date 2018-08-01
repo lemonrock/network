@@ -29,19 +29,19 @@ pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObs
 impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> Layer3PacketProcessing for EthernetPacketProcessing<EINPDO, L3PP>
 {
 	#[inline(always)]
-	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		self.layer_3_packet_processing.process_internet_protocol_version_4(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 	
 	#[inline(always)]
-	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		self.layer_3_packet_processing.process_internet_protocol_version_6(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 	
 	#[inline(always)]
-	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
 		self.layer_3_packet_processing.process_address_resolution_protocol(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
