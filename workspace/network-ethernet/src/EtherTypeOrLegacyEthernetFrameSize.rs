@@ -13,6 +13,31 @@ pub union EtherTypeOrLegacyEthernetFrameSize
 	pub ether_type: EtherType,
 }
 
+impl Serialize for EtherTypeOrLegacyEthernetFrameSize
+{
+	#[inline(always)]
+	fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		(unsafe { self.legacy_ethernet_frame_size }).serialize(serializer)
+	}
+}
+
+impl<'deserialize> Deserialize<'deserialize> for EtherTypeOrLegacyEthernetFrameSize
+{
+	#[inline(always)]
+	fn deserialize<D: Deserializer<'deserialize>>(deserializer: D) -> Result<Self, D::Error>
+	{
+		Ok
+		(
+			Self
+			{
+				legacy_ethernet_frame_size: LegacyEthernetFrameSize::deserialize(deserializer)?,
+			}
+		)
+		
+	}
+}
+
 impl Into<NetworkEndianU16> for EtherTypeOrLegacyEthernetFrameSize
 {
 	#[inline(always)]

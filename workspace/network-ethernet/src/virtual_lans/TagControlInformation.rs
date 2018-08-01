@@ -5,6 +5,7 @@
 /// Tag control information.
 #[repr(C, packed)]
 #[derive(Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct TagControlInformation(NetworkEndianU16);
 
 impl Into<NetworkEndianU16> for TagControlInformation

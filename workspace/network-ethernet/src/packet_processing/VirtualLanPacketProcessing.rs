@@ -4,34 +4,34 @@
 
 /// Packet processing configuration by Virtual LAN.
 #[derive(Debug)]
-pub struct VirtualLanPacketProcessing<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>
+pub struct VirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>
 {
 	/// Outer QinQ Virtual LAN.
-	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessing<'ethernet_addresses, INPDO>>,
+	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessing<EINPDO, L3PP>>,
 	
 	/// Inner 802.1Q Virtual LAN.
-	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessing<'ethernet_addresses, INPDO>>,
+	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessing<EINPDO, L3PP>>,
 	
 	/// No virtual LANs.
-	pub none: EthernetPacketProcessing<'ethernet_addresses, INPDO>,
+	pub none: EthernetPacketProcessing<EINPDO, L3PP>,
 }
 
-impl<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>> VirtualLanPacketProcessing<'ethernet_addresses, INPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> VirtualLanPacketProcessing<EINPDO, L3PP>
 {
 	#[inline(always)]
-	pub(crate) fn dropped_packet(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>)
+	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR, EINPDO::ARPINPDR>)
 	{
 		self.none.dropped_packet(reason)
 	}
 	
 	#[inline(always)]
-	pub(crate) fn get_packet_processing_for_outer_virtual_lan(&self, outer_virtual_lan_identifier: Option<VirtualLanIdentifier>, inner_virtual_lan_identifier: Option<VirtualLanIdentifier>) -> Option<&QinQVirtualLanPacketProcessing<'ethernet_addresses, INPDO>>
+	pub(crate) fn get_packet_processing_for_outer_virtual_lan(&self, outer_virtual_lan_identifier: Option<VirtualLanIdentifier>, inner_virtual_lan_identifier: Option<VirtualLanIdentifier>) -> Option<&QinQVirtualLanPacketProcessing<EINPDO, L3PP>>
 	{
 		self.outer.get(&(inner_virtual_lan_identifier, outer_virtual_lan_identifier))
 	}
 	
 	#[inline(always)]
-	pub(crate) fn get_packet_processing_for_inner_virtual_lan(&self, inner_virtual_lan_identifier: Option<VirtualLanIdentifier>) -> Option<&EthernetPacketProcessing<'ethernet_addresses, INPDO>>
+	pub(crate) fn get_packet_processing_for_inner_virtual_lan(&self, inner_virtual_lan_identifier: Option<VirtualLanIdentifier>) -> Option<&EthernetPacketProcessing<EINPDO, L3PP>>
 	{
 		match inner_virtual_lan_identifier
 		{

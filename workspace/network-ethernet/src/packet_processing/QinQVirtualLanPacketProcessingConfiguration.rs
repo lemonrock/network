@@ -5,20 +5,20 @@
 /// Configuration.
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
-pub struct QinQVirtualLanPacketProcessingConfiguration
+pub struct QinQVirtualLanPacketProcessingConfiguration<L3PPC: Layer3PacketProcessingConfiguration>
 {
 	/// Outer QinQ Virtual LAN permitted classes of service.
-	pub outer_packet_processing: EthernetPacketProcessingConfiguration,
+	pub outer_packet_processing: EthernetPacketProcessingConfiguration<L3PPC>,
 	
 	/// Inner packet processing configuration.
-	pub inner_packet_processing: EthernetPacketProcessingConfiguration,
+	pub inner_packet_processing: EthernetPacketProcessingConfiguration<L3PPC>,
 }
 
-impl QinQVirtualLanPacketProcessingConfiguration
+impl<L3PPC: Layer3PacketProcessingConfiguration> QinQVirtualLanPacketProcessingConfiguration<L3PPC>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>(mut self, dropped_packet_reporting: &Rc<INPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<'ethernet_addresses, INPDO>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<EINPDO, L3PPC::L3PP>
 	{
 		QinQVirtualLanPacketProcessing
 		{

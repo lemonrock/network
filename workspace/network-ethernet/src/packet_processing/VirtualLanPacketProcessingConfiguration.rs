@@ -5,32 +5,23 @@
 /// Configuration.
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
-pub struct VirtualLanPacketProcessingConfiguration
+pub struct VirtualLanPacketProcessingConfiguration<L3PPC: Layer3PacketProcessingConfiguration>
 {
 	/// Outer QinQ Virtual LAN.
-	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessingConfiguration>,
+	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessingConfiguration<L3PPC>>,
 	
 	/// Inner 802.1Q Virtual LAN.
-	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessingConfiguration>,
+	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessingConfiguration<L3PPC>>,
 	
 	/// No virtual LANs.
-	pub none: EthernetPacketProcessingConfiguration,
+	pub none: EthernetPacketProcessingConfiguration<L3PPC>,
 }
 
-impl Display for VirtualLanPacketProcessingConfiguration
-{
-	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
-	{
-		Debug::fmt(self, f)
-	}
-}
-
-impl VirtualLanPacketProcessingConfiguration
+impl<L3PPC: Layer3PacketProcessingConfiguration> VirtualLanPacketProcessingConfiguration<L3PPC>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>(mut self, dropped_packet_reporting: &Rc<INPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> VirtualLanPacketProcessing<'ethernet_addresses, INPDO>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(mut self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> VirtualLanPacketProcessing<EINPDO, L3PPC::L3PP>
 	{
 		VirtualLanPacketProcessing
 		{

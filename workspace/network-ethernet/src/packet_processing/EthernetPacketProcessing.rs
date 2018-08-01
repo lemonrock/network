@@ -4,9 +4,9 @@
 
 /// Packet processing configuration for a particular combination of Outer Virtual LAN tag, Inner Virtual LAN tag and (our valid unicast) Ethernet Address.
 #[derive(Debug)]
-pub struct EthernetPacketProcessing<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>
+pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>
 {
-	dropped_packet_reporting: Rc<INPDO>,
+	dropped_packet_reporting: Rc<EINPDO>,
 	
 	/// Inner 802.1Q Virtual LAN honour drop eligible.
 	inner_honour_drop_eligible_indicator: bool,
@@ -21,12 +21,36 @@ pub struct EthernetPacketProcessing<'ethernet_addresses, INPDO: IncomingNetworkP
 	
 	/// Blacklist or whitelist of ethernet addresses.
 	source_ethernet_address_blacklist_or_whitelist: MediaAccessControlAddressList,
+
+	/// Layer 3 packet processing.
+	layer_3_packet_processing: L3PP,
 }
 
-impl<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>> EthernetPacketProcessing<'ethernet_addresses, INPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> Layer3PacketProcessing for EthernetPacketProcessing<EINPDO, L3PP>
 {
 	#[inline(always)]
-	pub(crate) fn dropped_packet(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>)
+	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		self.layer_3_packet_processing.process_internet_protocol_version_4(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+	}
+	
+	#[inline(always)]
+	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		self.layer_3_packet_processing.process_internet_protocol_version_6(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+	}
+	
+	#[inline(always)]
+	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl IncomingNetworkPacket, layer_3_packet: &'ethernet_addresses mut Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		self.layer_3_packet_processing.process_address_resolution_protocol(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+	}
+}
+
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> EthernetPacketProcessing<EINPDO, L3PP>
+{
+	#[inline(always)]
+	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR, EINPDO::ARPINPDR>)
 	{
 		self.dropped_packet_reporting.dropped_packet(reason)
 	}

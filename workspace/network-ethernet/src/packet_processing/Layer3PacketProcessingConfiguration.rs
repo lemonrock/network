@@ -2,17 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-use super::*;
-
-
-include!("EthernetIncomingNetworkPacket.rs");
-include!("EthernetIncomingNetworkPacketDropObserver.rs");
-include!("EthernetIncomingNetworkPacketDropReason.rs");
-include!("EthernetPacketProcessing.rs");
-include!("EthernetPacketProcessingConfiguration.rs");
-include!("Layer3PacketProcessing.rs");
-include!("Layer3PacketProcessingConfiguration.rs");
-include!("QinQVirtualLanPacketProcessing.rs");
-include!("QinQVirtualLanPacketProcessingConfiguration.rs");
-include!("VirtualLanPacketProcessing.rs");
-include!("VirtualLanPacketProcessingConfiguration.rs");
+/// Layer 3 packet processing configuration.
+pub trait Layer3PacketProcessingConfiguration: Debug + Default + Serialize
+{
+	/// Layer 3 packet processing type.
+	type L3PP: Layer3PacketProcessing;
+	
+	/// Configure.
+	#[inline(always)]
+	fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>) -> Self::L3PP;
+}

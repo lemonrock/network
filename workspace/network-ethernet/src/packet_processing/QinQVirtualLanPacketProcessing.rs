@@ -4,16 +4,16 @@
 
 /// Outer Virtual LAN packet processing configuration by Virtual LAN.
 #[derive(Debug)]
-pub struct QinQVirtualLanPacketProcessing<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>
+pub struct QinQVirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>
 {
 	/// Outer QinQ Virtual LAN permitted classes of service.
-	pub outer_packet_processing: EthernetPacketProcessing<'ethernet_addresses, INPDO>,
+	pub outer_packet_processing: EthernetPacketProcessing<EINPDO, L3PP>,
 	
 	/// Inner packet processing configuration.
-	pub inner_packet_processing: EthernetPacketProcessing<'ethernet_addresses, INPDO>,
+	pub inner_packet_processing: EthernetPacketProcessing<EINPDO, L3PP>,
 }
 
-impl<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>> QinQVirtualLanPacketProcessing<'ethernet_addresses, INPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> QinQVirtualLanPacketProcessing<EINPDO, L3PP>
 {
 	#[inline(always)]
 	pub(crate) fn honour_outer_drop_eligible_indicator(&self, outer_drop_eligible_indicator: bool) -> bool

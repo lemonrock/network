@@ -5,31 +5,35 @@
 /// Ethernet packet processing configuration.
 #[derive(Debug, Clone)]
 #[derive(Serialize, Deserialize)]
-pub struct EthernetPacketProcessingConfiguration
+pub struct EthernetPacketProcessingConfiguration<L3PPC: Layer3PacketProcessingConfiguration>
 {
 	/// Inner 802.1Q Virtual LAN honour drop eligible.
-	#[serde(default = "EthernetPacketProcessingConfiguration::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
+	#[serde(default = "EthernetPacketProcessingConfiguration::<L3PPC>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
 	
 	/// Inner 802.1Q Virtual LAN permitted classes of service.
 	#[serde(default)] pub inner_permitted_classes_of_service: PermittedClassesOfService,
 	
 	/// Blacklist or whitelist of ethernet addresses.
 	#[serde(default)] pub source_ethernet_address_blacklist_or_whitelist: MediaAccessControlAddressList,
+	
+	/// Layer 3 packet processing configuration
+	#[serde(default)] pub layer_3_packet_processing_configuration: L3PPC,
 }
 
-impl EthernetPacketProcessingConfiguration
+impl<'deserialize, L3PPC: Layer3PacketProcessingConfiguration> EthernetPacketProcessingConfiguration<L3PPC>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<'ethernet_addresses, INPDO: IncomingNetworkPacketDropObserver<DropReason=EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>>>(mut self, dropped_packet_reporting: &Rc<INPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<'ethernet_addresses, INPDO>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<EINPDO, L3PPC::L3PP>
 	{
 		EthernetPacketProcessing
 		{
 			dropped_packet_reporting: dropped_packet_reporting.clone(),
 			inner_honour_drop_eligible_indicator: self.inner_honour_drop_eligible_indicator,
 			inner_permitted_classes_of_service: self.inner_permitted_classes_of_service,
-			source_ethernet_address_blacklist_or_whitelist: self.source_ethernet_address_blacklist_or_whitelist,
 			our_valid_unicast_ethernet_address,
+			source_ethernet_address_blacklist_or_whitelist: self.source_ethernet_address_blacklist_or_whitelist,
+			layer_3_packet_processing: self.layer_3_packet_processing_configuration.configure(dropped_packet_reporting),
 		}
 	}
 	

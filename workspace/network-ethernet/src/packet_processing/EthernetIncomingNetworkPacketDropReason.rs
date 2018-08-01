@@ -7,8 +7,13 @@
 /// This reason is reported immediately before the underlying packet is dropped, at which point all referenced data will no longer exist.
 ///
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
+///
+/// * `IPV4INPDR` is the Internet Protocol (IP) version 4 incoming network packet drop reason type.
+/// * `IPV6INPDR` is the Internet Protocol (IP) version 6 incoming network packet drop reason type.
+/// * `ARPINPDR` is the Address Resolution Protocol (ARP) incoming network packet drop reason type.
 #[derive(Debug)]
-pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>
+#[derive(Serialize)]
+pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR, IPV6INPDR, ARPINPDR>
 {
 	/// The packet's length was too short to be an ethernet packet.
 	///
@@ -60,6 +65,36 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>
 		
 		/// EtherType or LegacyEthernetFrameSize.
 		unsuspported_ether_type_or_legacy_ethernet_frame_size: EtherTypeOrLegacyEthernetFrameSize,
+	},
+	
+	/// Wrapper around a problematic internet protocol version 4 packet.
+	ProblematicInternetProtocolVersion4Packet
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+		
+		/// Reason
+		reason: IPV4INPDR,
+	},
+	
+	/// Wrapper around a problematic internet protocol version 6 packet.
+	ProblematicInternetProtocolVersion6Packet
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+		
+		/// Reason
+		reason: IPV6INPDR,
+	},
+	
+	/// Wrapper around a problematic internet protocol version 6 packet.
+	ProblematicAddressResolutionProtocolPacket
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+		
+		/// Reason
+		reason: ARPINPDR,
 	},
 	
 	/// The packet's length was too short to be an IEEE 802.1Q (Virtual LAN) packet.
@@ -204,6 +239,6 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>
 	},
 }
 
-impl<'ethernet_addresses> IncomingNetworkPacketProcessingDropReason for EthernetIncomingNetworkPacketDropReason<'ethernet_addresses>
+impl<'ethernet_addresses, IPV4INPDR: Sized + Debug, IPV6INPDR: Sized + Debug, ARPINPDR: Sized + Debug> IncomingNetworkPacketProcessingDropReason for EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR, IPV6INPDR, ARPINPDR>
 {
 }
