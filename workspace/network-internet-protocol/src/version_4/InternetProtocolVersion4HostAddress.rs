@@ -72,30 +72,14 @@ impl NetworkEndian for InternetProtocolVersion4HostAddress
 	}
 }
 
-impl ::treebitmap::address::Address for InternetProtocolVersion4HostAddress
+impl TreeBitmapAddress for InternetProtocolVersion4HostAddress
 {
 	type Nibbles = [u8; Self::NibblesLength];
 	
 	#[inline(always)]
 	fn nibbles(self) -> Self::Nibbles
 	{
-		let octets = self.0;
-		
-		let _0 = unsafe { *octets.get_unchecked(0) };
-		let _1 = unsafe { *octets.get_unchecked(1) };
-		let _2 = unsafe { *octets.get_unchecked(2) };
-		let _3 = unsafe { *octets.get_unchecked(3) };
-		
-		[
-			_0 >> 4,
-			_0 & 0x0F,
-			_1 >> 4,
-			_1 & 0x0F,
-			_2 >> 4,
-			_2 & 0x0F,
-			_3 >> 4,
-			_3 & 0x0F,
-		]
+		self.nibbles_non_destructively()
 	}
 	
 	#[inline(always)]
@@ -210,7 +194,31 @@ impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 
 impl InternetProtocolVersion4HostAddress
 {
-	const NibblesLength: usize = Self::Size * 2;
+	/// Nibbles length.
+	pub const NibblesLength: usize = Self::Size * 2;
+	
+	/// Treebitmap nibbles, using a reference rather than a move.
+	#[inline(always)]
+	pub fn nibbles_non_destructively(&self) -> <Self as TreeBitmapAddress>::Nibbles
+	{
+		let octets = &self.0;
+		
+		let _0 = unsafe { *octets.get_unchecked(0) };
+		let _1 = unsafe { *octets.get_unchecked(1) };
+		let _2 = unsafe { *octets.get_unchecked(2) };
+		let _3 = unsafe { *octets.get_unchecked(3) };
+		
+		[
+			_0 >> 4,
+			_0 & 0x0F,
+			_1 >> 4,
+			_1 & 0x0F,
+			_2 >> 4,
+			_2 & 0x0F,
+			_3 >> 4,
+			_3 & 0x0F,
+		]
+	}
 	
 	/// Unspecified (Any) address.
 	pub const Unspecified: Self = InternetProtocolVersion4HostAddress([0, 0, 0, 0]);

@@ -33,7 +33,7 @@ include!("arp_unsupported.rs");
 pub mod packet_processing;
 
 
-mod treebitmap;
+#[allow(dead_code)] mod treebitmap;
 
 
 /// Internet Protocol (IP) version 4.
@@ -79,6 +79,8 @@ use ::std::net::Ipv6Addr;
 use ::std::ptr::copy_nonoverlapping;
 use ::std::ptr::NonNull;
 use ::std::rc::Rc;
+use ::treebitmap::address::Address as TreeBitmapAddress;
+use ::treebitmap::tree_bitmap::TreeBitmap;
 
 
 include!("ExplicitCongestionNotification.rs");

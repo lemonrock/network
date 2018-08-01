@@ -20,7 +20,7 @@ pub struct Layer3PacketProcessingImpl<EINPDO: EthernetIncomingNetworkPacketDropO
 	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
 	our_valid_internet_protocol_version_4_multicast_addresses: HashSet<InternetProtocolVersion4HostAddress>,
 	
-	denied_source_internet_protocol_version_4_host_addresses: InternetProtocolVersion4LongestPrefixMatchTable,
+	denied_source_internet_protocol_version_4_host_addresses: TreeBitmap<()>,
 	
 	
 	
@@ -30,7 +30,7 @@ pub struct Layer3PacketProcessingImpl<EINPDO: EthernetIncomingNetworkPacketDropO
 	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
 	our_valid_internet_protocol_version_6_multicast_addresses: HashSet<InternetProtocolVersion6HostAddress>,
 	
-	denied_source_internet_protocol_version_6_host_addresses: InternetProtocolVersion6LongestPrefixMatchTable,
+	denied_source_internet_protocol_version_6_host_addresses: TreeBitmap<()>,
 }
 
 impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessing for Layer3PacketProcessingImpl<EINPDO>
@@ -121,7 +121,8 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessingIm
 	{
 		debug_assert!(internet_protocol_version_4_host_address.is_valid_unicast(), "internet_protocol_version_4_host_address '{:?}' is not valid unicast", internet_protocol_version_4_host_address);
 		
-		self.denied_source_internet_protocol_version_4_host_addresses.look_up(internet_protocol_version_4_host_address).is_some()
+		let nibbles = internet_protocol_version_4_host_address.nibbles_non_destructively();
+		self.denied_source_internet_protocol_version_4_host_addresses.longest_match_present(&nibbles)
 	}
 	
 	#[inline(always)]
@@ -129,7 +130,8 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessingIm
 	{
 		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
 		
-		self.denied_source_internet_protocol_version_6_host_addresses.look_up(internet_protocol_version_6_host_address).is_some()
+		let nibbles = internet_protocol_version_6_host_address.nibbles_non_destructively();
+		self.denied_source_internet_protocol_version_6_host_addresses.longest_match_present(&nibbles)
 	}
 	
 	/// Public because used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.

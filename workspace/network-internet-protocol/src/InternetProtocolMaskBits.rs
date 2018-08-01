@@ -9,6 +9,7 @@ pub trait InternetProtocolMaskBits: Sized + Debug + Display + PartialOrd + Ord +
 	#[inline(always)]
 	fn as_depth(self) -> u8;
 	
+	/// From depth, 0 to 32 for Internet Protocol Version 4 and 0 to 128 for Internet Protocol Version 6.
 	#[inline(always)]
 	fn from_depth(depth: u8) -> Self;
 }
