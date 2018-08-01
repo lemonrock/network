@@ -14,7 +14,7 @@
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 #[derive(Serialize, Deserialize)]
 #[repr(packed)]
-pub struct InternetProtocolVersion6HostAddress(pub [u8; InternetProtocolVersion6HostAddress::Size]);
+pub struct InternetProtocolVersion6HostAddress(pub(crate) [u8; InternetProtocolVersion6HostAddress::Size]);
 
 impl Display for InternetProtocolVersion6HostAddress
 {
@@ -41,6 +41,24 @@ impl Default for InternetProtocolVersion6HostAddress
 	}
 }
 
+impl From<[u8; InternetProtocolVersion6HostAddress::Size]> for InternetProtocolVersion6HostAddress
+{
+	#[inline(always)]
+	fn from(octets: [u8; InternetProtocolVersion6HostAddress::Size]) -> Self
+	{
+		InternetProtocolVersion6HostAddress(octets)
+	}
+}
+
+impl Into<[u8; InternetProtocolVersion6HostAddress::Size]> for InternetProtocolVersion6HostAddress
+{
+	#[inline(always)]
+	fn into(self) -> [u8; InternetProtocolVersion6HostAddress::Size]
+	{
+		self.0
+	}
+}
+
 impl NetworkEndian for InternetProtocolVersion6HostAddress
 {
 	/// Underlying bytes.
@@ -58,10 +76,110 @@ impl NetworkEndian for InternetProtocolVersion6HostAddress
 	}
 }
 
+impl ::treebitmap::address::Address for InternetProtocolVersion6HostAddress
+{
+	type Nibbles = [u8; Self::NibblesLength];
+	
+	#[inline(always)]
+	fn nibbles(self) -> Self::Nibbles
+	{
+		let octets = self.0;
+		
+		let _0 = unsafe { *octets.get_unchecked(0) };
+		let _1 = unsafe { *octets.get_unchecked(1) };
+		let _2 = unsafe { *octets.get_unchecked(2) };
+		let _3 = unsafe { *octets.get_unchecked(3) };
+		let _4 = unsafe { *octets.get_unchecked(4) };
+		let _5 = unsafe { *octets.get_unchecked(5) };
+		let _6 = unsafe { *octets.get_unchecked(6) };
+		let _7 = unsafe { *octets.get_unchecked(7) };
+		let _8 = unsafe { *octets.get_unchecked(8) };
+		let _9 = unsafe { *octets.get_unchecked(9) };
+		let _10 = unsafe { *octets.get_unchecked(10) };
+		let _11 = unsafe { *octets.get_unchecked(11) };
+		let _12 = unsafe { *octets.get_unchecked(12) };
+		let _13 = unsafe { *octets.get_unchecked(13) };
+		let _14 = unsafe { *octets.get_unchecked(14) };
+		let _15 = unsafe { *octets.get_unchecked(15) };
+		
+		[
+			_0 >> 4,
+			_0 & 0x0F,
+			_1 >> 4,
+			_1 & 0x0F,
+			_2 >> 4,
+			_2 & 0x0F,
+			_3 >> 4,
+			_3 & 0x0F,
+			
+			_4 >> 4,
+			_4 & 0x0F,
+			_5 >> 4,
+			_5 & 0x0F,
+			_6 >> 4,
+			_6 & 0x0F,
+			_7 >> 4,
+			_7 & 0x0F,
+			
+			_8 >> 4,
+			_8 & 0x0F,
+			_9 >> 4,
+			_9 & 0x0F,
+			_10 >> 4,
+			_10 & 0x0F,
+			_11 >> 4,
+			_11 & 0x0F,
+			
+			_12 >> 4,
+			_12 & 0x0F,
+			_13 >> 4,
+			_13 & 0x0F,
+			_14 >> 4,
+			_14 & 0x0F,
+			_15 >> 4,
+			_15 & 0x0F,
+		]
+	}
+	
+	#[inline(always)]
+	fn from_nibbles(nibbles: &[u8]) -> Self
+	{
+		let mut octets: <Self as InternetProtocolHostAddress>::Octets = unsafe { zeroed() };
+		let limit = min(Self::NibblesLength, nibbles.len());
+		for (nibble_index, nibble) in nibbles.iter().enumerate().take(limit)
+		{
+			let nibble = *nibble;
+			let remainder = nibble_index % 2;
+			let octet_index = nibble_index / 2;
+			octets[octet_index] = if remainder == 0
+			{
+				nibble << 4
+			}
+			else
+			{
+				octets[octet_index] | nibble
+			};
+		}
+		
+		InternetProtocolVersion6HostAddress(octets)
+	}
+	
+	#[inline(always)]
+	fn mask(self, depth: u32) -> Self
+	{
+		debug_assert!(depth <= 128, "depth exceeds 128");
+		
+		let mask_bits = <Self as InternetProtocolHostAddress>::MaskBits::from_depth(depth as u8);
+		Self::from_network_endian(self.as_network_endian() & mask_bits as <Self as InternetProtocolHostAddress>::BigEndianValue)
+	}
+}
+
 /// A trait abstracting the similarities between internet protocol (IP) version 4 and version 6 host addresses.
 impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 {
 	type BigEndianValue = u128;
+	
+	type NativeEndianValue = u128;
 	
 	type RustAddress = Ipv6Addr;
 	
@@ -112,7 +230,7 @@ impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 	}
 	
 	#[inline(always)]
-	fn as_native_endian(&self) -> Self::BigEndianValue
+	fn as_native_endian(&self) -> Self::NativeEndianValue
 	{
 		u128::from_be(self.as_network_endian())
 	}
@@ -120,7 +238,7 @@ impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 	#[inline(always)]
 	fn as_network_endian(&self) -> Self::BigEndianValue
 	{
-		unsafe { transmute(self.0) }
+		u128::from_bytes(self.0)
 	}
 	
 	#[inline(always)]
@@ -132,6 +250,8 @@ impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 
 impl InternetProtocolVersion6HostAddress
 {
+	const NibblesLength: usize = Self::Size * 2;
+	
 	/// Unspecified address.
 	pub const Unspecified: Self = InternetProtocolVersion6HostAddress([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
 	

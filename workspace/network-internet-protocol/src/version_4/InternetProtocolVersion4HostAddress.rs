@@ -10,7 +10,7 @@
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 #[derive(Serialize, Deserialize)]
 #[repr(C, packed)]
-pub struct InternetProtocolVersion4HostAddress(pub [u8; InternetProtocolVersion4HostAddress::Size]);
+pub struct InternetProtocolVersion4HostAddress(pub(crate) [u8; InternetProtocolVersion4HostAddress::Size]);
 
 impl Display for InternetProtocolVersion4HostAddress
 {
@@ -37,6 +37,24 @@ impl Default for InternetProtocolVersion4HostAddress
 	}
 }
 
+impl From<[u8; InternetProtocolVersion4HostAddress::Size]> for InternetProtocolVersion4HostAddress
+{
+	#[inline(always)]
+	fn from(octets: [u8; InternetProtocolVersion4HostAddress::Size]) -> Self
+	{
+		InternetProtocolVersion4HostAddress(octets)
+	}
+}
+
+impl Into<[u8; InternetProtocolVersion4HostAddress::Size]> for InternetProtocolVersion4HostAddress
+{
+	#[inline(always)]
+	fn into(self) -> [u8; InternetProtocolVersion4HostAddress::Size]
+	{
+		self.0
+	}
+}
+
 impl NetworkEndian for InternetProtocolVersion4HostAddress
 {
 	/// Underlying bytes.
@@ -54,10 +72,71 @@ impl NetworkEndian for InternetProtocolVersion4HostAddress
 	}
 }
 
+impl ::treebitmap::address::Address for InternetProtocolVersion4HostAddress
+{
+	type Nibbles = [u8; Self::NibblesLength];
+	
+	#[inline(always)]
+	fn nibbles(self) -> Self::Nibbles
+	{
+		let octets = self.0;
+		
+		let _0 = unsafe { *octets.get_unchecked(0) };
+		let _1 = unsafe { *octets.get_unchecked(1) };
+		let _2 = unsafe { *octets.get_unchecked(2) };
+		let _3 = unsafe { *octets.get_unchecked(3) };
+		
+		[
+			_0 >> 4,
+			_0 & 0x0F,
+			_1 >> 4,
+			_1 & 0x0F,
+			_2 >> 4,
+			_2 & 0x0F,
+			_3 >> 4,
+			_3 & 0x0F,
+		]
+	}
+	
+	#[inline(always)]
+	fn from_nibbles(nibbles: &[u8]) -> Self
+	{
+		let mut octets: <Self as InternetProtocolHostAddress>::Octets = unsafe { zeroed() };
+		let limit = min(Self::NibblesLength, nibbles.len());
+		for (nibble_index, nibble) in nibbles.iter().enumerate().take(limit)
+		{
+			let nibble = *nibble;
+			let remainder = nibble_index % 2;
+			let octet_index = nibble_index / 2;
+			octets[octet_index] = if remainder == 0
+			{
+				nibble << 4
+			}
+			else
+			{
+				octets[octet_index] | nibble
+			};
+		}
+		
+		InternetProtocolVersion4HostAddress(octets)
+	}
+	
+	#[inline(always)]
+	fn mask(self, depth: u32) -> Self
+	{
+		debug_assert!(depth <= 32, "depth exceeds 32");
+		
+		let mask_bits = <Self as InternetProtocolHostAddress>::MaskBits::from_depth(depth as u8);
+		Self::from_network_endian(self.as_network_endian() & mask_bits as <Self as InternetProtocolHostAddress>::BigEndianValue)
+	}
+}
+
 /// A trait abstracting the similarities between internet protocol (IP) version 4 and version 6 host addresses.
 impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 {
 	type BigEndianValue = u32;
+	
+	type NativeEndianValue = u32;
 	
 	type RustAddress = Ipv4Addr;
 	
@@ -106,12 +185,12 @@ impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 	{
 		in_addr
 		{
-			s_addr: unsafe { transmute(self.0) },
+			s_addr: self.as_network_endian(),
 		}
 	}
 	
 	#[inline(always)]
-	fn as_native_endian(&self) -> Self::BigEndianValue
+	fn as_native_endian(&self) -> Self::NativeEndianValue
 	{
 		u32::from_be(self.as_network_endian())
 	}
@@ -119,7 +198,7 @@ impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 	#[inline(always)]
 	fn as_network_endian(&self) -> Self::BigEndianValue
 	{
-		unsafe { transmute(self.0) }
+		u32::from_bytes(self.0)
 	}
 	
 	#[inline(always)]
@@ -131,6 +210,8 @@ impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 
 impl InternetProtocolVersion4HostAddress
 {
+	const NibblesLength: usize = Self::Size * 2;
+	
 	/// Unspecified (Any) address.
 	pub const Unspecified: Self = InternetProtocolVersion4HostAddress([0, 0, 0, 0]);
 	
@@ -141,28 +222,28 @@ impl InternetProtocolVersion4HostAddress
 	#[inline(always)]
 	pub fn to_embedded_rfc8215_internet_protocol_version_6_host_address(self) -> InternetProtocolVersion6HostAddress
 	{
-		InternetProtocolVersion6HostAddress([0x00, 0x64, 0xFF, 0x9B, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
+		InternetProtocolVersion6HostAddress::from([0x00, 0x64, 0xFF, 0x9B, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
 	}
 	
 	/// To an embedded RFC 6052 globally routable (RFC 6052) `InternetProtocolVersion6HostAddress`.
 	#[inline(always)]
 	pub fn to_embedded_rfc6052_internet_protocol_version_6_host_address(self) -> InternetProtocolVersion6HostAddress
 	{
-		InternetProtocolVersion6HostAddress([0x00, 0x64, 0xFF, 0x9B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
+		InternetProtocolVersion6HostAddress::from([0x00, 0x64, 0xFF, 0x9B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
 	}
 	
 	/// To a mapped (RFC 4291) `InternetProtocolVersion6HostAddress`.
 	#[inline(always)]
 	pub fn to_mapped_internet_protocol_version_6_host_address(self) -> InternetProtocolVersion6HostAddress
 	{
-		InternetProtocolVersion6HostAddress([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
+		InternetProtocolVersion6HostAddress::from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
 	}
 	
 	/// To a deprecated compatible (RFC 4291) `InternetProtocolVersion6HostAddress`.
 	#[inline(always)]
 	pub fn to_deprecated_compatible_internet_protocol_version_6_host_address(self) -> InternetProtocolVersion6HostAddress
 	{
-		InternetProtocolVersion6HostAddress([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
+		InternetProtocolVersion6HostAddress::from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, self.get_first_byte(), self.get_second_byte(), self.get_third_byte(), self.get_fourth_byte()])
 	}
 	
 	/// Is this a valid unicast address?

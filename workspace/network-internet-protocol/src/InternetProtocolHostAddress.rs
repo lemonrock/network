@@ -3,10 +3,13 @@
 
 
 /// A trait abstracting the similarities between internet protocol (IP) version 4 and version 6 host addresses.
-pub trait InternetProtocolHostAddress: Sized + Debug + Display + PartialOrd + Ord + PartialEq + Eq + Hash + Serialize + Clone
+pub trait InternetProtocolHostAddress: Sized + Debug + Display + PartialOrd + Ord + PartialEq + Eq + Hash + Serialize + Clone + ::treebitmap::address::Address
 {
 	/// eg `u128`.
 	type BigEndianValue: Debug;
+	
+	/// eg `u128`.
+	type NativeEndianValue: Debug;
 	
 	/// eg `Ipv6Addr`.
 	type RustAddress: Debug;

@@ -58,6 +58,7 @@ use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObse
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
 use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::serde::Serialize;
+use ::std::cmp::min;
 use ::std::cmp::Ordering;
 use ::std::collections::HashSet;
 use ::std::convert::TryFrom;

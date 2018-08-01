@@ -677,6 +677,15 @@ pub enum InternetProtocolVersion6MaskBits
 	#[cfg(target_endian = "little")] _128 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,
 }
 
+impl Into<u128> for InternetProtocolVersion4MaskBits
+{
+	#[inline(always)]
+	fn into(self) -> u128
+	{
+		self as u128
+	}
+}
+
 impl Display for InternetProtocolVersion6MaskBits
 {
 	#[inline(always)]
@@ -826,13 +835,22 @@ impl InternetProtocolMaskBits for InternetProtocolVersion6MaskBits
 	fn as_depth(self) -> u8
 	{
 		let mask_bits = self as u128;
-		if cfg!(target_endian = "little")
+		mask_bits.count_ones() as u8
+	}
+	
+	#[inline(always)]
+	fn from_depth(depth: u8) -> Self
+	{
+		debug_assert!(depth <= 128, "depth exceeds 128");
+		
+		let bit_pattern = if depth == 0
 		{
-			mask_bits.count_ones() as u8
+			0u128
 		}
 		else
 		{
-			(!mask_bits).trailing_zeros() as u8
-		}
+			::std::u128::MAX.wrapping_shl(128 - depth as u32)
+		};
+		unsafe { transmute(bit_pattern) }
 	}
 }
