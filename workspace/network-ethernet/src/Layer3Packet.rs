@@ -62,22 +62,4 @@ impl Layer3Packet
 //
 //		internet_protocol_version_6_packet.process(packet, packet_processing, layer_3_length, ethernet_addresses)
 //	}
-//
-//	#[inline(always)]
-//	pub(crate) fn process_address_resolution_protocol<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-//	{
-//		if unlikely!(AddressResolutionProtocolPacket::is_packet_length_too_short(layer_3_length))
-//		{
-//			drop!(AddressResolutionProtocolPacketIsTooShort { ethernet_addresses }, packet_processing, packet)
-//		}
-//
-//		let address_resolution_protocol_packet: &'ethernet_addresses mut AddressResolutionProtocolPacket = self.as_type();
-//
-//		if unlikely!(address_resolution_protocol_packet.is_invalid_for_internet_protocol_version_4(layer_3_length))
-//		{
-//			drop!(AddressResolutionProtocolNotSupportedForAnythingOtherThanInternetProtocolVersion4 { ethernet_addresses }, packet_processing, packet)
-//		}
-//
-//		address_resolution_protocol_packet.process(packet, packet_processing, ethernet_addresses)
-//	}
 }

@@ -104,7 +104,7 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR,
 	
 	/// Occurs during packet processing of an IEEE 802.1Q (Virtual LAN) packet.
 	CouldNotParse8011QVirtualLanTag
-{
+	{
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 

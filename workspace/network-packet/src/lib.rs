@@ -19,10 +19,6 @@ use ::std::fmt::Debug;
 use ::std::ptr::NonNull;
 
 
-include!("drop.rs");
-include!("unsupported.rs");
-
-
 include!("IncomingNetworkPacket.rs");
 include!("IncomingNetworkPacketDropReason.rs");
 include!("IncomingNetworkPacketDropObserver.rs");

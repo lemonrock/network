@@ -4,8 +4,7 @@
 
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![feature(const_fn)]
-#![feature(untagged_unions)]
+#![feature(const_fn, core_intrinsics, untagged_unions)]
 
 
 //! # network-internet-control-message-protocol
@@ -16,6 +15,7 @@
 
 
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
+#[macro_use] extern crate likely;
 extern crate network_endian;
 extern crate network_ethernet;
 extern crate network_internet_protocol;
@@ -23,10 +23,14 @@ extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
+use self::AddressResolutionProtocolIncomingNetworkPacketDropReason::*;
 #[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
 #[cfg(feature = "libc")] use libc::*;
 use ::network_endian::*;
+use ::network_ethernet::EthernetAddresses;
 use ::network_ethernet::EtherType;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
 use ::network_ethernet::MediaAccessControlAddress;
 use ::network_internet_protocol::*;
 use ::network_internet_protocol::version_4::*;
@@ -40,10 +44,16 @@ use ::std::mem::size_of;
 #[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 
 
+include!("drop.rs");
+include!("unsupported.rs");
+
+
 //include!("AddressResolutionProtocolAddressConflictState.rs");
+include!("AddressResolutionProtocolIncomingNetworkPacketDropReason.rs");
 include!("AddressResolutionProtocolPacket.rs");
 include!("AddressResolutionProtocolPacketHeader.rs");
 include!("AddressResolutionProtocolPacketInternetProtocolVersion4Payload.rs");
 include!("AddressResolutionProtocolPacketPayload.rs");
 include!("HardwareType.rs");
+include!("Layer3PacketProcessingImpl.rs");
 include!("Operation.rs");

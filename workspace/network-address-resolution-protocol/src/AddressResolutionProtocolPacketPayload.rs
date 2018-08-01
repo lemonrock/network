@@ -30,3 +30,12 @@ impl Debug for AddressResolutionProtocolPacketPayload
 		write!(f, "(arp payload)")
 	}
 }
+
+impl AddressResolutionProtocolPacketPayload
+{
+	#[inline(always)]
+	pub(crate) fn internet_protocol_version_4_payload(&self) -> &AddressResolutionProtocolPacketInternetProtocolVersion4Payload
+	{
+		unsafe { &self.internet_protocol_version_4_payload }
+	}
+}

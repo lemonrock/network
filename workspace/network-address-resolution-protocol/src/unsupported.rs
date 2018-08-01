@@ -8,7 +8,7 @@ macro_rules! unsupported
 	($message: expr) =>
 	{
 		{
-			eprintln!("Unsupported functionality: {}", $message);
+			eprintln!("Unsupported functionality: ARP: {}", $message);
 		}
 	}
 }

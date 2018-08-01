@@ -119,7 +119,7 @@ impl AddressResolutionProtocolPacket
 	#[inline(always)]
 	pub fn is_packet_length_too_short(layer_3_length: u16) -> bool
 	{
-		layer_3_length < AddressResolutionProtocolPacketHeader::HeaderSizeU16
+		AddressResolutionProtocolPacketHeader::is_packet_length_too_short(layer_3_length)
 	}
 
 	/// Use this to eliminate obsolete ARP traffic.
@@ -128,13 +128,12 @@ impl AddressResolutionProtocolPacket
 	{
 		self.is_layer_3_length_invalid_for_internet_protocol_version_4(layer_3_length) || self.header.is_header_invalid_for_internet_protocol_version_4()
 	}
-
-
-	/// Payload.
+	
+	/// The only kind of payload commonly encountered.
 	#[inline(always)]
-	pub fn payload(&mut self) -> &mut AddressResolutionProtocolPacketInternetProtocolVersion4Payload
+	pub fn internet_protocol_version_4_payload(&self) -> &AddressResolutionProtocolPacketInternetProtocolVersion4Payload
 	{
-		unsafe { &mut self.payload.internet_protocol_version_4_payload }
+		self.payload.internet_protocol_version_4_payload()
 	}
 	
 	/// Is the the layer 3 length invalid for an internet protocol version 4 ARP message?
@@ -144,5 +143,209 @@ impl AddressResolutionProtocolPacket
 		const PayloadSizeU16: u16 = size_of::<AddressResolutionProtocolPacketInternetProtocolVersion4Payload>() as u16;
 		
 		layer_3_length != AddressResolutionProtocolPacketHeader::HeaderSizeU16 + PayloadSizeU16
+	}
+	
+	/// Process.
+	#[inline(always)]
+	pub fn process<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		if unlikely!(Self::is_packet_length_too_short(layer_3_length))
+		{
+			drop!(PacketIsTooShort, ethernet_addresses, packet_processing, packet)
+		}
+
+		if unlikely!(self.is_invalid_for_internet_protocol_version_4(layer_3_length))
+		{
+			drop!(NotSupportedForAnythingOtherThanInternetProtocolVersion4, ethernet_addresses, packet_processing, packet)
+		}
+		
+		self.process_for_internet_protocol_version_4_payload(packet, packet_processing, ethernet_addresses)
+	}
+	
+	#[inline(always)]
+	fn process_for_internet_protocol_version_4_payload<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
+		let header = &self.header;
+		
+		debug_assert!(source_ethernet_address.is_valid_unicast(), "source_ethernet_address '{}' is not valid unicast", source_ethernet_address);
+
+		if unlikely!(destination_ethernet_address.is_multicast())
+		{
+			drop!(DestinationEthernetAddressIsMulticast { header }, ethernet_addresses, packet_processing, packet)
+		}
+
+		debug_assert!(destination_ethernet_address.is_valid_unicast() || destination_ethernet_address.is_broadcast(), "destination_ethernet_address '{}' is not valid unicast or broadcast()", destination_ethernet_address);
+
+		match self.header.operation
+		{
+			Operation::Request => self.process_request(packet, packet_processing, ethernet_addresses),
+
+			Operation::Reply => self.process_reply(packet, packet_processing, ethernet_addresses),
+
+			_ => drop!(OperationIsUnsupported { header }, ethernet_addresses, packet_processing, packet),
+		}
+	}
+
+	#[inline(always)]
+	fn process_request<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
+		let header = &self.header;
+		
+		// RFC 1122 Section 2.3.2.1: "(2) Unicast Poll -- Actively poll the remote host by periodically sending a point-to-point ARP Request to it, and delete the entry if no ARP Reply is received from N successive polls".
+		//
+		// Thus an ARP request should be either to a broadcast address (normal behaviour) or to an unicast address.
+		if destination_ethernet_address.is_multicast()
+		{
+			drop!(RequestIsMulticast { header }, ethernet_addresses, packet_processing, packet)
+		}
+
+		let payload = self.internet_protocol_version_4_payload();
+
+		// This violates RFC 5227 which states that requests SHOULD have a non-zero target hardware address.
+		if cfg!(feature = "drop-arp-requests-with-non-zero-target-hardware-address")
+		{
+			if unlikely!(payload.target_hardware_address.is_not_zero())
+			{
+				drop!(RequestTargetHardwareAddressIsZero { header }, ethernet_addresses, packet_processing, packet)
+			}
+		}
+
+		let sender_hardware_address = &payload.sender_hardware_address;
+		if unlikely!(source_ethernet_address != sender_hardware_address)
+		{
+			drop!(HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+		}
+
+		let target_protocol_address = payload.target_protocol_address;
+		if unlikely!(target_protocol_address.is_not_valid_unicast())
+		{
+			drop!(HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+		}
+
+		let sender_protocol_address = payload.sender_protocol_address;
+
+		// sender_hardware_address: MUST be valid source ethernet address.
+		// sender_protocol_address: MUST be all zeros (unspecified).
+		// target_hardware_address: SHOULD be zeros; it is ignored.
+		// target_protocol_address: MUST be set to address being probed.
+		let is_arp_probe = sender_protocol_address.is_unspecified();
+		if is_arp_probe
+		{
+			let we_own_the_target_protocol_address_so_reply = packet_processing.is_internet_protocol_version_4_host_address_one_of_ours(target_protocol_address);
+			if unlikely!(we_own_the_target_protocol_address_so_reply)
+			{
+				packet_processing.reply_to_probe(packet, ethernet_addresses);
+				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+			}
+			else
+			{
+				drop!(ProbeIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
+			}
+		}
+		else
+		{
+			if destination_ethernet_address.is_not_broadcast()
+			{
+				drop!(RequestIsNotAProbeAndIsNotBroadcast { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(sender_protocol_address.is_not_valid_unicast())
+			{
+				drop!(RequestIsNotAProbeAndSenderProtocolAddressIsNotUnicast { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			let internet_protocol_version_4_host_address_conflict = packet_processing.is_internet_protocol_version_4_host_address_one_of_ours(sender_protocol_address);
+			if internet_protocol_version_4_host_address_conflict
+			{
+				packet_processing.internet_protocol_version_4_host_address_conflict(packet, ethernet_addresses);
+				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+			}
+
+			// Also known as a gratuitous ARP request.
+			let is_arp_announcement = sender_protocol_address == target_protocol_address;
+			if is_arp_announcement
+			{
+				packet_processing.add_to_address_resolution_cache(sender_hardware_address, sender_protocol_address, packet);
+				return
+			}
+
+			let we_own_the_target_protocol_address_so_reply = packet_processing.is_internet_protocol_version_4_host_address_one_of_ours(target_protocol_address);
+			if we_own_the_target_protocol_address_so_reply
+			{
+				packet_processing.reply_to_broadcast(packet, ethernet_addresses);
+				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+			}
+			
+			drop!(BroadcastIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
+		}
+	}
+	
+	#[inline(always)]
+	fn process_reply<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	{
+		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
+		let header = &self.header;
+		
+		let payload = self.internet_protocol_version_4_payload();
+		let sender_hardware_address = &payload.sender_hardware_address;
+		let target_hardware_address = &payload.target_hardware_address;
+		let sender_protocol_address = payload.sender_protocol_address;
+		let target_protocol_address = payload.target_protocol_address;
+
+		let internet_protocol_version_4_host_address_conflict = packet_processing.is_internet_protocol_version_4_host_address_one_of_ours(sender_protocol_address);
+		if internet_protocol_version_4_host_address_conflict
+		{
+			packet_processing.internet_protocol_version_4_host_address_conflict(packet, ethernet_addresses);
+			return
+		}
+
+		let sender_and_target_protocol_addresses_are_the_same = sender_protocol_address == target_protocol_address;
+
+		// A gratuitous ARP reply is a reply to which no request has been made.
+		// These are less common than a gratuitous ARP request, and not preferred, see RFC 5227 Section 3.
+		let is_gratuitous_arp_reply = sender_and_target_protocol_addresses_are_the_same && (target_hardware_address.is_broadcast() || target_hardware_address.is_zero());
+		if is_gratuitous_arp_reply
+		{
+			if unlikely!(sender_protocol_address.is_not_valid_unicast())
+			{
+				drop!(GratuitousReplyIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+			}
+		}
+		else
+		{
+			if unlikely!(source_ethernet_address != sender_hardware_address)
+			{
+				drop!(HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(destination_ethernet_address != target_hardware_address)
+			{
+				drop!(HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(target_hardware_address.is_not_valid_unicast())
+			{
+				drop!(ReplyTargetHardwareAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(sender_and_target_protocol_addresses_are_the_same)
+			{
+				drop!(ReplySourceAndTargetProtocolAddressesAreTheSame { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(sender_protocol_address.is_not_valid_unicast())
+			{
+				drop!(ReplySenderProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+			}
+
+			if unlikely!(target_protocol_address.is_not_valid_unicast())
+			{
+				drop!(ReplyTargetProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+			}
+		}
+
+		packet_processing.add_to_address_resolution_cache(sender_hardware_address, sender_protocol_address, packet);
 	}
 }

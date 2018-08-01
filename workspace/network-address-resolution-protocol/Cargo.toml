@@ -20,6 +20,7 @@ version = "0.1.0"
 [dependencies]
 dpdk-sys = { version = "0.0.6", optional = true }
 libc = { version = "^0.2", optional = true }
+likely = "0.1"
 network-endian = { path = "../network-endian", version = "^0.1" }
 network-ethernet = { path = "../network-ethernet", version = "^0.1" }
 network-internet-protocol = { path = "../network-internet-protocol", version = "^0.1" }

@@ -22,7 +22,7 @@ extern crate hyper_thread_random;
 #[cfg(feature = "libc")] extern crate libc;
 #[macro_use] extern crate likely;
 extern crate network_endian;
-#[macro_use] extern crate network_packet;
+extern crate network_packet;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -59,6 +59,9 @@ use ::std::ptr::copy_nonoverlapping;
 #[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 use ::std::rc::Rc;
 use ::std::str::SplitN;
+
+
+include!("drop.rs");
 
 
 /// Virtual LANs (VLANs).

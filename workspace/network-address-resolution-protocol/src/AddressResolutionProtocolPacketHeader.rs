@@ -49,7 +49,13 @@ impl Display for AddressResolutionProtocolPacketHeader
 
 impl AddressResolutionProtocolPacketHeader
 {
-	pub(crate) const HeaderSizeU16: u16 = size_of::<AddressResolutionProtocolPacketHeader>() as u16;
+	pub(crate) const HeaderSizeU16: u16 = size_of::<Self>() as u16;
+	
+	#[inline(always)]
+	pub(crate) fn is_packet_length_too_short(layer_3_length: u16) -> bool
+	{
+		layer_3_length < Self::HeaderSizeU16
+	}
 	
 	#[inline(always)]
 	pub(crate) fn is_header_invalid_for_internet_protocol_version_4(&self) -> bool

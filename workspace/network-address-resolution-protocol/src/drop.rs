@@ -2,14 +2,18 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-#[macro_export]
 macro_rules! drop
 {
-	($reason: expr, $dropped_packet_oberserver: ident, $packet: ident) =>
+	($reason: expr, $ethernet_addresses: ident, $dropped_packet_observer: ident, $packet: ident) =>
 	{
 		{
-			let reason = $reason;
-			$dropped_packet_oberserver.dropped_packet(reason);
+			let reason = EthernetIncomingNetworkPacketDropReason::ProblematicAddressResolutionProtocolPacket
+			{
+				ethernet_addresses: $ethernet_addresses,
+				reason: $reason,
+			};
+			
+			$dropped_packet_observer.dropped_packet(reason);
 			$packet.free_direct_contiguous_packet();
 			return
 		}
