@@ -48,6 +48,7 @@ use ::std::mem::size_of;
 #[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
 
 
+include!("arp_unsupported.rs");
 include!("drop.rs");
 
 

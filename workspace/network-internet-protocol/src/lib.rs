@@ -36,9 +36,6 @@ extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
-include!("arp_unsupported.rs");
-
-
 /// Incoming network packet processing.
 pub mod packet_processing;
 
