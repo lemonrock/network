@@ -11,14 +11,16 @@ pub struct AddressResolutionPacketProcessing<EINPDO: EthernetIncomingNetworkPack
 	our_valid_internet_protocol_version_4_host_addresses: Rc<OurValidInternetProtocolVersion4HostAddresses>,
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>> Layer3PacketProcessing for AddressResolutionProtocolPacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>> Layer3PacketProcessing for AddressResolutionPacketProcessing<EINPDO>
 {
+	type DropReason = AddressResolutionProtocolIncomingNetworkPacketDropReason;
+	
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		if unlikely!(AddressResolutionProtocolPacket::is_packet_length_too_short(layer_3_length))
 		{
-			drop!(PacketIsTooShort, ethernet_addresses, packet_processing, packet)
+			drop!(PacketIsTooShort, ethernet_addresses, self, packet)
 		}
 		
 		let address_resolution_protocol_packet: &'lifetime AddressResolutionProtocolPacket = layer_3_packet.as_type();
@@ -27,11 +29,11 @@ impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=Addre
 	}
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>> AddressResolutionPacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>> AddressResolutionPacketProcessing<EINPDO>
 {
 	/// In order to observe dropped packets.
 	#[inline(always)]
-	pub(crate) fn drop(&self, reason: AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
+	pub(crate) fn drop<'lifetime>(&self, reason: EINPDO::ARPINPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicAddressResolutionProtocolPacket
 		{

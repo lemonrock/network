@@ -4,17 +4,10 @@
 
 macro_rules! drop
 {
-	($reason: expr, $ethernet_addresses: ident, $dropped_packet_observer: ident, $packet: ident) =>
+	($reason: expr, $ethernet_addresses: ident, $packet_processing: ident, $packet: ident) =>
 	{
 		{
-			let reason = EthernetIncomingNetworkPacketDropReason::ProblematicAddressResolutionProtocolPacket
-			{
-				ethernet_addresses: $ethernet_addresses,
-				reason: $reason,
-			};
-			
-			$dropped_packet_observer.dropped_packet(reason);
-			$packet.free_direct_contiguous_packet();
+			$packet_processing.drop($reason, $ethernet_addresses, $packet);
 			return
 		}
 	}

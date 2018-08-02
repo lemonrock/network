@@ -160,7 +160,7 @@ impl AddressResolutionProtocolPacket
 	fn process_for_internet_protocol_version_4_payload<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
-		let header = &self.header;
+		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
 		
 		debug_assert!(source_ethernet_address.is_valid_unicast(), "source_ethernet_address '{}' is not valid unicast", source_ethernet_address);
 
@@ -182,10 +182,10 @@ impl AddressResolutionProtocolPacket
 	}
 
 	#[inline(always)]
-	fn process_request<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process_request<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
-		let header = &self.header;
+		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
 		
 		// RFC 1122 Section 2.3.2.1: "(2) Unicast Poll -- Actively poll the remote host by periodically sending a point-to-point ARP Request to it, and delete the entry if no ARP Reply is received from N successive polls".
 		//
@@ -277,10 +277,10 @@ impl AddressResolutionProtocolPacket
 	}
 	
 	#[inline(always)]
-	fn process_reply<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process_reply<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
-		let header = &self.header;
+		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
 		
 		let payload = self.internet_protocol_version_4_payload();
 		let sender_hardware_address = &payload.sender_hardware_address;

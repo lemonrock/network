@@ -22,6 +22,7 @@
 extern crate network_endian;
 extern crate network_ethernet;
 extern crate network_internet_protocol;
+extern crate network_packet;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -32,6 +33,7 @@ use self::AddressResolutionProtocolIncomingNetworkPacketDropReason::*;
 use ::network_endian::*;
 use ::network_ethernet::EthernetAddresses;
 use ::network_ethernet::EtherType;
+use ::network_ethernet::Layer3Packet;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObserver;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
@@ -40,6 +42,9 @@ use ::network_ethernet::MediaAccessControlAddress;
 use ::network_internet_protocol::*;
 use ::network_internet_protocol::packet_processing::*;
 use ::network_internet_protocol::version_4::*;
+use ::network_packet::IncomingNetworkPacketProcessingDropReason;
+use ::serde::Serialize;
+use ::serde::Serializer;
 use ::std::fmt;
 use ::std::fmt::Debug;
 use ::std::fmt::Display;
