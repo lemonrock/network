@@ -4,8 +4,7 @@
 
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![feature(repr128)]
-#![feature(try_from)]
+#![feature(const_fn, repr128, try_from)]
 
 
 //! # network-internet-protocol
@@ -33,6 +32,10 @@ include!("arp_unsupported.rs");
 pub mod packet_processing;
 
 
+/// Routing.
+pub mod routing;
+
+
 #[allow(dead_code)] mod treebitmap;
 
 
@@ -58,8 +61,10 @@ use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObse
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
 use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::serde::Serialize;
+use ::serde::de::DeserializeOwned;
 use ::std::cmp::min;
 use ::std::cmp::Ordering;
+use ::std::collections::HashMap;
 use ::std::collections::HashSet;
 use ::std::convert::TryFrom;
 use ::std::fmt;

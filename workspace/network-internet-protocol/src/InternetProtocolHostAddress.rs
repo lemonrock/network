@@ -66,4 +66,11 @@ pub trait InternetProtocolHostAddress: Sized + Debug + Display + PartialOrd + Or
 	/// Will fail for some address classes and types; ideally an address is private (version 4) or link-local (version 6).
 	#[inline(always)]
 	fn to_media_access_control_address(&self) -> Result<MediaAccessControlAddress, ()>;
+	
+	/// Nibbles length.
+	const NibblesLength: usize = Self::Size * 2;
+	
+	/// Treebitmap nibbles, using a reference rather than a move.
+	#[inline(always)]
+	fn nibbles_non_destructively(&self) -> <Self as TreeBitmapAddress>::Nibbles;
 }

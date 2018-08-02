@@ -191,16 +191,9 @@ impl InternetProtocolHostAddress for InternetProtocolVersion6HostAddress
 	{
 		MediaAccessControlAddress::from_internet_protocol_version_6_host_address(*self)
 	}
-}
-
-impl InternetProtocolVersion6HostAddress
-{
-	/// Nibbles length.
-	pub const NibblesLength: usize = Self::Size * 2;
 	
-	/// Treebitmap nibbles, using a reference rather than a move.
 	#[inline(always)]
-	pub fn nibbles_non_destructively(self) -> <Self as TreeBitmapAddress>::Nibbles
+	fn nibbles_non_destructively(&self) -> <Self as TreeBitmapAddress>::Nibbles
 	{
 		let octets = &self.0;
 		
@@ -259,7 +252,10 @@ impl InternetProtocolVersion6HostAddress
 			_15 & 0x0F,
 		]
 	}
-	
+}
+
+impl InternetProtocolVersion6HostAddress
+{
 	/// Unspecified address.
 	pub const Unspecified: Self = InternetProtocolVersion6HostAddress([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
 	

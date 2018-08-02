@@ -190,16 +190,9 @@ impl InternetProtocolHostAddress for InternetProtocolVersion4HostAddress
 	{
 		MediaAccessControlAddress::from_private_internet_protocol_version_4_host_address(self)
 	}
-}
-
-impl InternetProtocolVersion4HostAddress
-{
-	/// Nibbles length.
-	pub const NibblesLength: usize = Self::Size * 2;
 	
-	/// Treebitmap nibbles, using a reference rather than a move.
 	#[inline(always)]
-	pub fn nibbles_non_destructively(&self) -> <Self as TreeBitmapAddress>::Nibbles
+	fn nibbles_non_destructively(&self) -> <Self as TreeBitmapAddress>::Nibbles
 	{
 		let octets = &self.0;
 		
@@ -219,7 +212,10 @@ impl InternetProtocolVersion4HostAddress
 			_3 & 0x0F,
 		]
 	}
-	
+}
+
+impl InternetProtocolVersion4HostAddress
+{
 	/// Unspecified (Any) address.
 	pub const Unspecified: Self = InternetProtocolVersion4HostAddress([0, 0, 0, 0]);
 	

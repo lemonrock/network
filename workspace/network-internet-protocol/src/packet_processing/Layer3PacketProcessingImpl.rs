@@ -74,7 +74,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessingIm
 	}
 	
 	#[inline(always)]
-	pub(crate) fn is_internet_protocol_version_4_multicast_address_not_one_of_ours(&self, internet_protocol_version_4_multicast_address: InternetProtocolVersion4HostAddress) -> bool
+	pub(crate) fn is_internet_protocol_version_4_multicast_address_not_one_of_ours(&self, _internet_protocol_version_4_multicast_address: InternetProtocolVersion4HostAddress) -> bool
 	{
 		const MulticastIsUnsupportedAtThisTime: bool = false;
 		
@@ -82,7 +82,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> Layer3PacketProcessingIm
 	}
 	
 	#[inline(always)]
-	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_multicast_addresses(&self, internet_protocol_version_6_multicast_address: &InternetProtocolVersion6HostAddress) -> bool
+	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_multicast_addresses(&self, _internet_protocol_version_6_multicast_address: &InternetProtocolVersion6HostAddress) -> bool
 	{
 		// TODO: solicited node check implicit group membership.
 		// TODO: all nodes (FF02::1); equivalent to 224.0.0.1 and 255.255.255.255.

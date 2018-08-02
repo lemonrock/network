@@ -9,7 +9,7 @@
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
 #[derive(Debug)]
 #[derive(Serialize)]
-pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'packet_header>
+pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
 {
 	/// Temporary reason until support for Address Resolution Protocol replies is implemented.
 	ReuseInReply,
@@ -24,21 +24,21 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'packet_header
 	DestinationEthernetAddressIsMulticast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	OperationIsUnsupported
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsMulticast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
@@ -47,28 +47,28 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'packet_header
 	RequestTargetHardwareAddressIsZero
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	HardwareAndPacketSourceEthernetAddressMismatch
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	HardwareAndPacketDestinationEthernetAddressMismatch
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ProbeIsNotForUs
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
@@ -77,55 +77,55 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'packet_header
 	BroadcastIsNotForUs
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsNotAProbeAndIsNotBroadcast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsNotAProbeAndSenderProtocolAddressIsNotUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	GratuitousReplyIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplyTargetHardwareAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplySourceAndTargetProtocolAddressesAreTheSame
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplySenderProtocolAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplyTargetProtocolAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'packet_header AddressResolutionProtocolPacketHeader,
+		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 }
