@@ -3,16 +3,16 @@
 
 
 /// Allows for notification of dropped incoming network packets.
-pub trait EthernetIncomingNetworkPacketDropObserver: Debug
+pub trait EthernetIncomingNetworkPacketDropObserver<>: Debug
 {
 	/// Internet Protocol (IP) version 4 incoming network packet drop reason type.
-	type IPV4INPDR: Sized + Debug;
+	type IPV4INPDR: IncomingNetworkPacketProcessingDropReason;
 	
 	/// Internet Protocol (IP) version 6 incoming network packet drop reason type.
-	type IPV6INPDR: Sized + Debug;
+	type IPV6INPDR: IncomingNetworkPacketProcessingDropReason;
 	
 	/// Address Resolution Protocol (ARP) incoming network packet drop reason type.
-	type ARPINPDR: Sized + Debug;
+	type ARPINPDR: IncomingNetworkPacketProcessingDropReason;
 	
 	/// Implement this to observe dropped packets.
 	#[inline(always)]

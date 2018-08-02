@@ -2,11 +2,10 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-use super::*;
-
-
-include!("drop.rs");
-
-
-include!("InternetProtocolVersion4PacketProcessing.rs");
-include!("InternetProtocolVersion6PacketProcessing.rs");
+/// Internet Protocol (IP) version 6 packet processing.
+pub trait InternetProtocolVersion6PacketProcessing: Debug
+{
+	/// Process an internet protocol version 6 packet.
+	#[inline(always)]
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);
+}

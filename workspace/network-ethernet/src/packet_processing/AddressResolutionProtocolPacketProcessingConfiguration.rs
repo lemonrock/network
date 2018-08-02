@@ -2,11 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-use super::*;
-
-
-include!("drop.rs");
-
-
-include!("InternetProtocolVersion4PacketProcessing.rs");
-include!("InternetProtocolVersion6PacketProcessing.rs");
+/// Address Resolution Protocol (ARP) packet processing configuration.
+pub trait AddressResolutionProtocolPacketProcessingConfiguration: Debug + Default + Serialize
+{
+	/// Address Resolution Protocol (ARP) packet processing type.
+	type ARP: AddressResolutionProtocolPacketProcessing;
+	
+	/// Configure.
+	#[inline(always)]
+	fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>) -> Self::ARP;
+}

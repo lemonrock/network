@@ -12,6 +12,9 @@
 //! A domain model of Address Resolution Protocol (ARP) packets and associated types.
 //!
 //! This crate has the optional feature `dpdk-sys`, which adds support for converting Into and From DPDK representations.
+//!
+//! This crate also the following default features:
+//! * `drop-arp-requests-with-non-zero-target-hardware-address`: Drops ARP requests with a non-zero target hardware address. Violates RFC 5227.
 
 
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
@@ -48,6 +51,7 @@ use ::std::mem::size_of;
 include!("drop.rs");
 
 
+include!("AddressResolutionPacketProcessing.rs");
 //include!("AddressResolutionProtocolAddressConflictState.rs");
 include!("AddressResolutionProtocolIncomingNetworkPacketDropReason.rs");
 include!("AddressResolutionProtocolPacket.rs");

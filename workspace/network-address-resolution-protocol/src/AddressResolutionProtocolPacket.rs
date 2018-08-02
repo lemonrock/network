@@ -149,11 +149,6 @@ impl AddressResolutionProtocolPacket
 	#[inline(always)]
 	pub fn process<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
 	{
-		if unlikely!(Self::is_packet_length_too_short(layer_3_length))
-		{
-			drop!(PacketIsTooShort, ethernet_addresses, packet_processing, packet)
-		}
-
 		if unlikely!(self.is_invalid_for_internet_protocol_version_4(layer_3_length))
 		{
 			drop!(NotSupportedForAnythingOtherThanInternetProtocolVersion4, ethernet_addresses, packet_processing, packet)

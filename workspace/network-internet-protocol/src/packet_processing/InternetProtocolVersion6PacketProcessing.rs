@@ -1,0 +1,89 @@
+// This file is part of network. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT. No part of predicator, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+// Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
+
+
+#[derive(Debug)]
+pub struct InternetProtocolVersion6PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver>
+{
+	dropped_packet_reporting: Rc<EINPDO>,
+	
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_6_host_addresses: HashSet<InternetProtocolVersion6HostAddress>,
+	
+	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
+	our_valid_internet_protocol_version_6_multicast_addresses: HashSet<InternetProtocolVersion6HostAddress>,
+	
+	denied_source_internet_protocol_version_6_host_addresses: TreeBitmap<()>,
+}
+
+impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>>> ::network_ethernet::packet_processing::InternetProtocolVersion6PacketProcessing for InternetProtocolVersion6PacketProcessing<EINPDO>
+{
+	#[inline(always)]
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	{
+		if unlikely!(InternetProtocolVersion6Packet::is_packet_length_too_short(layer_3_length))
+		{
+			drop!(InternetProtocolVersion6IncomingNetworkPacketDropReason::PacketIsTooShort, ethernet_addresses, self, packet)
+		}
+		
+		let internet_protocol_version_6_packet: &'lifetime InternetProtocolVersion6Packet = layer_3_packet.as_type();
+		
+		internet_protocol_version_6_packet.process(packet, self, layer_3_length, ethernet_addresses)
+	}
+}
+
+impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>>> InternetProtocolVersion6PacketProcessing<EINPDO>
+{
+	/// In order to observe dropped packets.
+	#[inline(always)]
+	pub(crate) fn drop(&self, reason: InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
+	{
+		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicInternetProtocolVersion6Packet
+		{
+			ethernet_addresses,
+			reason,
+		};
+		
+		self.dropped_packet_reporting.dropped_packet(reason);
+		packet.free_direct_contiguous_packet();
+	}
+}
+
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> InternetProtocolVersion6PacketProcessing<EINPDO>
+{
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_multicast_addresses(&self, _internet_protocol_version_6_multicast_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		// TODO: solicited node check implicit group membership.
+		// TODO: all nodes (FF02::1); equivalent to 224.0.0.1 and 255.255.255.255.
+		
+		const MulticastIsUnsupportedAtThisTime: bool = false;
+		
+		MulticastIsUnsupportedAtThisTime
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_one_of_ours(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		self.our_valid_internet_protocol_version_6_host_addresses.contains(&internet_protocol_version_6_host_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_unicast_addresses(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		!self.is_internet_protocol_version_6_host_address_one_of_ours(internet_protocol_version_6_host_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn is_source_internet_protocol_version_6_address_denied(&self, internet_protocol_version_6_host_address: &InternetProtocolVersion6HostAddress) -> bool
+	{
+		debug_assert!(internet_protocol_version_6_host_address.is_valid_unicast(), "internet_protocol_version_6_host_address '{:?}' is not valid unicast", internet_protocol_version_6_host_address);
+		
+		let nibbles = internet_protocol_version_6_host_address.nibbles_non_destructively();
+		self.denied_source_internet_protocol_version_6_host_addresses.longest_match_present(&nibbles)
+	}
+}

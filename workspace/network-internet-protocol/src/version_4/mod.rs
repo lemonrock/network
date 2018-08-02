@@ -6,6 +6,7 @@ use super::*;
 
 
 include!("InternetProtocolVersion4HostAddress.rs");
+include!("InternetProtocolVersion4IncomingNetworkPacketDropReason.rs");
 include!("InternetProtocolVersion4MaskBits.rs");
 include!("InternetProtocolVersion4NetworkAddress.rs");
 include!("InternetProtocolVersion4Packet.rs");

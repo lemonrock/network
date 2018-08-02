@@ -4,7 +4,7 @@
 
 /// Packet processing configuration for a particular combination of Outer Virtual LAN tag, Inner Virtual LAN tag and (our valid unicast) Ethernet Address.
 #[derive(Debug)]
-pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing>
+pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
@@ -22,32 +22,17 @@ pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObs
 	/// Blacklist or whitelist of ethernet addresses.
 	source_ethernet_address_blacklist_or_whitelist: MediaAccessControlAddressList,
 
-	/// Layer 3 packet processing.
-	layer_3_packet_processing: L3PP,
+	/// Address Resolution Protocol (ARP) packet processing.
+	address_resolution_protocol_packet_processing: ARP,
+	
+	/// Internet Protocol (IP) version 4 packet processing.
+	internet_protocol_version_4_packet_processing: IPV4,
+	
+	/// Internet Protocol (IP) version 6 packet processing.
+	internet_protocol_version_6_packet_processing: IPV6,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> Layer3PacketProcessing for EthernetPacketProcessing<EINPDO, L3PP>
-{
-	#[inline(always)]
-	fn process_internet_protocol_version_4<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-	{
-		self.layer_3_packet_processing.process_internet_protocol_version_4(packet, layer_3_packet, layer_3_length, ethernet_addresses)
-	}
-	
-	#[inline(always)]
-	fn process_internet_protocol_version_6<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-	{
-		self.layer_3_packet_processing.process_internet_protocol_version_6(packet, layer_3_packet, layer_3_length, ethernet_addresses)
-	}
-	
-	#[inline(always)]
-	fn process_address_resolution_protocol<'ethernet_addresses>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'ethernet_addresses Layer3Packet, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-	{
-		self.layer_3_packet_processing.process_address_resolution_protocol(packet, layer_3_packet, layer_3_length, ethernet_addresses)
-	}
-}
-
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProcessing> EthernetPacketProcessing<EINPDO, L3PP>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing> EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>
 {
 	#[inline(always)]
 	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR, EINPDO::ARPINPDR>)
@@ -89,5 +74,23 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver, L3PP: Layer3PacketProces
 		debug_assert!(source_ethernet_address.is_valid_unicast(), "source_ethernet_address '{:?}' is not valid unicast", source_ethernet_address);
 		
 		self.source_ethernet_address_blacklist_or_whitelist.is_denied(&source_ethernet_address)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_4<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
+	{
+		self.address_resolution_protocol_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_6<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
+	{
+		self.internet_protocol_version_4_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_address_resolution_protocol<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
+	{
+		self.internet_protocol_version_6_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 }

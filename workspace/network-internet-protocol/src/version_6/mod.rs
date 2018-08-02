@@ -5,7 +5,10 @@
 use super::*;
 
 
+include!("ExtensionHeaderType.rs");
+include!("ExtensionHeaderTypeOrLayer4ProtocolNumber.rs");
 include!("InternetProtocolVersion6HostAddress.rs");
+include!("InternetProtocolVersion6IncomingNetworkPacketDropReason.rs");
 include!("InternetProtocolVersion6MaskBits.rs");
 include!("InternetProtocolVersion6MulticastAddressLifetime.rs");
 include!("InternetProtocolVersion6MulticastAddressParseError.rs");
@@ -14,5 +17,3 @@ include!("InternetProtocolVersion6NetworkAddress.rs");
 include!("InternetProtocolVersion6Packet.rs");
 include!("InternetProtocolVersion6PacketHeader.rs");
 include!("InternetProtocolVersion6PseudoHeader.rs");
-include!("ExtensionHeaderType.rs");
-include!("ExtensionHeaderTypeOrLayer4ProtocolNumber.rs");

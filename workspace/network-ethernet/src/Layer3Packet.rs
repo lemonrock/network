@@ -36,30 +36,4 @@ impl Layer3Packet
 	{
 		unsafe { transmute(&self.other) }
 	}
-	
-//	#[inline(always)]
-//	pub(crate) fn process_internet_protocol_version_4<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-//	{
-//		if unlikely!(InternetProtocolVersion4Packet::is_packet_length_too_short(layer_3_length))
-//		{
-//			drop!(InternetProtocolVersion4PacketIsTooShort { ethernet_addresses }, packet_processing, packet)
-//		}
-//
-//		let internet_protocol_version_4_packet: &'ethernet_addresses mut InternetProtocolVersion4Packet = self.as_type();
-//
-//		internet_protocol_version_4_packet.process(packet, packet_processing, layer_3_length, ethernet_addresses)
-//	}
-//
-//	#[inline(always)]
-//	pub(crate) fn process_internet_protocol_version_6<'ethernet_addresses>(&'ethernet_addresses self, packet: impl IncomingNetworkPacket, packet_processing: &PacketProcessing<impl IncomingNetworkPacketProcessingDropObserver>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
-//	{
-//		if unlikely!(InternetProtocolVersion6Packet::is_packet_length_too_short(layer_3_length))
-//		{
-//			drop!(InternetProtocolVersion6PacketIsTooShort { ethernet_addresses }, packet_processing, packet)
-//		}
-//
-//		let internet_protocol_version_6_packet: &'ethernet_addresses mut InternetProtocolVersion6Packet = self.as_type();
-//
-//		internet_protocol_version_6_packet.process(packet, packet_processing, layer_3_length, ethernet_addresses)
-//	}
 }

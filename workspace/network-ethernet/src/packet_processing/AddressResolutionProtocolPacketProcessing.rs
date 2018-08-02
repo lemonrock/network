@@ -2,13 +2,10 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Layer 3 packet processing configuration.
-pub trait Layer3PacketProcessingConfiguration: Debug + Default + Serialize
+/// Address Resolution Protocol (ARP) packet processing.
+pub trait AddressResolutionProtocolPacketProcessing: Debug
 {
-	/// Layer 3 packet processing type.
-	type L3PP: Layer3PacketProcessing;
-	
-	/// Configure.
+	/// Process an Address Resolution Protocol (ARP) packet.
 	#[inline(always)]
-	fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>) -> Self::L3PP;
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);
 }

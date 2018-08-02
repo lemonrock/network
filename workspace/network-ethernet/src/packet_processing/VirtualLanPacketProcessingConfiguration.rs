@@ -5,23 +5,23 @@
 /// Configuration.
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
-pub struct VirtualLanPacketProcessingConfiguration<L3PPC: Layer3PacketProcessingConfiguration>
+pub struct VirtualLanPacketProcessingConfiguration<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration>
 {
 	/// Outer QinQ Virtual LAN.
-	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessingConfiguration<L3PPC>>,
+	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>>,
 	
 	/// Inner 802.1Q Virtual LAN.
-	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessingConfiguration<L3PPC>>,
+	pub inner: HashMap<VirtualLanIdentifier, EthernetPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>>,
 	
 	/// No virtual LANs.
-	pub none: EthernetPacketProcessingConfiguration<L3PPC>,
+	pub none: EthernetPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>,
 }
 
-impl<L3PPC: Layer3PacketProcessingConfiguration> VirtualLanPacketProcessingConfiguration<L3PPC>
+impl<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration> VirtualLanPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(mut self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> VirtualLanPacketProcessing<EINPDO, L3PPC::L3PP>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(mut self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> VirtualLanPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
 	{
 		VirtualLanPacketProcessing
 		{

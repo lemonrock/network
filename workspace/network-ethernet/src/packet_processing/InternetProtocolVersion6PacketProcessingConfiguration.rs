@@ -2,11 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-use super::*;
-
-
-include!("drop.rs");
-
-
-include!("InternetProtocolVersion4PacketProcessing.rs");
-include!("InternetProtocolVersion6PacketProcessing.rs");
+/// Internet Protocol (IP) version 6 packet processing configuration.
+pub trait InternetProtocolVersion6PacketProcessingConfiguration: Debug + Default + Serialize
+{
+	/// Internet Protocol (IP) version 6 packet processing type.
+	type IPV6: InternetProtocolVersion6PacketProcessing;
+	
+	/// Configure.
+	#[inline(always)]
+	fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>) -> Self::IPV6;
+}

@@ -26,3 +26,13 @@ network-ethernet = { path = "../network-ethernet", version = "^0.1" }
 network-internet-protocol = { path = "../network-internet-protocol", version = "^0.1" }
 serde = "1.0"
 serde_derive = "1.0"
+
+[features]
+default = ["drop-arp-requests-with-non-zero-target-hardware-address"]
+
+# Drops ARP requests with a non-zero target hardware address.
+#
+# Enabled by default.
+#
+# Violates RFC 5227.
+drop-arp-requests-with-non-zero-target-hardware-address = []

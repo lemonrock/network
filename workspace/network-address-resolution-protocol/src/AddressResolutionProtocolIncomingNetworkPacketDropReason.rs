@@ -129,3 +129,7 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
 		header: &'header AddressResolutionProtocolPacketHeader,
 	},
 }
+
+impl IncomingNetworkPacketProcessingDropReason for AddressResolutionProtocolIncomingNetworkPacketDropReason
+{
+}

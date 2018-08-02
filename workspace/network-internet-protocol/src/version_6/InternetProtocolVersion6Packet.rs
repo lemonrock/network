@@ -28,4 +28,10 @@ impl InternetProtocolVersion6Packet
 	{
 		layer_3_length < InternetProtocolVersion6PacketHeader::HeaderSizeU16
 	}
+	
+	#[inline(always)]
+	pub(crate) fn process<'lifetime, EINDPO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion6PacketProcessing<EINDPO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	{
+		unimplemented!();
+	}
 }
