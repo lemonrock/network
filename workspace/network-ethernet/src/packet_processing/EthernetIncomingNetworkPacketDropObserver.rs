@@ -3,18 +3,18 @@
 
 
 /// Allows for notification of dropped incoming network packets.
-pub trait EthernetIncomingNetworkPacketDropObserver<>: Debug
+pub trait EthernetIncomingNetworkPacketDropObserver: Debug
 {
+	/// Address Resolution Protocol (ARP) incoming network packet drop reason type.
+	type ARPINPDR: IncomingNetworkPacketProcessingDropReason;
+	
 	/// Internet Protocol (IP) version 4 incoming network packet drop reason type.
 	type IPV4INPDR: IncomingNetworkPacketProcessingDropReason;
 	
 	/// Internet Protocol (IP) version 6 incoming network packet drop reason type.
 	type IPV6INPDR: IncomingNetworkPacketProcessingDropReason;
 	
-	/// Address Resolution Protocol (ARP) incoming network packet drop reason type.
-	type ARPINPDR: IncomingNetworkPacketProcessingDropReason;
-	
 	/// Implement this to observe dropped packets.
 	#[inline(always)]
-	fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, Self::IPV4INPDR, Self::IPV6INPDR, Self::ARPINPDR>);
+	fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, Self::ARPINPDR, Self::IPV4INPDR, Self::IPV6INPDR>);
 }

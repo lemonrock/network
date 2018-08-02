@@ -5,6 +5,7 @@
 /// This is a specialized structure designed to represent a buffer of packet data.
 #[repr(C, packed)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct InternetProtocolVersion4PacketHeader
 {
 	/// Version and internet header length bit fields.

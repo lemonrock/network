@@ -5,6 +5,9 @@
 /// Address Resolution Protocol (ARP) packet processing.
 pub trait AddressResolutionProtocolPacketProcessing: Debug
 {
+	/// Drop reason.
+	type DropReason: IncomingNetworkPacketProcessingDropReason;
+	
 	/// Process an Address Resolution Protocol (ARP) packet.
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);

@@ -17,6 +17,15 @@ pub union ExtensionHeaderTypeOrLayer4ProtocolNumber
 	pub unknown: u8,
 }
 
+impl Serialize for ExtensionHeaderTypeOrLayer4ProtocolNumber
+{
+	#[inline(always)]
+	fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		(unsafe { self.unknown }).serialize(serializer)
+	}
+}
+
 impl From<u8> for ExtensionHeaderTypeOrLayer4ProtocolNumber
 {
 	#[inline(always)]

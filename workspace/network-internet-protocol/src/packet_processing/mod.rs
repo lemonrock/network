@@ -10,3 +10,4 @@ include!("drop.rs");
 
 include!("InternetProtocolVersion4PacketProcessing.rs");
 include!("InternetProtocolVersion6PacketProcessing.rs");
+include!("OurValidInternetProtocolVersion4HostAddresses.rs");

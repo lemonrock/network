@@ -2,15 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
+/// Implementation of Internet Protocol (IP) version 4 packet processing.
 #[derive(Debug)]
-pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver>
+pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
-	/// Our unicast internet protocol (IP) version 4 host addresses valid for this network interface.
-	///
-	/// No sender packet should be received from this address; if it was, it implies loopback on this interface, which is daft.
-	our_valid_internet_protocol_version_4_host_addresses: HashSet<InternetProtocolVersion4HostAddress>,
+	our_valid_internet_protocol_version_4_host_addresses: Rc<OurValidInternetProtocolVersion4HostAddresses>,
 	
 	/// Our multicast internet protocol (IP) version 4 host addresses valid for this network interface.
 	///
@@ -20,8 +18,10 @@ pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetw
 	denied_source_internet_protocol_version_4_host_addresses: TreeBitmap<()>,
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<'lifetime>>> ::network_ethernet::packet_processing::InternetProtocolVersion4PacketProcessing<EINPDO> for InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> ::network_ethernet::packet_processing::InternetProtocolVersion4PacketProcessing for InternetProtocolVersion4PacketProcessing<EINPDO>
 {
+	type DropReason = EINPDO::IPV4INPDR;
+	
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
@@ -36,11 +36,10 @@ impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=Inte
 	}
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<'lifetime>>> InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> InternetProtocolVersion4PacketProcessing<EINPDO>
 {
-	/// In order to observe dropped packets.
 	#[inline(always)]
-	pub(crate) fn drop(&self, reason: InternetProtocolVersion4IncomingNetworkPacketDropReason<'lifetime>, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
+	pub(crate) fn drop<'lifetime>(&self, reason: EINPDO::IPV4INPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicInternetProtocolVersion4Packet
 		{
@@ -51,17 +50,11 @@ impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=Inte
 		self.dropped_packet_reporting.dropped_packet(reason);
 		packet.free_direct_contiguous_packet();
 	}
-}
-
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> InternetProtocolVersion4PacketProcessing<EINPDO>
-{
-	/// Public because also used by the Address Resolution Protocol (ARP) `network-address-resolution-protocol` crate.
+	
 	#[inline(always)]
-	pub fn is_internet_protocol_version_4_host_address_one_of_ours(&self, internet_protocol_version_4_host_address: InternetProtocolVersion4HostAddress) -> bool
+	pub(crate) fn is_internet_protocol_version_4_host_address_one_of_ours(&self, internet_protocol_version_4_host_address: InternetProtocolVersion4HostAddress) -> bool
 	{
-		debug_assert!(internet_protocol_version_4_host_address.is_valid_unicast(), "internet_protocol_version_4_host_address '{:?}' is not valid unicast", internet_protocol_version_4_host_address);
-		
-		self.our_valid_internet_protocol_version_4_host_addresses.contains(&internet_protocol_version_4_host_address)
+		self.our_valid_internet_protocol_version_4_host_addresses.is_internet_protocol_version_4_host_address_one_of_ours(internet_protocol_version_4_host_address)
 	}
 	
 	#[inline(always)]

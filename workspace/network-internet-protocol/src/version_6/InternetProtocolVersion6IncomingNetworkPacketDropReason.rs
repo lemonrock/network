@@ -8,7 +8,8 @@
 ///
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
 #[derive(Debug)]
-pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
+#[derive(Serialize)]
+pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 {
 	/// Packet is too short.
 	PacketIsTooShort,
@@ -17,7 +18,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	HeaderIsNot6
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Flow label was zero.
@@ -26,57 +28,66 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	FlowLabelIsNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Hop-by-hop options extension header was not the first extension header.
 	HopByHopOptionsIsNotFirstExtensionHeader
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Hop-by-hop options extension header was too short.
 	HopByHopOptionsUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Hop-by-hop options extension header was too long.
 	HopByHopOptionsHeaderExtensionLengthOverflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Type-Length-Value option in an extension header was too short.
 	TypeLengthValueOptionTypeUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Type-Length-Value option in an extension header was too short.
 	TypeLengthValueOptionLengthUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Type-Length-Value option in an extension header was too short.
 	TypeLengthValueOptionDataUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Type-Length-Value option in an extension header required discard of packet if not supported.
 	TypeLengthValueOptionDiscardPacket
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
+		/// Option type.
 		option_type: u8,
 	},
 	
@@ -84,8 +95,10 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	TypeLengthValueOptionShouldNotBeUsedOnTheInternet
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
+		/// Option type.
 		option_type: u8,
 	},
 	
@@ -93,21 +106,24 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	RoutingExtensionHeaderRepeated
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Routing extension header was too short.
 	RoutingExtensionHeaderUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// We are not a router, and the routing extension header has route segments left, ie we are not the final destination.
 	RoutingExtensionHeaderHasSegmentsLeft
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Routing type.
 		routing_type: u8,
@@ -120,7 +136,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	RoutingExtensionHeaderRoutingTypeIsDeprecatedExperimentalOrReserved
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Routing type.
 		routing_type: u8,
@@ -133,14 +150,16 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	FragmentExtensionHeaderRepeated
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Fragment extension header was too short.
 	FragmentExtensionHeaderUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Fragment extension header had its first reserved field set to a value which is not zero.
@@ -149,7 +168,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	FragmentExtensionHeaderFirstReservedFieldNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Value of the reserved field.
 		reserved: u8,
@@ -161,7 +181,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	FragmentExtensionHeaderSecondReservedFieldNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Value of the reserved field.
 		reserved: u8,
@@ -172,28 +193,25 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	/// Whilst strictly possible, there is no good reason to send fragmented packets when there is only one fragment!
 	FragmentExtensionHeaderOnlyOneFragmentOrLastFragmentIsFirst
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Packet fragment, apart from the last fragment, has a length which is not a multiple of eight (8).
 	PacketFragmentNotAMultipleOfEight
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Reassembling using this fragment would make the packet including payload larger than 65,535 bytes.
 	PacketFragmentWouldMakeReassembledPacketWouldTooLarge
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// A packet has overly small fragments.
@@ -201,10 +219,9 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	/// This is usually indicative of an attack.
 	PacketFragmentTooSmall
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The encapsulating security payload (ESP) extension header is unsupported.
@@ -213,7 +230,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	EncapulatingSecurityPayloadExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The authentication header (AH) extension header is unsupported.
@@ -222,53 +240,56 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	AuthenticationHeaderExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The no-next-header 'psuedo' extension header is unsupported.
 	NoNextHeaderIsUnsupported
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The destination options extension header was repeated more than twice.
 	MoreThanTwoDestinationOptionsExtensionHeaders
 	{
-		ethernet_addresses: &'header EthernetAddresses,
-		
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The mobility extension header is unsupported.
 	MobilityExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The host identity protocol (HIP) extension header is unsupported.
 	HostIdentityProtocolExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// The SHIM6 extension header is unsupported.
 	Shim6ProtocolExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Experimentation extension headers are unsupported.
 	ExperimentationExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// An unrecognised extension header or unsupported layer 4 protocol was specified.
@@ -277,7 +298,8 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	UnrecognisedExtensionHeaderOrLayer4Protocol
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Next header (extension header type) or layer 4 protocol number.
 		next_header: u8,
@@ -289,56 +311,64 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	SourceAddressNotValidUnicast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a packet with a source address that was denied (eg banned, firewalled).
 	SourceAddressDenied
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a packet with a destination address that was reserved for documentation.
 	DestinationAddressDocumentation
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a packet with a destination address that was reserved for loopback (ie is should never be received by a network card).
 	DestinationAddressLoopback
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a packet with a destination address that was reserved for multicast 'loopback' (interface-local) (ie is should never be received by a network card).
 	DestinationAddressInterfaceLocal
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a unicast packet to a destination that isn't us.
 	UnicastDestinationIsNotUs
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	MulticastAddressIsNotMulticast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	MulticastAddressIsNotValidMulticast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Parsing error.
 		parsing_error: InternetProtocolVersion6MulticastAddressParseError,
@@ -348,52 +378,68 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<'header>
 	MulticastAddressMismatchesEthernetAddress
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	EthernetBroadcastShouldNotOccur
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	MulticastAddressDenied
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	DestinationWasLoopbackOrDocumentationAddress
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	TransmissionControlProtocolPacketsShouldOnlyBeUnicast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
-	UserDatagramProtocolPacketsMustHaveAChecksumSet
+	UserDatagramProtocolPacketsMustHaveACheckSumSet
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 6 packet processing.
 	InternetControlMessageProtocolPacketsShouldNotBeFragmented
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		header: &'header InternetProtocolVersion6PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 }
 
 impl IncomingNetworkPacketProcessingDropReason for InternetProtocolVersion6IncomingNetworkPacketDropReason
 {
+}
+
+impl InternetProtocolVersion6IncomingNetworkPacketDropReason
+{
+	#[inline(always)]
+	fn serialize_non_null<S: Serializer, T: Serialize>(to_serialize: &NonNull<T>, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		unsafe { to_serialize.as_ref().serialize(serializer) }
+	}
 }

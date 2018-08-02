@@ -31,6 +31,7 @@ extern crate libc;
 extern crate network_check_sum;
 extern crate network_endian;
 extern crate network_ethernet;
+extern crate network_packet;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -70,7 +71,9 @@ use ::network_ethernet::virtual_lans::DifferentiatedServiceCodePoint;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObserver;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
+use ::network_packet::IncomingNetworkPacketProcessingDropReason;
 use ::serde::Serialize;
+use ::serde::Serializer;
 use ::serde::de::DeserializeOwned;
 use ::std::cmp::min;
 use ::std::cmp::Ordering;

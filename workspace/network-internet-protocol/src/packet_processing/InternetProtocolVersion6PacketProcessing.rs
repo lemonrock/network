@@ -2,8 +2,9 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
+/// Implementation of Internet Protocol (IP) version 6 packet processing.
 #[derive(Debug)]
-pub struct InternetProtocolVersion6PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver>
+pub struct InternetProtocolVersion6PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
@@ -16,8 +17,10 @@ pub struct InternetProtocolVersion6PacketProcessing<EINPDO: EthernetIncomingNetw
 	denied_source_internet_protocol_version_6_host_addresses: TreeBitmap<()>,
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>>> ::network_ethernet::packet_processing::InternetProtocolVersion6PacketProcessing for InternetProtocolVersion6PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>> ::network_ethernet::packet_processing::InternetProtocolVersion6PacketProcessing for InternetProtocolVersion6PacketProcessing<EINPDO>
 {
+	type DropReason = EINPDO::IPV6INPDR;
+	
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
@@ -32,11 +35,10 @@ impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=Inte
 	}
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>>> InternetProtocolVersion6PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>> InternetProtocolVersion6PacketProcessing<EINPDO>
 {
-	/// In order to observe dropped packets.
 	#[inline(always)]
-	pub(crate) fn drop(&self, reason: InternetProtocolVersion6IncomingNetworkPacketDropReason<'lifetime>, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
+	pub(crate) fn drop<'lifetime>(&self, reason: EINPDO::IPV6INPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicInternetProtocolVersion6Packet
 		{
@@ -47,10 +49,7 @@ impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=Inte
 		self.dropped_packet_reporting.dropped_packet(reason);
 		packet.free_direct_contiguous_packet();
 	}
-}
-
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver> InternetProtocolVersion6PacketProcessing<EINPDO>
-{
+	
 	#[inline(always)]
 	pub(crate) fn is_internet_protocol_version_6_host_address_not_one_of_our_multicast_addresses(&self, _internet_protocol_version_6_multicast_address: &InternetProtocolVersion6HostAddress) -> bool
 	{

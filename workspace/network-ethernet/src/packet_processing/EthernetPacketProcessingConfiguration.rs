@@ -8,7 +8,7 @@
 pub struct EthernetPacketProcessingConfiguration<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration>
 {
 	/// Inner 802.1Q Virtual LAN honour drop eligible.
-	#[serde(default = "EthernetPacketProcessingConfiguration::<ARP, IPV4, IPV6>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
+	#[serde(default = "EthernetPacketProcessingConfiguration::<ARPC, IPV4C, IPV6C>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
 	
 	/// Inner 802.1Q Virtual LAN permitted classes of service.
 	#[serde(default)] pub inner_permitted_classes_of_service: PermittedClassesOfService,
@@ -30,7 +30,7 @@ impl<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: Intern
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARPC::ARP as AddressResolutionProtocolPacketProcessing>::DropReason, IPV4INPDR=<IPV4C::IPV4 as InternetProtocolVersion4PacketProcessing>::DropReason, IPV6INPDR=<IPV6C::IPV6 as InternetProtocolVersion6PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
 	{
 		EthernetPacketProcessing
 		{

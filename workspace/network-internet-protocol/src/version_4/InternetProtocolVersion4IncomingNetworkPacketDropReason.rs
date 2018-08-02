@@ -8,7 +8,8 @@
 ///
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
 #[derive(Debug)]
-pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
+#[derive(Serialize)]
+pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason
 {
 	/// Packet is too short.
 	PacketIsTooShort,
@@ -17,28 +18,32 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	HeaderIsNot4
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Total Length field is invalid.
 	TotalLengthInvalid
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Only occurs if the feature `drop-ipv4-packets-with-do-not-fragment-and-non-zero-identification` is configured.
 	InvalidFragmentationFlagsOrIdentification
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	TotalLengthLessThanHeader
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
@@ -47,28 +52,32 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	HasOptions
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	OptionLacksKind
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	OptionLengthTooShort
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	OptionLengthTooLong
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
@@ -79,7 +88,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	SourceAddressNotValidUnicast
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
@@ -88,7 +98,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	SourceAddressDenied
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
@@ -97,7 +108,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	UnicastDestinationIsNotUs
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
@@ -106,38 +118,52 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<'header>
 	EthernetBroadcastNotInternetBroadcast
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	MulticastAddressIsNotMulticast
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	MulticastAddressMismatchesEthernetAddress
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	MulticastAddressDenied
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	DestinationWasLoopbackorDocumentationAddress
 	{
 		/// Internet Protocol (IP) version 4 packet header.
-		header: &'header InternetProtocolVersion4PacketHeader,
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 }
 
 impl IncomingNetworkPacketProcessingDropReason for InternetProtocolVersion4IncomingNetworkPacketDropReason
 {
+}
+
+impl InternetProtocolVersion4IncomingNetworkPacketDropReason
+{
+	#[inline(always)]
+	fn serialize_non_null<S: Serializer, T: Serialize>(to_serialize: &NonNull<T>, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		unsafe { to_serialize.as_ref().serialize(serializer) }
+	}
 }

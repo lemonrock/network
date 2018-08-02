@@ -18,7 +18,7 @@ impl<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: Intern
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARPC::ARP as AddressResolutionProtocolPacketProcessing>::DropReason, IPV4INPDR=<IPV4C::IPV4 as InternetProtocolVersion4PacketProcessing>::DropReason, IPV6INPDR=<IPV6C::IPV6 as InternetProtocolVersion6PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
 	{
 		QinQVirtualLanPacketProcessing
 		{

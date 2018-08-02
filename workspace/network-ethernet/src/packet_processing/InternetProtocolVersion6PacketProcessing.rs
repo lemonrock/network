@@ -5,7 +5,10 @@
 /// Internet Protocol (IP) version 6 packet processing.
 pub trait InternetProtocolVersion6PacketProcessing: Debug
 {
-	/// Process an internet protocol version 6 packet.
+	/// Drop reason.
+	type DropReason: IncomingNetworkPacketProcessingDropReason;
+	
+	/// Process an Internet Protocol (IP) version 6 packet.
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);
 }

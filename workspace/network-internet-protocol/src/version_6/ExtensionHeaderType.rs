@@ -7,6 +7,7 @@
 /// See <https://www.iana.org/assignments/ipv6-parameters/ipv6-parameters.xhtml>.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 #[repr(u8)]
+#[derive(Deserialize, Serialize)]
 pub enum ExtensionHeaderType
 {
 	/// RFC 8200.

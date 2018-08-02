@@ -36,7 +36,7 @@ impl InternetProtocolVersion4Packet
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINDPO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<'lifetime>>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINDPO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		unimplemented!();
 	}

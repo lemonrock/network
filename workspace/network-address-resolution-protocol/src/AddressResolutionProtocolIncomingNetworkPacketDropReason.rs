@@ -9,7 +9,7 @@
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
 #[derive(Debug)]
 #[derive(Serialize)]
-pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
+pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason
 {
 	/// Temporary reason until support for Address Resolution Protocol replies is implemented.
 	ReuseInReply,
@@ -24,21 +24,24 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
 	DestinationEthernetAddressIsMulticast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	OperationIsUnsupported
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsMulticast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
@@ -47,28 +50,32 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
 	RequestTargetHardwareAddressIsZero
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	HardwareAndPacketSourceEthernetAddressMismatch
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	HardwareAndPacketDestinationEthernetAddressMismatch
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ProbeIsNotForUs
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
@@ -77,59 +84,76 @@ pub enum AddressResolutionProtocolIncomingNetworkPacketDropReason<'header>
 	BroadcastIsNotForUs
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsNotAProbeAndIsNotBroadcast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	RequestIsNotAProbeAndSenderProtocolAddressIsNotUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	GratuitousReplyIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplyTargetHardwareAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplySourceAndTargetProtocolAddressesAreTheSame
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplySenderProtocolAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 	
 	/// Occurs during Address Reolution Protocol (ARP) packet processing.
 	ReplyTargetProtocolAddressIsNotValidUnicast
 	{
 		/// Address Reolution Protocol (ARP) packet header.
-		header: &'header AddressResolutionProtocolPacketHeader,
+		#[serde(serialize_with = "AddressResolutionProtocolIncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<AddressResolutionProtocolPacketHeader>,
 	},
 }
 
 impl IncomingNetworkPacketProcessingDropReason for AddressResolutionProtocolIncomingNetworkPacketDropReason
 {
+}
+
+impl AddressResolutionProtocolIncomingNetworkPacketDropReason
+{
+	#[inline(always)]
+	fn serialize_non_null<S: Serializer, T: Serialize>(to_serialize: &NonNull<T>, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		unsafe { to_serialize.as_ref().serialize(serializer) }
+	}
 }

@@ -4,6 +4,7 @@
 
 /// A pseudo-header for Internet Protocol Version 6.
 #[repr(C, packed)]
+#[derive(Deserialize, Serialize)]
 pub struct InternetProtocolVersion6PseudoHeader
 {
 	source_internet_protocol_version_6_address: InternetProtocolVersion6HostAddress,

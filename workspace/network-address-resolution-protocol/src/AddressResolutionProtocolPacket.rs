@@ -145,9 +145,8 @@ impl AddressResolutionProtocolPacket
 		layer_3_length != AddressResolutionProtocolPacketHeader::HeaderSizeU16 + PayloadSizeU16
 	}
 	
-	/// Process.
 	#[inline(always)]
-	pub fn process<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, layer_3_length: u16, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		if unlikely!(self.is_invalid_for_internet_protocol_version_4(layer_3_length))
 		{
@@ -158,7 +157,7 @@ impl AddressResolutionProtocolPacket
 	}
 	
 	#[inline(always)]
-	fn process_for_internet_protocol_version_4_payload<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_for_internet_protocol_version_4_payload<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = &self.header;
@@ -183,7 +182,7 @@ impl AddressResolutionProtocolPacket
 	}
 
 	#[inline(always)]
-	fn process_request<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_request<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = &self.header;
@@ -278,7 +277,7 @@ impl AddressResolutionProtocolPacket
 	}
 	
 	#[inline(always)]
-	fn process_reply<'ethernet_addresses, IPV4INPDR, IPV6INPDR>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'ethernet_addresses>>, ethernet_addresses: &'ethernet_addresses EthernetAddresses)
+	fn process_reply<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &Layer3PacketProcessingImpl<IPV4INPDR, IPV6INPDR, AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = &self.header;

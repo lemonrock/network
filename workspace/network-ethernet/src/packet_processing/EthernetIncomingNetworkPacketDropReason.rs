@@ -13,7 +13,7 @@
 /// * `ARPINPDR` is the Address Resolution Protocol (ARP) incoming network packet drop reason type.
 #[derive(Debug)]
 #[derive(Serialize)]
-pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR: IncomingNetworkPacketProcessingDropReason, IPV6INPDR: IncomingNetworkPacketProcessingDropReason, ARPINPDR: IncomingNetworkPacketProcessingDropReason>
+pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: IncomingNetworkPacketProcessingDropReason, IPV4INPDR: IncomingNetworkPacketProcessingDropReason, IPV6INPDR: IncomingNetworkPacketProcessingDropReason>
 {
 	/// The packet's length was too short to be an ethernet packet.
 	///
@@ -239,6 +239,6 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR:
 	},
 }
 
-impl<'ethernet_addresses, IPV4INPDR: Sized + Debug, IPV6INPDR: Sized + Debug, ARPINPDR: Sized + Debug> IncomingNetworkPacketProcessingDropReason for EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, IPV4INPDR, IPV6INPDR, ARPINPDR>
+impl<'ethernet_addresses, ARPINPDR: IncomingNetworkPacketProcessingDropReason, IPV4INPDR: IncomingNetworkPacketProcessingDropReason, IPV6INPDR: IncomingNetworkPacketProcessingDropReason> IncomingNetworkPacketProcessingDropReason for EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR, IPV4INPDR, IPV6INPDR>
 {
 }

@@ -4,6 +4,7 @@
 
 /// Cause of failure to parse.
 #[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub enum InternetProtocolVersion6MulticastAddressParseError
 {
 	#[allow(missing_docs)]
