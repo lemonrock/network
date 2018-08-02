@@ -5,20 +5,20 @@
 /// Configuration.
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
-pub struct QinQVirtualLanPacketProcessingConfiguration<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration>
+pub struct QinQVirtualLanPacketProcessingConfiguration<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration>
 {
 	/// Outer QinQ Virtual LAN permitted classes of service.
-	pub outer_packet_processing: EthernetPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>,
+	pub outer_packet_processing: EthernetPacketProcessingConfiguration<ARP, IPV4, IPV6>,
 	
 	/// Inner packet processing configuration.
-	pub inner_packet_processing: EthernetPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>,
+	pub inner_packet_processing: EthernetPacketProcessingConfiguration<ARP, IPV4, IPV6>,
 }
 
-impl<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration> QinQVirtualLanPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>
+impl<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration> QinQVirtualLanPacketProcessingConfiguration<ARP, IPV4, IPV6>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARPC::ARP as AddressResolutionProtocolPacketProcessing>::DropReason, IPV4INPDR=<IPV4C::IPV4 as InternetProtocolVersion4PacketProcessing>::DropReason, IPV6INPDR=<IPV6C::IPV6 as InternetProtocolVersion6PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARP::L3PP as Layer3PacketProcessing>::DropReason, IPV4INPDR=<IPV4::L3PP as Layer3PacketProcessing>::DropReason, IPV6INPDR=<IPV6::L3PP as Layer3PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> QinQVirtualLanPacketProcessing<EINPDO, ARP::L3PP, IPV4::L3PP, IPV6::L3PP>
 	{
 		QinQVirtualLanPacketProcessing
 		{

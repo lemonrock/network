@@ -5,17 +5,13 @@
 use super::*;
 
 
-include!("AddressResolutionProtocolPacketProcessing.rs");
-include!("AddressResolutionProtocolPacketProcessingConfiguration.rs");
 include!("EthernetIncomingNetworkPacket.rs");
 include!("EthernetIncomingNetworkPacketDropObserver.rs");
 include!("EthernetIncomingNetworkPacketDropReason.rs");
 include!("EthernetPacketProcessing.rs");
 include!("EthernetPacketProcessingConfiguration.rs");
-include!("InternetProtocolVersion4PacketProcessing.rs");
-include!("InternetProtocolVersion4PacketProcessingConfiguration.rs");
-include!("InternetProtocolVersion6PacketProcessing.rs");
-include!("InternetProtocolVersion6PacketProcessingConfiguration.rs");
+include!("Layer3PacketProcessing.rs");
+include!("Layer3PacketProcessingConfiguration.rs");
 include!("QinQVirtualLanPacketProcessing.rs");
 include!("QinQVirtualLanPacketProcessingConfiguration.rs");
 include!("VirtualLanPacketProcessing.rs");

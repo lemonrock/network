@@ -68,6 +68,7 @@ use ::network_ethernet::virtual_lans::DifferentiatedServiceCodePoint;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObserver;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
+use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::network_packet::IncomingNetworkPacketProcessingDropReason;
 use ::serde::Serialize;
 use ::serde::Serializer;

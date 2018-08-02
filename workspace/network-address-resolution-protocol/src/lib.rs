@@ -33,10 +33,12 @@ use ::network_endian::*;
 use ::network_ethernet::EthernetAddresses;
 use ::network_ethernet::EtherType;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacket;
+use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObserver;
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
+use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::network_ethernet::MediaAccessControlAddress;
 use ::network_internet_protocol::*;
-use ::network_internet_protocol::packet_processing::Layer3PacketProcessingImpl;
+use ::network_internet_protocol::packet_processing::*;
 use ::network_internet_protocol::version_4::*;
 use ::std::fmt;
 use ::std::fmt::Debug;
@@ -45,7 +47,8 @@ use ::std::fmt::Formatter;
 use ::std::marker::PhantomData;
 use ::std::mem::size_of;
 #[cfg(feature = "dpdk-sys")] use ::std::mem::transmute;
-#[cfg(feature = "dpdk-sys")] use ::std::ptr::NonNull;
+use ::std::ptr::NonNull;
+use ::std::rc::Rc;
 
 
 include!("arp_unsupported.rs");

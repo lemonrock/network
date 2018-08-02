@@ -4,7 +4,7 @@
 
 /// Packet processing configuration by Virtual LAN.
 #[derive(Debug)]
-pub struct VirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>
+pub struct VirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>
 {
 	/// Outer QinQ Virtual LAN.
 	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>>,
@@ -16,7 +16,7 @@ pub struct VirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropO
 	pub none: EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing> VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing> VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>
 {
 	#[inline(always)]
 	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::ARPINPDR, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR>)

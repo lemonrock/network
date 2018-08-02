@@ -17,7 +17,7 @@ pub struct InternetProtocolVersion6PacketProcessing<EINPDO: EthernetIncomingNetw
 	denied_source_internet_protocol_version_6_host_addresses: TreeBitmap<()>,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>> ::network_ethernet::packet_processing::InternetProtocolVersion6PacketProcessing for InternetProtocolVersion6PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>> Layer3PacketProcessing for InternetProtocolVersion6PacketProcessing<EINPDO>
 {
 	type DropReason = EINPDO::IPV6INPDR;
 	

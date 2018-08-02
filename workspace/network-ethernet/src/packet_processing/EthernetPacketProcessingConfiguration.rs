@@ -5,10 +5,10 @@
 /// Ethernet packet processing configuration.
 #[derive(Debug, Clone)]
 #[derive(Serialize, Deserialize)]
-pub struct EthernetPacketProcessingConfiguration<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration>
+pub struct EthernetPacketProcessingConfiguration<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration>
 {
 	/// Inner 802.1Q Virtual LAN honour drop eligible.
-	#[serde(default = "EthernetPacketProcessingConfiguration::<ARPC, IPV4C, IPV6C>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
+	#[serde(default = "EthernetPacketProcessingConfiguration::<ARP, IPV4, IPV6>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
 	
 	/// Inner 802.1Q Virtual LAN permitted classes of service.
 	#[serde(default)] pub inner_permitted_classes_of_service: PermittedClassesOfService,
@@ -17,20 +17,20 @@ pub struct EthernetPacketProcessingConfiguration<ARPC: AddressResolutionProtocol
 	#[serde(default)] pub source_ethernet_address_blacklist_or_whitelist: MediaAccessControlAddressList,
 	
 	/// Address Resolution Protocol (ARP) packet processing configuration.
-	#[serde(default)] pub address_resolution_protocol_packet_processing_configuration: ARPC,
+	#[serde(default)] pub address_resolution_protocol_packet_processing_configuration: ARP,
 	
 	/// Internet Protocol (IP) version 4 packet processing configuration.
-	#[serde(default)] pub internet_protocol_version_4_packet_processing_configuration: IPV4C,
+	#[serde(default)] pub internet_protocol_version_4_packet_processing_configuration: IPV4,
 	
 	/// Internet Protocol (IP) version 6 packet processing configuration.
-	#[serde(default)] pub internet_protocol_version_6_packet_processing_configuration: IPV6C,
+	#[serde(default)] pub internet_protocol_version_6_packet_processing_configuration: IPV6,
 }
 
-impl<ARPC: AddressResolutionProtocolPacketProcessingConfiguration, IPV4C: InternetProtocolVersion4PacketProcessingConfiguration, IPV6C: InternetProtocolVersion6PacketProcessingConfiguration> EthernetPacketProcessingConfiguration<ARPC, IPV4C, IPV6C>
+impl<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration> EthernetPacketProcessingConfiguration<ARP, IPV4, IPV6>
 {
 	/// Configure.
 	#[inline(always)]
-	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARPC::ARP as AddressResolutionProtocolPacketProcessing>::DropReason, IPV4INPDR=<IPV4C::IPV4 as InternetProtocolVersion4PacketProcessing>::DropReason, IPV6INPDR=<IPV6C::IPV6 as InternetProtocolVersion6PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<EINPDO, ARPC::ARP, IPV4C::IPV4, IPV6C::IPV6>
+	pub fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=<ARP::L3PP as Layer3PacketProcessing>::DropReason, IPV4INPDR=<IPV4::L3PP as Layer3PacketProcessing>::DropReason, IPV6INPDR=<IPV6::L3PP as Layer3PacketProcessing>::DropReason>>(self, dropped_packet_reporting: &Rc<EINPDO>, our_valid_unicast_ethernet_address: MediaAccessControlAddress) -> EthernetPacketProcessing<EINPDO, ARP::L3PP, IPV4::L3PP, IPV6::L3PP>
 	{
 		EthernetPacketProcessing
 		{

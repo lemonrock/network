@@ -4,7 +4,7 @@
 
 /// Packet processing configuration for a particular combination of Outer Virtual LAN tag, Inner Virtual LAN tag and (our valid unicast) Ethernet Address.
 #[derive(Debug)]
-pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>
+pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
@@ -32,7 +32,7 @@ pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObs
 	internet_protocol_version_6_packet_processing: IPV6,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing> EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing> EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>
 {
 	#[inline(always)]
 	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::ARPINPDR, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR>)

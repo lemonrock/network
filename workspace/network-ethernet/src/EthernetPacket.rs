@@ -295,7 +295,7 @@ impl EthernetPacket
 	
 	/// Process assuming the poll mode driver has hardware offloading for IEEE 802.1Q and IEEE 802.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn process_poll_mode_driver_offloads_qinq_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	pub fn process_poll_mode_driver_offloads_qinq_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		// TODO: Make use of packet.layer_4_hardware_packet_type() where hardware supports it - note that h/w may not support the L4_ICMP type.
 		// TODO: Make use of packet.is_encapsulated_in_a_tunnel_and_has_inner_layers() where hardware supports it to get rid of packets quickly.
@@ -323,7 +323,7 @@ impl EthernetPacket
 	
 	/// Process assuming the poll mode driver has hardware offloading only for IEEE 802.1Q Virtual LANs but not IEEE 801.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn process_poll_mode_driver_offloads_only_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	pub fn process_poll_mode_driver_offloads_only_vlan_tagging_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		guard_is_valid_ethernet_packet!(packet_processing_by_virtual_lan, packet);
 
@@ -366,7 +366,7 @@ impl EthernetPacket
 	
 	/// Process assuming the poll mode driver has no hardware offloading for IEEE 802.1Q and IEEE 802.1ad QinQ Virtual LANs.
 	#[inline(always)]
-	pub fn poll_mode_driver_does_not_offload_any_vlan_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	pub fn poll_mode_driver_does_not_offload_any_vlan_stripping<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		guard_is_valid_ethernet_packet!(packet_processing_by_virtual_lan, packet);
 
@@ -419,13 +419,13 @@ impl EthernetPacket
 	}
 
 	#[inline(always)]
-	fn process<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
+	fn process<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
 	{
 		Self::process_layer_3(self.layer_3_packet(), packet, packet_processing, layer_3_length, potentially_invalid_ether_type)
 	}
 
 	#[inline(always)]
-	fn process_layer_3<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(layer_3_packet: &Layer3Packet, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
+	fn process_layer_3<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(layer_3_packet: &Layer3Packet, packet: impl EthernetIncomingNetworkPacket, packet_processing: &EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>, layer_3_length: u16, potentially_invalid_ether_type: EtherType)
 	{
 		let ethernet_packet = packet.ethernet_packet();
 		
@@ -444,21 +444,21 @@ impl EthernetPacket
 	}
 
 	#[inline(always)]
-	fn process_internet_protocol_version_4<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	fn process_internet_protocol_version_4<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_internet_protocol_version_4(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 
 	#[inline(always)]
-	fn process_internet_protocol_version_6<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	fn process_internet_protocol_version_6<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_internet_protocol_version_6(packet, layer_3_packet, layer_3_length, ethernet_addresses)
 	}
 
 	#[inline(always)]
-	fn process_address_resolution_protocol<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: AddressResolutionProtocolPacketProcessing, IPV4: InternetProtocolVersion4PacketProcessing, IPV6: InternetProtocolVersion6PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
+	fn process_address_resolution_protocol<'ethernet_addresses, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>(&'ethernet_addresses self, packet: impl EthernetIncomingNetworkPacket, packet_processing_by_virtual_lan: &VirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>)
 	{
 		let (packet_processing, layer_3_length, ethernet_addresses, layer_3_packet) = guard_ethernet_addresses_and_compute_packet_length!(self, packet, packet_processing_by_virtual_lan);
 		packet_processing.process_address_resolution_protocol(packet, layer_3_packet, layer_3_length, ethernet_addresses)

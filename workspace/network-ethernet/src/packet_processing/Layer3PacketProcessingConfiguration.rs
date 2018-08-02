@@ -2,13 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Internet Protocol (IP) version 6 packet processing.
-pub trait InternetProtocolVersion6PacketProcessing: Debug
+/// Internet Protocol (IP) version 4 packet processing configuration.
+pub trait Layer3PacketProcessingConfiguration: Debug + Default + Serialize
 {
-	/// Drop reason.
-	type DropReason: IncomingNetworkPacketProcessingDropReason;
+	/// Layer 3 packet processing type.
+	type L3PP: Layer3PacketProcessing;
 	
-	/// Process an Internet Protocol (IP) version 6 packet.
+	/// Configure.
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);
+	fn configure<EINPDO: EthernetIncomingNetworkPacketDropObserver>(self, dropped_packet_reporting: &Rc<EINPDO>) -> Self::L3PP;
 }

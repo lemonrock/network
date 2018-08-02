@@ -11,7 +11,7 @@ pub struct AddressResolutionPacketProcessing<EINPDO: EthernetIncomingNetworkPack
 	our_valid_internet_protocol_version_4_host_addresses: Rc<OurValidInternetProtocolVersion4HostAddresses>,
 }
 
-impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>> ::network_ethernet::packet_processing::AddressResolutionProtocolPacketProcessing for AddressResolutionProtocolPacketProcessing<EINPDO>
+impl<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason<'lifetime>>> Layer3PacketProcessing for AddressResolutionProtocolPacketProcessing<EINPDO>
 {
 	#[inline(always)]
 	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)

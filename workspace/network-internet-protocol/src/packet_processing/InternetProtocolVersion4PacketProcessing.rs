@@ -18,7 +18,7 @@ pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetw
 	denied_source_internet_protocol_version_4_host_addresses: TreeBitmap<()>,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> ::network_ethernet::packet_processing::InternetProtocolVersion4PacketProcessing for InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> Layer3PacketProcessing for InternetProtocolVersion4PacketProcessing<EINPDO>
 {
 	type DropReason = EINPDO::IPV4INPDR;
 	

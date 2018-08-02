@@ -3,7 +3,7 @@
 
 
 /// Internet Protocol (IP) version 4 packet processing.
-pub trait InternetProtocolVersion4PacketProcessing: Debug
+pub trait Layer3PacketProcessing: Debug
 {
 	/// Drop reason.
 	type DropReason: IncomingNetworkPacketProcessingDropReason;
