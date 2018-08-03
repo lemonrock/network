@@ -16,6 +16,7 @@
 //! This crate also has the default features:-
 //!
 //! * `drop-packets-with-ipv4-options`: Drops internet protocol (IP) version 4 packets with IP options. Violates RFC 791 but IP options are very rarely used, the few that are used have potential to be used as attack vectors and none have any meaning to this library.
+//! * `drop-packets-with-ipv4-options-lacking-zero-padding`: Drops internet protocol (IP) version 4 packets with IP options which do not have zero padding at the end of the options list. This is a strictness check with a very minor impact on performance.
 //! * `drop-ipv4-packets-with-do-not-fragment-and-non-zero-identification`: Drops internet protocol (IP) version 4 packets with the Do Not Fragment (DF) flag set and a non-zero (fragment) identification. Violates RFC 6864 Section 4.1 paragraph 5 but there is no good reason to send IP packets with DF set and a non-zero (fragment) identification. In particular, the identification field in these cases can be used as a covert channel and to infer the number of devices behind a NAT proxy.
 //! * `drop-ipv6-packets-with-non-zero-flow-label`: Drop internet protocol (IP) version 6 packets whose flow label is not zero. There is no good reason to be receiving such packets for ICMP, TCP and UDP flows.
 //! * `drop-ipv6-fragments-when-first-reserved-field-is-not-zero`: Drop internet protocol (IP) version 6 packets whose fragment extension header has a non-zero first reserved field (8-bits). Violates RFC 8200 Section 4.5 but there is no good reason to be receiving such packets.

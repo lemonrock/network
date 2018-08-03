@@ -195,6 +195,13 @@ impl InternetProtocolVersion4PacketHeader
 		}
 	}
 	
+	/// Only call this after validating with `has_invalid_fragmentation_flags_or_identification()`.
+	#[inline(always)]
+	pub fn is_fragment(&self) -> bool
+	{
+		self.fragment_offset_is_not_zero() || (self.fragment_offset.to_network_endian() & InternetProtocolVersion4PacketHeader::MoreFragmentsFlag.to_be() != 0)
+	}
+	
 	#[inline(always)]
 	fn fragment_offset_is_not_zero(&self) -> bool
 	{
@@ -243,5 +250,11 @@ impl InternetProtocolVersion4PacketHeader
 		const OffsetMask: u16 = InternetProtocolVersion4PacketHeader::MoreFragmentsFlag - 1;
 		
 		self.fragment_offset.to_network_endian() & (Self::MoreFragmentsFlag | OffsetMask).to_be() != 0
+	}
+	
+	#[inline(always)]
+	pub(crate) fn non_null(&self) -> NonNull<Self>
+	{
+		unsafe { NonNull::new_unchecked(self as *const Self as *mut Self) }
 	}
 }

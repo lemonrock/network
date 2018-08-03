@@ -31,7 +31,7 @@ serde = "1.0"
 serde_derive = "1.0"
 
 [features]
-default = ["drop-packets-with-ipv4-options", "drop-ipv4-packets-with-do-not-fragment-and-non-zero-identification", "drop-ipv6-packets-with-non-zero-flow-label", "drop-ipv6-fragments-when-first-reserved-field-is-not-zero", "drop-ipv6-fragments-when-second-reserved-field-is-not-zero", "drop-overly-small-ipv6-fragments-aggresively"]
+default = ["drop-packets-with-ipv4-options", "drop-packets-with-ipv4-options-lacking-zero-padding", "drop-ipv4-packets-with-do-not-fragment-and-non-zero-identification", "drop-ipv6-packets-with-non-zero-flow-label", "drop-ipv6-fragments-when-first-reserved-field-is-not-zero", "drop-ipv6-fragments-when-second-reserved-field-is-not-zero", "drop-overly-small-ipv6-fragments-aggresively"]
 
 # Drops internet protocol (IP) version 4 packets with IP options.
 #
@@ -39,6 +39,13 @@ default = ["drop-packets-with-ipv4-options", "drop-ipv4-packets-with-do-not-frag
 #
 # Violates RFC 791 but IP options are very rarely used, the few that are used have potential to be used as attack vectors and none have any meaning to this library.
 drop-packets-with-ipv4-options = []
+
+# Drops internet protocol (IP) version 4 packets with IP options which do not have zero padding at the end of the options list.
+#
+# Enabled by default.
+#
+# This is a strictness check with a very minor impact on performance.
+drop-packets-with-ipv4-options-lacking-zero-padding = []
 
 # Drops internet protocol (IP) version 4 packets with the Do Not Fragment (DF) flag set and a non-zero (fragment) identification.
 #
