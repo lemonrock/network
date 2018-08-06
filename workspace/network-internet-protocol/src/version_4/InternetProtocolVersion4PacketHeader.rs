@@ -259,16 +259,17 @@ impl InternetProtocolVersion4PacketHeader
 		let length = header_length_including_options as usize;
 		let start_pointer = self as *const Self as usize;
 		let end_pointer = start_pointer + length;
+		let mut pointer = start_pointer;
 		let mut sum: u32 = 0;
 		while pointer != end_pointer
 		{
-			sum += ((unsafe { *(pointer as *const NetworkEndianU16) }).to_native_endian() as u32);
+			sum += (unsafe { *(pointer as *const NetworkEndianU16) }).to_native_endian() as u32;
 			
 			pointer += 2
 		}
 		
 		let carry_bits = ((sum & 0xFFFF0000) >> 16) as u16;
-		let sum_without_carry_bits = (sum & 0x0000FFFF);
+		let sum_without_carry_bits = sum & 0x0000FFFF;
 		let check_sum = sum_without_carry_bits + carry_bits;
 		let ones_complement = !check_sum;
 		

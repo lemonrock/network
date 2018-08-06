@@ -2,12 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
+#[macro_export]
 macro_rules! drop
 {
-	($reason: expr, $ethernet_addresses: ident, $packet_processing: expr, $packet: ident) =>
+	($now: ident, $reason: expr, $ethernet_addresses: ident, $packet_processing: expr, $packet: ident) =>
 	{
 		{
-			$packet_processing.drop($reason, $ethernet_addresses, $packet);
+			$packet_processing.drop($now, $reason, $ethernet_addresses, $packet);
 			return
 		}
 	}

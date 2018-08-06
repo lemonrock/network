@@ -39,7 +39,7 @@ extern crate serde;
 
 
 /// Incoming network packet processing.
-pub mod packet_processing;
+#[macro_use] pub mod packet_processing;
 
 
 /// Routing.
@@ -95,6 +95,7 @@ use ::std::mem::uninitialized;
 use ::std::mem::zeroed;
 use ::std::net::Ipv4Addr;
 use ::std::net::Ipv6Addr;
+use ::std::ops::Index;
 use ::std::ptr::copy_nonoverlapping;
 use ::std::ptr::NonNull;
 use ::std::rc::Rc;
