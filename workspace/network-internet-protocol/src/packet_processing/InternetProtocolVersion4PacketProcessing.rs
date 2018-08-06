@@ -18,12 +18,14 @@ pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetw
 	denied_source_internet_protocol_version_4_host_addresses: TreeBitmap<()>,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> Layer3PacketProcessing for InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> Layer3PacketProcessing<(bool, bool)> for InternetProtocolVersion4PacketProcessing<EINPDO>
 {
 	type DropReason = EINPDO::IPV4INPDR;
 	
+	type CheckSumsValidated = (bool, bool);
+	
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
 	{
 		if unlikely!(InternetProtocolVersion4Packet::is_packet_length_too_short(layer_3_length))
 		{
@@ -32,7 +34,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtoco
 		
 		let internet_protocol_version_4_packet: &'lifetime InternetProtocolVersion4Packet = layer_3_packet.as_type();
 		
-		internet_protocol_version_4_packet.process(packet, self, layer_3_length, ethernet_addresses)
+		internet_protocol_version_4_packet.process(packet, self, layer_3_length, ethernet_addresses, internet_protocol_version_4_and_layer_4_check_sums_validated.0, internet_protocol_version_4_and_layer_4_check_sums_validated.1)
 	}
 }
 

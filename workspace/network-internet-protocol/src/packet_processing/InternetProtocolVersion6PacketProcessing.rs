@@ -21,8 +21,10 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtoco
 {
 	type DropReason = EINPDO::IPV6INPDR;
 	
+	type CheckSumsValidated = bool;
+	
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
 	{
 		if unlikely!(InternetProtocolVersion6Packet::is_packet_length_too_short(layer_3_length))
 		{
@@ -31,7 +33,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtoco
 		
 		let internet_protocol_version_6_packet: &'lifetime InternetProtocolVersion6Packet = layer_3_packet.as_type();
 		
-		internet_protocol_version_6_packet.process(packet, self, layer_3_length, ethernet_addresses)
+		internet_protocol_version_6_packet.process(packet, self, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
 	}
 }
 

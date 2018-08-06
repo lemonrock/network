@@ -192,7 +192,7 @@ impl InternetProtocolVersion4Packet
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, internet_protocol_version_4_check_sum_validated_in_hardware: bool, layer_4_check_sum_validated_in_hardware: bool)
 	{
 		let header = &self.header;
 		

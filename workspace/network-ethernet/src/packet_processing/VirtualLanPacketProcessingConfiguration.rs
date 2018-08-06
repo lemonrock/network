@@ -6,6 +6,7 @@
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
 pub struct VirtualLanPacketProcessingConfiguration<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration>
+	where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Outer QinQ Virtual LAN.
 	pub outer: HashMap<(Option<VirtualLanIdentifier>, Option<VirtualLanIdentifier>), QinQVirtualLanPacketProcessingConfiguration<ARP, IPV4, IPV6>>,
@@ -18,6 +19,7 @@ pub struct VirtualLanPacketProcessingConfiguration<ARP: Layer3PacketProcessingCo
 }
 
 impl<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration> VirtualLanPacketProcessingConfiguration<ARP, IPV4, IPV6>
+	where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Configure.
 	#[inline(always)]

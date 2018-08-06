@@ -4,7 +4,7 @@
 
 /// Outer Virtual LAN packet processing configuration by Virtual LAN.
 #[derive(Debug)]
-pub struct QinQVirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>
+pub struct QinQVirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing<CheckSumsValidated=()>, IPV4: Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6: Layer3PacketProcessing<CheckSumsValidated=bool>>
 {
 	/// Outer QinQ Virtual LAN permitted classes of service.
 	pub outer_packet_processing: EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>,
@@ -13,7 +13,7 @@ pub struct QinQVirtualLanPacketProcessing<EINPDO: EthernetIncomingNetworkPacketD
 	pub inner_packet_processing: EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing> QinQVirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing<CheckSumsValidated=()>, IPV4: Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6: Layer3PacketProcessing<CheckSumsValidated=bool>> QinQVirtualLanPacketProcessing<EINPDO, ARP, IPV4, IPV6>
 {
 	#[inline(always)]
 	pub(crate) fn honour_outer_drop_eligible_indicator(&self, outer_drop_eligible_indicator: bool) -> bool

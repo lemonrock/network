@@ -6,6 +6,7 @@
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
 pub struct QinQVirtualLanPacketProcessingConfiguration<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration>
+	where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Outer QinQ Virtual LAN permitted classes of service.
 	pub outer_packet_processing: EthernetPacketProcessingConfiguration<ARP, IPV4, IPV6>,
@@ -15,6 +16,7 @@ pub struct QinQVirtualLanPacketProcessingConfiguration<ARP: Layer3PacketProcessi
 }
 
 impl<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration> QinQVirtualLanPacketProcessingConfiguration<ARP, IPV4, IPV6>
+	where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Configure.
 	#[inline(always)]

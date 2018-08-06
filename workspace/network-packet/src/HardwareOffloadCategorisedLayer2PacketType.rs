@@ -2,10 +2,15 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Categorised layer 2 packet type.
+/// Hardware offload categorised layer 2 packet type.
 ///
-/// Most drivers, excluding Intel's, do not categorise.
+/// Most DPDK drivers, excluding Intel's, do not categorise.
+///
+/// If those that do, not all of these values may be supported by the driver.
+///
+/// As such, that makes this categorisation close to useless.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub enum HardwareOffloadCategorisedLayer2PacketType
 {
 	/// IEEE1588 (802.1AS) timestamp.
@@ -38,10 +43,14 @@ pub enum HardwareOffloadCategorisedLayer2PacketType
 	
 	/// Virtual LAN.
 	///
+	/// Only valid if Virtual LAN stripping is disabled for Intel drivers.
+	///
 	/// EtherType 0x8100F.
 	VirtualLan,
 	
 	/// QinQ Virtual LAN.
+	///
+	/// ?Only valid if Virtual LAN stripping is disabled for Intel drivers?
 	///
 	/// EtherType 0x88A8.
 	QinQVirtualLan,
@@ -54,5 +63,5 @@ pub enum HardwareOffloadCategorisedLayer2PacketType
 	PPPoE,
 	
 	/// Invalid or introduced after this code was written.
-	InvalidOrIntroducedAfterThisCodeWasWritten(u32),
+	Other,
 }

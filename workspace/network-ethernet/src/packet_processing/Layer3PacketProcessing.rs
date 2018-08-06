@@ -8,7 +8,12 @@ pub trait Layer3PacketProcessing: Debug
 	/// Drop reason.
 	type DropReason: IncomingNetworkPacketProcessingDropReason;
 	
+	/// Which check sums are validated for this layer 3 type?
+	type CheckSumsValidated;
+	
 	/// Process an internet protocol version 4 packet.
+	///
+	/// `internet_protocol_version_4_and_layer_4_check_sums_validated`
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses);
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated);
 }

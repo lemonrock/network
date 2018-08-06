@@ -26,5 +26,4 @@ use ::std::ptr::NonNull;
 
 
 include!("InternetCheckSum.rs");
-include!("HardwareOffloadCheckSumStatus.rs");
 include!("Rfc1141CompliantCheckSum.rs");

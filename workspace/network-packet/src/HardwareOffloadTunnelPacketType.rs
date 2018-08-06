@@ -6,6 +6,7 @@
 ///
 /// If the packet is a tunneled packet, then this is known as the Outer Layer 4 packet type.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub enum HardwareOffloadTunnelPacketType
 {
 	/// Probably not a tunnel packet type.
@@ -42,6 +43,15 @@ pub enum HardwareOffloadTunnelPacketType
 	
 	/// Layer 2 Tunneling Protocol (L2TP).
 	Layer2TunnelingProtocol,
+	
+	/// Virtual eXtensible Local Area Network (VxLAN) Generic Protocol Extension.
+	VirtualExtensibleLocalAreaNetworkGenericProtocolExtension,
+
+	/// RFC 4023: MPLS-in-GRE tunnel.
+	MultiprotocolLabelSwitchingInGenericRoutingEncapsulation,
+
+	/// RFC 7510: MPLS-in-UDP tunnel.
+	MultiprotocolLabelSwitchingInUserDatagramProtocol,
 	
 	/// Invalid or introduced after this code was written.
 	Other,

@@ -4,7 +4,7 @@
 
 /// Packet processing configuration for a particular combination of Outer Virtual LAN tag, Inner Virtual LAN tag and (our valid unicast) Ethernet Address.
 #[derive(Debug)]
-pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing>
+pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing<CheckSumsValidated=()>, IPV4: Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6: Layer3PacketProcessing<CheckSumsValidated=bool>>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
@@ -32,7 +32,7 @@ pub struct EthernetPacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObs
 	internet_protocol_version_6_packet_processing: IPV6,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing, IPV4: Layer3PacketProcessing, IPV6: Layer3PacketProcessing> EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason, IPV4INPDR=IPV4::DropReason, IPV6INPDR=IPV6::DropReason>, ARP: Layer3PacketProcessing<CheckSumsValidated=()>, IPV4: Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6: Layer3PacketProcessing<CheckSumsValidated=bool>> EthernetPacketProcessing<EINPDO, ARP, IPV4, IPV6>
 {
 	#[inline(always)]
 	pub(crate) fn dropped_packet<'ethernet_addresses>(&self, reason: EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, EINPDO::ARPINPDR, EINPDO::IPV4INPDR, EINPDO::IPV6INPDR>)
@@ -77,20 +77,20 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason,
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process_internet_protocol_version_4<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
-	{
-		self.address_resolution_protocol_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
-	}
-	
-	#[inline(always)]
-	pub(crate) fn process_internet_protocol_version_6<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
-	{
-		self.internet_protocol_version_4_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
-	}
-	
-	#[inline(always)]
 	pub(crate) fn process_address_resolution_protocol<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
 	{
-		self.internet_protocol_version_6_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses)
+		self.address_resolution_protocol_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, ())
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_4<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses, check_sum_validated_in_hardware: (bool, bool))
+	{
+		self.internet_protocol_version_4_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_6<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	{
+		self.internet_protocol_version_6_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
 	}
 }

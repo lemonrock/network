@@ -15,8 +15,10 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutio
 {
 	type DropReason = AddressResolutionProtocolIncomingNetworkPacketDropReason;
 	
+	type CheckSumsValidated = ();
+	
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
 	{
 		if unlikely!(AddressResolutionProtocolPacket::is_packet_length_too_short(layer_3_length))
 		{

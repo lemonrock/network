@@ -16,6 +16,9 @@ pub enum HardwareOffloadCheckSumStatus
 	/// The check sum in the packet is valid.
 	Good,
 	
-	/// The check sum is not correct in the packet data, but the integrity of the internet protocol version 4 pseudo-header was verified.
+	/// The check sum is not correct in the packet data, but the integrity of the layer 4 or Internet Protocol (IP) version 4 pseudo-header was verified.
+	///
+	/// This is not known to occur for any DPDK poll mode drivers for Internet Protocol (IP) version 4.
+	/// It does occur for Layer 4, but only for the VirtIO virtual DPDK poll mode driver.
 	IncorrectButInternetProtocolHeaderIntegrityVerified,
 }

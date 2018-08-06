@@ -6,6 +6,7 @@
 #[derive(Debug, Clone)]
 #[derive(Serialize, Deserialize)]
 pub struct EthernetPacketProcessingConfiguration<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration>
+where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Inner 802.1Q Virtual LAN honour drop eligible.
 	#[serde(default = "EthernetPacketProcessingConfiguration::<ARP, IPV4, IPV6>::inner_honour_drop_eligible_indicator_default")] pub inner_honour_drop_eligible_indicator: bool,
@@ -27,6 +28,7 @@ pub struct EthernetPacketProcessingConfiguration<ARP: Layer3PacketProcessingConf
 }
 
 impl<ARP: Layer3PacketProcessingConfiguration, IPV4: Layer3PacketProcessingConfiguration, IPV6: Layer3PacketProcessingConfiguration> EthernetPacketProcessingConfiguration<ARP, IPV4, IPV6>
+where ARP::L3PP : Layer3PacketProcessing<CheckSumsValidated=()>, IPV4::L3PP : Layer3PacketProcessing<CheckSumsValidated=(bool, bool)>, IPV6::L3PP : Layer3PacketProcessing<CheckSumsValidated=bool>
 {
 	/// Configure.
 	#[inline(always)]

@@ -2,10 +2,13 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Layer 2 packet type.
+/// Hardware offload layer 2 packet type.
 ///
 /// If the packet is a tunneled packet, then this is known as the Outer Layer 2 packet type.
+///
+/// Must DPDK drivers do not categorise and return `Unknown`, making this categorisation close to useless.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub enum HardwareOffloadLayer2PacketType
 {
 	/// Either:-
@@ -13,7 +16,7 @@ pub enum HardwareOffloadLayer2PacketType
 	/// * Ignore this packet.
 	/// * HardwareOffload categorisation hasn't happened.
 	///
-	/// It seems possible that some drivers don't set `RTE_PTYPE_L2_ETHER` even on ethernet packets.
+	/// It seems possible that some DPDK drivers don't set `RTE_PTYPE_L2_ETHER` even on ethernet packets.
 	Unknown,
 	
 	/// Ether packet; may be further categorised.

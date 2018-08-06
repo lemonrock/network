@@ -20,6 +20,63 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// This should be unusual, as most network hardware should not even be providing such packets to upper layers to process.
 	IsTooShortToBeAnEthernetPacket,
 	
+	/// Hardware offloading categorised this as a tunnel packet.
+	HardwareOffloadingCategorisationIsTunnelPacket
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+	},
+	
+	/// Hardware offloading categorised this as an unwanted packet.
+	///
+	/// This can include packets related to IEEE 1488 timestamping.
+	HardwareOffloadingCategorisationIsUnwanted
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+	},
+	
+	/// Hardware offloading categorised this packet's layer 4 protocol and it is one we do not want.
+	HardwareOffloadingCategorisationUnwantedLayer4ProtocolInInternetProtocolVersion4Packet
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+		
+		/// Harware offload layer 4 packet type.
+		hardware_offload_layer_4_packet_type: HardwareOffloadLayer4PacketType,
+	},
+	
+	/// Hardware offloading categorised this packet's layer 4 protocol and it is one we do not want.
+	HardwareOffloadingCategorisationUnwantedLayer4ProtocolInInternetProtocolVersion6Packet
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+		
+		/// Harware offload layer 4 packet type.
+		hardware_offload_layer_4_packet_type: HardwareOffloadLayer4PacketType,
+	},
+	
+	/// Hardware offloading determined the Internet Protocol (IP) version 4 check sum was bad.
+	HardwareOffloadingInternetProtocolVersion4CheckSumBad
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+	},
+	
+	/// Hardware offloading determined the Internet Protoocl (IP) version 4 layer 4 packet's check sum was bad.
+	HardwareOffloadingInternetProtocolVersion4Layer4CheckSumBad
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+	},
+	
+	/// Hardware offloading determined the Internet Protoocl (IP) version 6 layer 4 packet's check sum was bad.
+	HardwareOffloadingInternetProtocolVersion6Layer4CheckSumBad
+	{
+		/// Dropped packet's ethernet addresses.
+		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
+	},
+	
 	/// The packet had a source address which was not a valid unicast address.
 	SourceEthernetAddressIsNotValidUnicast
 	{
