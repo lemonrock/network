@@ -18,11 +18,18 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// The packet's length was too short to be an ethernet packet.
 	///
 	/// This should be unusual, as most network hardware should not even be providing such packets to upper layers to process.
-	IsTooShortToBeAnEthernetPacket,
+	IsTooShortToBeAnEthernetPacket
+	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+	},
 	
 	/// Hardware offloading categorised this as a tunnel packet.
 	HardwareOffloadingCategorisationIsTunnelPacket
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -32,6 +39,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// This can include packets related to IEEE 1488 timestamping.
 	HardwareOffloadingCategorisationIsUnwanted
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -39,6 +49,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Hardware offloading categorised this packet's layer 4 protocol and it is one we do not want.
 	HardwareOffloadingCategorisationUnwantedLayer4ProtocolInInternetProtocolVersion4Packet
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -49,6 +62,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Hardware offloading categorised this packet's layer 4 protocol and it is one we do not want.
 	HardwareOffloadingCategorisationUnwantedLayer4ProtocolInInternetProtocolVersion6Packet
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -59,6 +75,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Hardware offloading determined the Internet Protocol (IP) version 4 check sum was bad.
 	HardwareOffloadingInternetProtocolVersion4CheckSumBad
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -66,6 +85,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Hardware offloading determined the Internet Protoocl (IP) version 4 layer 4 packet's check sum was bad.
 	HardwareOffloadingInternetProtocolVersion4Layer4CheckSumBad
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -73,6 +95,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Hardware offloading determined the Internet Protoocl (IP) version 6 layer 4 packet's check sum was bad.
 	HardwareOffloadingInternetProtocolVersion6Layer4CheckSumBad
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -80,6 +105,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// The packet had a source address which was not a valid unicast address.
 	SourceEthernetAddressIsNotValidUnicast
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -87,6 +115,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// The packet's source address was our unicast ethernet address; it is a spoof.
 	SourceEthernetAddressIsOurUnicastEthernetAddress
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -94,6 +125,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// A packet had a source address which was administratively denied.
 	DeniedSourceEthernetAddress
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -101,6 +135,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// A packet should never have a destination ethernet address of zero.
 	DestinationEthernetAddressIsZero
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -108,6 +145,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// This can occur if a link has multiple ethernet addresses or is listening promiscuously.
 	DestinationEthernetAddressIsNotOneOfOurs
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 	},
@@ -117,6 +157,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Ether frame sizes are entirely unsupported.
 	UnsupportedEtherType
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -127,6 +170,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Wrapper around a problematic internet protocol version 4 packet.
 	ProblematicInternetProtocolVersion4Packet
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -137,6 +183,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Wrapper around a problematic internet protocol version 6 packet.
 	ProblematicInternetProtocolVersion6Packet
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -147,6 +196,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Wrapper around a problematic internet protocol version 6 packet.
 	ProblematicAddressResolutionProtocolPacket
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 		
@@ -157,11 +209,18 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// The packet's length was too short to be an IEEE 802.1Q (Virtual LAN) packet.
 	///
 	/// This should not occur when hardware strips IEEE 802.1Q (Virtual LAN) fields.
-	IsTooShortToBeA8021QVirtualLanEthernetPacket,
+	IsTooShortToBeA8021QVirtualLanEthernetPacket
+	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+	},
 	
 	/// Occurs during packet processing of an IEEE 802.1Q (Virtual LAN) packet.
 	CouldNotParse8011QVirtualLanTag
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -172,6 +231,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1Q (Virtual LAN) packet.
 	NoConfigurationFor8011QVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -182,6 +244,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1Q (Virtual LAN) packet.
 	DropEligibleFor8011QVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -192,6 +257,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1Q (Virtual LAN) packet.
 	DropThisClassOfServiceFor8011QVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -202,11 +270,18 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// The packet's length was too short to be an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	///
 	/// This should not occur when hardware strips IEEE 802.1ad 'QinQ' (Virtual LAN) fields.
-	IsTooShortToBeAQinQVirtualLanEthernetPacket,
+	IsTooShortToBeAQinQVirtualLanEthernetPacket
+	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+	},
 	
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	CouldNotParseOuterVirtualLanTag
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -220,6 +295,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	CouldNotParseInnerVirtualLanTag
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -233,6 +311,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	NoConfigurationForQinQVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -246,6 +327,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	DropEligibleForOuterVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -259,6 +343,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	DropEligibleForInnerVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -272,6 +359,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	DropThisClassOfServiceForOuterVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 
@@ -285,6 +375,9 @@ pub enum EthernetIncomingNetworkPacketDropReason<'ethernet_addresses, ARPINPDR: 
 	/// Occurs during packet processing of an IEEE 802.1ad 'QinQ' (Virtual LAN) packet.
 	DropThisClassOfServiceForInnerVirtualLan
 	{
+		/// Approximate time this packet arrived at.
+		now: MonotonicMillisecondTimestamp,
+		
 		/// Dropped packet's ethernet addresses.
 		ethernet_addresses: &'ethernet_addresses EthernetAddresses,
 

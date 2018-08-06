@@ -280,4 +280,10 @@ impl InternetProtocolVersion4PacketHeader
 	{
 		unsafe { NonNull::new_unchecked(self as *const Self as *mut Self) }
 	}
+	
+	#[inline(always)]
+	pub(crate) fn source_address_is_same_as_destination_address(&self) -> bool
+	{
+		self.source_address == self.destination_address
+	}
 }

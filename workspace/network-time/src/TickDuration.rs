@@ -4,6 +4,7 @@
 
 /// A tick duration; relative time.
 #[derive(Default, Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct TickDuration(u64);
 
 impl Display for TickDuration

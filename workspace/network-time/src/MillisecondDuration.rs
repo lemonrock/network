@@ -4,6 +4,7 @@
 
 /// Represents a duration in milliseconds.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct MillisecondDuration(u64);
 
 impl Display for MillisecondDuration

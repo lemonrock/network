@@ -2,16 +2,15 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Internet Protocol (IP) version 4 packet processing.
-pub trait Layer3PacketProcessing: Debug
+/// Layer 4 (eg Transmission Control Protocol (TCP)) packet processing.
+pub trait Layer4PacketProcessing
 {
 	/// Drop reason.
 	type DropReason: IncomingNetworkPacketProcessingDropReason;
 	
-	/// Which check sums are validated for this layer 3 type?
-	type CheckSumsValidated;
-	
-	/// Process an internet protocol version 4 packet.
+	/// `layer_4_length` is NOT the same as the Internet Protocol (IP) version 6 payload size; in this case, it is the IPv6 payload size ***less*** the extensions headers size.
+	///
+	/// RFC 2675 IPv6 jumbograms are not supported.
 	#[inline(always)]
-	fn process<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated);
+	fn process<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_4_packet: &'lifetime Layer4Packet, layer_4_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool);
 }

@@ -4,7 +4,7 @@
 
 /// Implementation of Internet Protocol (IP) version 4 packet processing.
 #[derive(Debug)]
-pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>
+pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing>
 {
 	dropped_packet_reporting: Rc<EINPDO>,
 	
@@ -16,16 +16,22 @@ pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetw
 	our_valid_internet_protocol_version_4_multicast_addresses: HashSet<InternetProtocolVersion4HostAddress>,
 	
 	denied_source_internet_protocol_version_4_host_addresses: TreeBitmap<()>,
+
+	internet_control_message_protocol_processing: ICMPV4,
+
+	transmission_control_protocol_processing: TCP,
+
+	user_datagram_protocol_processing: UDP,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> Layer3PacketProcessing<(bool, bool)> for InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing> Layer3PacketProcessing<(bool, bool)> for InternetProtocolVersion4PacketProcessing<EINPDO, ICMPV4, UDP, TCP>
 {
 	type DropReason = EINPDO::IPV4INPDR;
 	
 	type CheckSumsValidated = (bool, bool);
 	
 	#[inline(always)]
-	fn process<'lifetime>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
+	fn process<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
 	{
 		if unlikely!(InternetProtocolVersion4Packet::is_packet_length_too_short(layer_3_length))
 		{
@@ -38,7 +44,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtoco
 	}
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>> InternetProtocolVersion4PacketProcessing<EINPDO>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing> InternetProtocolVersion4PacketProcessing<EINPDO, ICMPV4, TCP, UDP>
 {
 	#[inline(always)]
 	pub(crate) fn drop<'lifetime>(&self, reason: EINPDO::IPV4INPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
@@ -82,5 +88,23 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtoco
 		
 		let nibbles = internet_protocol_version_4_host_address.nibbles_non_destructively();
 		self.denied_source_internet_protocol_version_4_host_addresses.longest_match_present(&nibbles)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_control_message_protocol<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_4_packet: &'lifetime Layer4Packet, layer_4_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	{
+		self.internet_control_message_protocol_processing.process(now, packet, layer_4_packet, layer_4_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_4<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_4_packet: &'lifetime Layer4Packet, layer_4_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	{
+		self.transmission_control_protocol_processing.process(now, packet, layer_4_packet, layer_4_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
+	}
+	
+	#[inline(always)]
+	pub(crate) fn process_internet_protocol_version_6<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_4_packet: &'lifetime Layer4Packet, layer_4_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	{
+		self.user_datagram_protocol_processing.process(now, packet, layer_4_packet, layer_4_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
 	}
 }

@@ -6,6 +6,7 @@
 ///
 /// This is not necessarily the system clock.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct MonotonicMillisecondTimestamp(u64);
 
 impl Display for MonotonicMillisecondTimestamp

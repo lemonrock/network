@@ -33,6 +33,7 @@ extern crate network_check_sum;
 extern crate network_endian;
 extern crate network_ethernet;
 extern crate network_packet;
+extern crate network_time;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -71,6 +72,7 @@ use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropObse
 use ::network_ethernet::packet_processing::EthernetIncomingNetworkPacketDropReason;
 use ::network_ethernet::packet_processing::Layer3PacketProcessing;
 use ::network_packet::IncomingNetworkPacketProcessingDropReason;
+use ::network_time::MonotonicMillisecondTimestamp;
 use ::serde::Serialize;
 use ::serde::Serializer;
 use ::serde::de::DeserializeOwned;
@@ -107,6 +109,7 @@ include!("InternetProtocolMaskBits.rs");
 include!("InternetProtocolNetworkAddress.rs");
 include!("InternetProtocolVersion4OrVersion6OrBoth.rs");
 include!("Layer4Packet.rs");
+include!("Layer4PacketProcessing.rs");
 include!("Layer4ProtocolNeedsToSupport.rs");
 include!("Layer4ProtocolNumber.rs");
 include!("MediaAccessControlAddressAndInternetProtocolAddressOverlap.rs");

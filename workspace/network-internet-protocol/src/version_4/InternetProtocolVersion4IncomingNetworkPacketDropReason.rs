@@ -284,10 +284,42 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	///
-	/// Received a packet with a source address that was an invalid unicast address.
+	/// Received a packet which did not have its Internet Protocol (IP) version 4 check sum validated in hardware and which, when calculated in software, was invalid.
+	InternetProtocolCheckSumWhenCalculatedInSoftwareWasInvalid
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
+	/// Occurs during Internet Protocol (IP) version 4 packet processing.
+	///
+	/// Received a packet with a source address that was the same as the destination address.
+	SourceAndDestinationAddressAreTheSame
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
+	/// Occurs during Internet Protocol (IP) version 4 packet processing.
+	///
+	/// Received a packet with a source address that was an invalid unicast address when the protocol was Internet Control Message Protocol (ICMP) or Transmission Control Protocol (TCP).
 	///
 	/// This can include the loopback, unspecified ('any'), broadcast and documentation addresses.
 	SourceAddressNotValidUnicast
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
+	/// Occurs during Internet Protocol (IP) version 4 packet processing.
+	///
+	/// Received a packet with a source address that was an invalid unicast address or was not the unspecified (any) address (0.0.0.0) when the protocol was User Datagram Protocol (UDP).
+	///
+	/// This can include the loopback, unspecified ('any'), broadcast and documentation addresses.
+	SourceAddressNotValidUnicastOrUnspecified
 	{
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]

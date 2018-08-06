@@ -305,6 +305,16 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 		next_header: u8,
 	},
 	
+	/// Occurs during Internet Protocol (IP) version 4 packet processing.
+	///
+	/// Received a packet with a source address that was the same as the destination address.
+	SourceAndDestinationAddressAreTheSame
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
 	/// Received a packet with a source address that was an invalid unicast address.
 	///
 	/// This can include the loopback, unspecified ('any'), broadcast and documentation addresses.

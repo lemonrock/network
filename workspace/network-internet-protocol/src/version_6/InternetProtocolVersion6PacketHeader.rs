@@ -190,4 +190,10 @@ impl InternetProtocolVersion6PacketHeader
 		
 		unsafe { *self.version_and_traffic_class_and_flow_label.get_unchecked_mut(1) = second_byte }
 	}
+	
+	#[inline(always)]
+	pub(crate) fn source_address_is_same_as_destination_address(&self) -> bool
+	{
+		self.source_address == self.destination_address
+	}
 }

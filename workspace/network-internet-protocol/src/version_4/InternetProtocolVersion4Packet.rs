@@ -192,8 +192,59 @@ impl InternetProtocolVersion4Packet
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, internet_protocol_version_4_check_sum_validated_in_hardware: bool, layer_4_check_sum_validated_in_hardware: bool)
+	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, internet_protocol_version_4_check_sum_validated_in_hardware: bool, layer_4_check_sum_validated_in_hardware: bool, now: MonotonicMillisecondTimestamp)
 	{
+		macro_rules! more_header_validation
+		{
+			($header: ident, $ethernet_addresses: ident, $packet_processing: ident, $packet: ident, $total_length: ident, $internet_protocol_version_4_check_sum_validated_in_hardware: ident, $now: ident) =>
+			{
+				{
+					let header_length_including_options = $header.header_length_including_options();
+					let header_length_including_options_as_u16 = header_length_including_options as u16;
+					
+					if unlikely!($total_length < header_length_including_options_as_u16)
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::TotalLengthLessThanHeader { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
+					}
+					
+					let header_has_ipv4_options = header_length_including_options != InternetProtocolVersion4PacketHeader::HeaderSizeU8;
+					if likely!(header_has_ipv4_options)
+					{
+						if cfg!(feature = "drop-packets-with-ipv4-options")
+						{
+							drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::HasOptions { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
+						}
+						else
+						{
+							process_options!($header, header_length_including_options, $ethernet_addresses, $packet_processing, $packet)
+						}
+					}
+					
+					if unlikely!(!$internet_protocol_version_4_check_sum_validated_in_hardware)
+					{
+						if unlikely!($header.check_sum_is_invalid())
+						{
+							drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetProtocolCheckSumWhenCalculatedInSoftwareWasInvalid { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
+						}
+					}
+					
+					if unlikely!(header.source_address_is_same_as_destination_address())
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAndDestinationAddressAreTheSame { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
+					}
+					
+					// TODO: IPv4 packet reassembly and RSS logic.
+					// TODO: Overly small fragments, eg fragments smaller than MSS / MTU minima (eg 1280 for IPv6).
+					let packet = match reassemble_fragmented_internet_protocol_version_4_packet($packet, $now, $header, header_length_including_options_as_u16)
+					{
+						None => return,
+						Some(packet) => packet,
+					};
+					packet
+				}
+			}
+		}
+		
 		let header = &self.header;
 		
 		if unlikely!(header.is_version_not_4())
@@ -224,134 +275,117 @@ impl InternetProtocolVersion4Packet
 					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetControlMessageProtocolPacketsShouldNotBeFragmented { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
 				}
 				
+				let source_address = header.source_address;
+				
+				if unlikely(source_address.is_not_valid_unicast())
 				{
-					// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
-					let supports_multicast = false;
-					// TODO: Macro to do common processing.
-					XXXX
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressNotValidUnicast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				more_header_validation!(header, ethernet_addresses, packet_processing, packet, total_length, internet_protocol_version_4_check_sum_validated_in_hardware, recent_timestamp);
+				
+				if unlikely(packet_processing.is_source_internet_protocol_version_4_address_denied(&source_address))
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				if unlikely!(packet_processing.is_internet_protocol_version_4_host_address_not_one_of_ours(destination_address))
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::UnicastDestinationIsNotUs { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				if unlikely!(!destination_ethernet_address.is_valid_unicast())
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::EthernetAddressWasNotUnicast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
 				}
 			}
 			
 			KnownOrUnknownLayer4ProtocolNumber::TransmissionControlProtocol =>
 			{
-				// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
-				let supports_multicast = false;
-				// TODO: Macro to do common processing.
-				XXXX
+				let source_address = header.source_address;
+				
+				if unlikely(source_address.is_not_valid_unicast())
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressNotValidUnicast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				more_header_validation!(header, ethernet_addresses, packet_processing, packet, total_length, internet_protocol_version_4_check_sum_validated_in_hardware, recent_timestamp);
+				
+				if unlikely(packet_processing.is_source_internet_protocol_version_4_address_denied(&source_address))
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				if unlikely!(packet_processing.is_internet_protocol_version_4_host_address_not_one_of_ours(destination_address))
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::UnicastDestinationIsNotUs { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				if unlikely!(!destination_ethernet_address.is_valid_unicast())
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::EthernetAddressWasNotUnicast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
 			},
 			
 			KnownOrUnknownLayer4ProtocolNumber::UserDatagramProtocol =>
 			{
-				// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
-				let supports_multicast = true;
-				// TODO: Macro to do common processing.
-				XXXX
+				let source_address = header.source_address;
+				
+				if unlikely(source_address.is_not_valid_unicast() || !source_address.is_unspecified())
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressNotValidUnicastOrUnspecified { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				more_header_validation!(header, ethernet_addresses, packet_processing, packet, total_length, internet_protocol_version_4_check_sum_validated_in_hardware, recent_timestamp);
+				
+				if unlikely(packet_processing.is_source_internet_protocol_version_4_address_denied(&source_address))
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				let (_source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
+				
+				let destination_address = header.destination_address;
+				
+				if destination_ethernet_address.is_broadcast()
+				{
+					if unlikely!(destination_address.is_not_broadcast())
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::EthernetBroadcastNotInternetBroadcast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+					}
+					
+					unsupported!("Broadcast IPv4 packets are not supported");
+					packet.free_direct_contiguous_packet();
+					return
+				}
+				else if let Some(lower_23_bits) = destination_ethernet_address.internet_protocol_version_4_multicast_23_bits()
+				{
+					if unlikely!(destination_address.is_not_multicast())
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressIsNotMulticast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+					}
+					
+					if unlikely!(destination_address.does_not_have_lower_23_bits(lower_23_bits))
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressMismatchesEthernetAddress { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+					}
+					
+					if packet_processing.is_internet_protocol_version_4_multicast_address_not_one_of_ours(destination_address)
+					{
+						drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+					}
+					
+					unsupported!("Multicast IPv4 packets are not supported");
+					packet.free_direct_contiguous_packet();
+					return
+				}
+				else
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::DestinationWasLoopbackOrDocumentationAddress { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
 			},
 			
 			unsupported_layer_4_protocol @ _ => drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::UnsupportedLayer4Protocol { header: header.non_null(), unsupported_layer_4_protocol }, ethernet_addresses, packet_processing, packet)
-		}
-		
-		let header_length_including_options = header.header_length_including_options();
-		
-		let header_length_including_options_as_u16 = header_length_including_options as u16;
-		
-		if unlikely!(total_length < header_length_including_options as u16)
-		{
-			drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::TotalLengthLessThanHeader { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-		}
-		
-		let header_has_ipv4_options = header_length_including_options != InternetProtocolVersion4PacketHeader::HeaderSizeU8;
-		if likely!(header_has_ipv4_options)
-		{
-			if cfg!(feature = "drop-packets-with-ipv4-options")
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::HasOptions { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			else
-			{
-				process_options!(header, header_length_including_options, ethernet_addresses, packet_processing, packet)
-			}
-		}
-		
-		// TODO: Overly small fragments, eg fragments smaller than MSS / MTU minima (eg 1280 for IPv6).
-		
-		// TODO: check for hardware offload.
-		if unlikely!(header.check_sum_is_invalid())
-		{
-			drop!()xxxx;
-		}
-		
-		let packet = match packet_processing.reassemble_fragmented_internet_protocol_version_4_packet(packet, recent_timestamp, header, header_length_including_options_as_u16)
-		{
-			None => return,
-			Some(packet) => packet,
-		};
-		
-		let source_address = header.source_address;
-		let destination_address = header.destination_address;
-		
-		// TODO: Source address may be 0.0.0.0 for DHCPDISCOVER broadcast.
-		xxx;
-		if unlikely(source_address.is_not_valid_unicast())
-		{
-			drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressNotValidUnicast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-		}
-		
-		if unlikely(packet_processing.is_source_internet_protocol_version_4_address_denied(&source_address))
-		{
-			drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::SourceAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-		}
-		
-		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
-		
-		if destination_ethernet_address.is_valid_unicast()
-		{
-			if unlikely!(packet_processing.is_internet_protocol_version_4_host_address_not_one_of_ours(destination_address))
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::UnicastDestinationIsNotUs { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			
-			xxx;
-		}
-		else if destination_ethernet_address.is_broadcast()
-		{
-			if unlikely!(header.destination_address.is_not_broadcast())
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::EthernetBroadcastNotInternetBroadcast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			
-			unsupported!("Broadcast IPv4 packets are not supported");
-			packet.free_direct_contiguous_packet();
-			return
-		}
-		else if let Some(lower_23_bits) = destination_ethernet_address.internet_protocol_version_4_multicast_23_bits()
-		{
-			if unlikely!(destination_address.is_not_multicast())
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressIsNotMulticast { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			
-			if unlikely!(destination_address.does_not_have_lower_23_bits(lower_23_bits))
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressMismatchesEthernetAddress { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			
-			if packet_processing.is_internet_protocol_version_4_multicast_address_not_one_of_ours(destination_address)
-			{
-				drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::MulticastAddressDenied { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
-			}
-			
-			unsupported!("Multicast IPv4 packets are not supported");
-			packet.free_direct_contiguous_packet();
-			return
-		}
-		else if source_address.is_unspecified()
-		{
-			xxx;
-		}
-		else
-		{
-			drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::DestinationWasLoopbackOrDocumentationAddress { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
 		}
 	}
 }

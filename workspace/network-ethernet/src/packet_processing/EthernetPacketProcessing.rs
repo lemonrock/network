@@ -77,20 +77,20 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=ARP::DropReason,
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process_address_resolution_protocol<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses)
+	pub(crate) fn process_address_resolution_protocol<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
-		self.address_resolution_protocol_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, ())
+		self.address_resolution_protocol_packet_processing.process(now, packet, layer_3_packet, layer_3_length, ethernet_addresses, ())
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process_internet_protocol_version_4<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses, check_sum_validated_in_hardware: (bool, bool))
+	pub(crate) fn process_internet_protocol_version_4<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: (bool, bool))
 	{
-		self.internet_protocol_version_4_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
+		self.internet_protocol_version_4_packet_processing.process(now, packet, layer_3_packet, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process_internet_protocol_version_6<'packet>(&self, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'packet Layer3Packet, layer_3_length: u16, ethernet_addresses: &'packet EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	pub(crate) fn process_internet_protocol_version_6<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
 	{
-		self.internet_protocol_version_6_packet_processing.process(packet, layer_3_packet, layer_3_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
+		self.internet_protocol_version_6_packet_processing.process(now, packet, layer_3_packet, layer_3_length, ethernet_addresses, layer_4_check_sum_validated_in_hardware)
 	}
 }

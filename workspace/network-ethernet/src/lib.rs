@@ -23,6 +23,7 @@ extern crate hyper_thread_random;
 #[macro_use] extern crate likely;
 extern crate network_endian;
 extern crate network_packet;
+extern crate network_time;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -35,6 +36,7 @@ use ::hyper_thread_random::generate_hyper_thread_safe_random_u64;
 use ::network_endian::NetworkEndian;
 use ::network_endian::NetworkEndianU16;
 use ::network_packet::*;
+use ::network_time::MonotonicMillisecondTimestamp;
 use ::serde::Deserialize;
 use ::serde::Deserializer;
 use ::serde::Serialize;

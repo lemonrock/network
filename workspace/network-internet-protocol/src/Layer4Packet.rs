@@ -27,3 +27,13 @@ impl Debug for Layer4Packet
 		write!(f, "(layer 4 packet)")
 	}
 }
+
+impl Layer4Packet
+{
+	/// Horrible method to cast to a specific implementation of a layer 4 packet.
+	#[inline(always)]
+	pub fn as_type<P>(&self) -> &P
+	{
+		unsafe { transmute(&self.other) }
+	}
+}

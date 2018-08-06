@@ -25,6 +25,7 @@ network-endian = { path = "../network-endian", version = "^0.1" }
 network-ethernet = { path = "../network-ethernet", version = "^0.1" }
 network-internet-protocol = { path = "../network-internet-protocol", version = "^0.1" }
 network-packet = { path = "../network-packet", version = "^0.1" }
+network-time = { path = "../network-time", version = "^0.1" }
 serde = "1.0"
 serde_derive = "1.0"
 

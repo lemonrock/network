@@ -23,6 +23,7 @@ extern crate network_endian;
 extern crate network_ethernet;
 extern crate network_internet_protocol;
 extern crate network_packet;
+extern crate network_time;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
 
@@ -43,6 +44,7 @@ use ::network_internet_protocol::*;
 use ::network_internet_protocol::packet_processing::*;
 use ::network_internet_protocol::version_4::*;
 use ::network_packet::IncomingNetworkPacketProcessingDropReason;
+use ::network_time::MonotonicMillisecondTimestamp;
 use ::serde::Serialize;
 use ::serde::Serializer;
 use ::std::fmt;

@@ -4,6 +4,7 @@
 
 /// Represents a 'tick', currently 128 milliseconds of time.
 #[derive(Default, Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct Tick(u64);
 
 impl Display for Tick
