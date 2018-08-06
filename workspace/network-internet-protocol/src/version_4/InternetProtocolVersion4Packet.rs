@@ -213,6 +213,44 @@ impl InternetProtocolVersion4Packet
 			drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::InvalidFragmentationFlagsOrIdentification { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
 		}
 		
+		let is_fragment = header.is_fragment();
+		
+		match unsafe { header.next_proto_id.unknown }
+		{
+			KnownOrUnknownLayer4ProtocolNumber::InternetControlMessageProtocol =>
+			{
+				if is_fragment
+				{
+					drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetControlMessageProtocolPacketsShouldNotBeFragmented { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+				}
+				
+				{
+					// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
+					let supports_multicast = false;
+					// TODO: Macro to do common processing.
+					XXXX
+				}
+			}
+			
+			KnownOrUnknownLayer4ProtocolNumber::TransmissionControlProtocol =>
+			{
+				// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
+				let supports_multicast = false;
+				// TODO: Macro to do common processing.
+				XXXX
+			},
+			
+			KnownOrUnknownLayer4ProtocolNumber::UserDatagramProtocol =>
+			{
+				// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
+				let supports_multicast = true;
+				// TODO: Macro to do common processing.
+				XXXX
+			},
+			
+			unsupported_layer_4_protocol @ _ => drop!(InternetProtocolVersion4IncomingNetworkPacketDropReason::UnsupportedLayer4Protocol { header: header.non_null(), unsupported_layer_4_protocol }, ethernet_addresses, packet_processing, packet)
+		}
+		
 		let header_length_including_options = header.header_length_including_options();
 		
 		let header_length_including_options_as_u16 = header_length_including_options as u16;
@@ -237,14 +275,11 @@ impl InternetProtocolVersion4Packet
 		
 		// TODO: Overly small fragments, eg fragments smaller than MSS / MTU minima (eg 1280 for IPv6).
 		
-		// TODO: Reject fragmentation of anything other than TCP / UDP traffic.
-		xxx;
-		
-		// TODO: The header checksum is not validated.
-		xxx;
-		
-		// TODO: Check layer 4 protocol number matches whether this can be unicast / broadcast / multicast.
-		xxx;
+		// TODO: check for hardware offload.
+		if unlikely!(header.check_sum_is_invalid())
+		{
+			drop!()xxxx;
+		}
 		
 		let packet = match packet_processing.reassemble_fragmented_internet_protocol_version_4_packet(packet, recent_timestamp, header, header_length_including_options_as_u16)
 		{

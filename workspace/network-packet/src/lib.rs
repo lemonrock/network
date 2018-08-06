@@ -19,6 +19,16 @@ use ::std::fmt::Debug;
 use ::std::ptr::NonNull;
 
 
+include!("HardwareOffloadCategorisedInternetProtocolHeaderOptionsAndExtensionsLayer3PacketType.rs");
+include!("HardwareOffloadCategorisedLayer2PacketType.rs");
+include!("HardwareOffloadLayer2PacketType.rs");
+include!("HardwareOffloadLayer2PacketTypeConversion.rs");
+include!("HardwareOffloadLayer3PacketType.rs");
+include!("HardwareOffloadLayer3PacketTypeConversion.rs");
+include!("HardwareOffloadLayer4PacketType.rs");
+include!("HardwareOffloadLayer4PacketTypeConversion.rs");
+include!("HardwareOffloadTunnelPacketType.rs");
+include!("HardwareOffloadTunnelPacketTypeConversion.rs");
 include!("IncomingNetworkPacket.rs");
 include!("IncomingNetworkPacketDropReason.rs");
 include!("IncomingNetworkPacketDropObserver.rs");

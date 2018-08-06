@@ -41,6 +41,25 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 	},
 	
+	/// Internet Control Message Protocol packets sent over Internet Protocol (IP) version 4 should not be fragmented.
+	InternetControlMessageProtocolPacketsShouldNotBeFragmented
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
+	/// Unsupported layer 4 protocol.
+	UnsupportedLayer4Protocol
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+		
+		/// Unsupported layer 4 protocol.
+		unsupported_layer_4_protocol: u8,
+	},
+	
 	/// Total length field is less than the length of the header.
 	TotalLengthLessThanHeader
 	{

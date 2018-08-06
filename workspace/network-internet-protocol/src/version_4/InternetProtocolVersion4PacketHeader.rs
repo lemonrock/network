@@ -27,7 +27,7 @@ pub struct InternetProtocolVersion4PacketHeader
 	pub time_to_live: u8,
 	
 	/// Layer 4 protocol identifier.
-	pub next_proto_id: Layer4ProtocolNumber,
+	pub next_proto_id: KnownOrUnknownLayer4ProtocolNumber,
 	
 	/// Check sum.
 	pub check_sum: InternetCheckSum,
@@ -250,6 +250,29 @@ impl InternetProtocolVersion4PacketHeader
 		const OffsetMask: u16 = InternetProtocolVersion4PacketHeader::MoreFragmentsFlag - 1;
 		
 		self.fragment_offset.to_network_endian() & (Self::MoreFragmentsFlag | OffsetMask).to_be() != 0
+	}
+	
+	/// Only do this after verifying `header_length_including_options()` is valid.
+	#[inline(always)]
+	pub fn check_sum_is_invalid(&self, header_length_including_options: u8) -> bool
+	{
+		let length = header_length_including_options as usize;
+		let start_pointer = self as *const Self as usize;
+		let end_pointer = start_pointer + length;
+		let mut sum: u32 = 0;
+		while pointer != end_pointer
+		{
+			sum += ((unsafe { *(pointer as *const NetworkEndianU16) }).to_native_endian() as u32);
+			
+			pointer += 2
+		}
+		
+		let carry_bits = ((sum & 0xFFFF0000) >> 16) as u16;
+		let sum_without_carry_bits = (sum & 0x0000FFFF);
+		let check_sum = sum_without_carry_bits + carry_bits;
+		let ones_complement = !check_sum;
+		
+		ones_complement != 0x0000
 	}
 	
 	#[inline(always)]

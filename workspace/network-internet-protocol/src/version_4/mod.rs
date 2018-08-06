@@ -16,3 +16,4 @@ include!("InternetProtocolVersion4OptionsBitSet.rs");
 include!("InternetProtocolVersion4Packet.rs");
 include!("InternetProtocolVersion4PacketHeader.rs");
 include!("InternetProtocolVersion4PseudoHeader.rs");
+include!("KnownOrUnknownLayer4ProtocolNumber.rs");
