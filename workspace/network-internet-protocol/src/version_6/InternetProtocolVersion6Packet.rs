@@ -30,7 +30,7 @@ impl InternetProtocolVersion6Packet
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion6PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
+	pub(crate) fn process<'lifetime, ICMPV6: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtocolVersion6IncomingNetworkPacketDropReason<ICMPV6::DropReason, TCP::DropReason, UDP::DropReason>>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion6PacketProcessing<EINPDO, ICMPV6, TCP, UDP>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, layer_4_check_sum_validated_in_hardware: bool)
 	{
 		unimplemented!();
 	}

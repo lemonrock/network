@@ -42,7 +42,7 @@ macro_rules! process_options
 				
 				let increment = match option_kind
 				{
-					InternetProtocolVersion4OptionNumber::EndOfOptionsList =>
+					InternetProtocolVersion4OptionKind::EndOfOptionsList =>
 					{
 						if cfg!(feature = "drop-packets-with-ipv4-options-lacking-zero-padding")
 						{
@@ -61,20 +61,20 @@ macro_rules! process_options
 						break
 					},
 					
-					InternetProtocolVersion4OptionNumber::NoOperation => 1,
+					InternetProtocolVersion4OptionKind::NoOperation => 1,
 					
 					// RFC 7126 obsolete.
-					InternetProtocolVersion4OptionNumber::StreamIdentifier
-					| InternetProtocolVersion4OptionNumber::ProbeMaximumTransmissionUnit
-					| InternetProtocolVersion4OptionNumber::ReplyMaximumTransmissionUnit
-					| InternetProtocolVersion4OptionNumber::Traceroute
-					| InternetProtocolVersion4OptionNumber::ExperimentalAccessControl
-					| InternetProtocolVersion4OptionNumber::ExtendedInternetProtocol
-					| InternetProtocolVersion4OptionNumber::AddressExtension
-					| InternetProtocolVersion4OptionNumber::SenderDirectedMultiDestinationDelivery
-					| InternetProtocolVersion4OptionNumber::DynamicPacketState
-					| InternetProtocolVersion4OptionNumber::UpstreamMulticastPacket
-					| InternetProtocolVersion4OptionNumber::ENCODE => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsObsoleteAsOfRfc7126 { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
+					InternetProtocolVersion4OptionKind::StreamIdentifier
+					| InternetProtocolVersion4OptionKind::ProbeMaximumTransmissionUnit
+					| InternetProtocolVersion4OptionKind::ReplyMaximumTransmissionUnit
+					| InternetProtocolVersion4OptionKind::Traceroute
+					| InternetProtocolVersion4OptionKind::ExperimentalAccessControl
+					| InternetProtocolVersion4OptionKind::ExtendedInternetProtocol
+					| InternetProtocolVersion4OptionKind::AddressExtension
+					| InternetProtocolVersion4OptionKind::SenderDirectedMultiDestinationDelivery
+					| InternetProtocolVersion4OptionKind::DynamicPacketState
+					| InternetProtocolVersion4OptionKind::UpstreamMulticastPacket
+					| InternetProtocolVersion4OptionKind::ENCODE => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsObsoleteAsOfRfc7126 { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
 					
 					// RFC 7126 threat.
 					//
@@ -84,27 +84,27 @@ macro_rules! process_options
 					// Internet Timestamp (Type = 68).
 					// Router Alert (Type = 148).
 					// Quick-Start (QS) (Type = 25).
-					InternetProtocolVersion4OptionNumber::LooseSourceRouteAndRecordRoute
-					| InternetProtocolVersion4OptionNumber::StrictSourceRouteAndRecordRoute
-					| InternetProtocolVersion4OptionNumber::RecordRoute
-					| InternetProtocolVersion4OptionNumber::InternetTimestamp
-					| InternetProtocolVersion4OptionNumber::RouterAlert
-					| InternetProtocolVersion4OptionNumber::QuickStart => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsThreatAsOfRfc7126 { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
+					InternetProtocolVersion4OptionKind::LooseSourceRouteAndRecordRoute
+					| InternetProtocolVersion4OptionKind::StrictSourceRouteAndRecordRoute
+					| InternetProtocolVersion4OptionKind::RecordRoute
+					| InternetProtocolVersion4OptionKind::InternetTimestamp
+					| InternetProtocolVersion4OptionKind::RouterAlert
+					| InternetProtocolVersion4OptionKind::QuickStart => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsThreatAsOfRfc7126 { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
 					
 					// RFC 3692 style Experiment (EXP) defined in RFC 4727.
-					InternetProtocolVersion4OptionNumber::Rfc3692StyleExperiment1
-					| InternetProtocolVersion4OptionNumber::Rfc3692StyleExperiment2
-					| InternetProtocolVersion4OptionNumber::Rfc3692StyleExperiment3
-					| InternetProtocolVersion4OptionNumber::Rfc3692StyleExperiment4 => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsExperimental { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
+					InternetProtocolVersion4OptionKind::Rfc3692StyleExperiment1
+					| InternetProtocolVersion4OptionKind::Rfc3692StyleExperiment2
+					| InternetProtocolVersion4OptionKind::Rfc3692StyleExperiment3
+					| InternetProtocolVersion4OptionKind::Rfc3692StyleExperiment4 => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsExperimental { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
 					
 					// RFC 7126 security.
 					//
 					// DoD Basic Security Option (Type = 130).
 					// DoD Extended Security Option (Type = 133).
 					// Commercial IP Security Option (CIPSO) (Type = 134).
-					InternetProtocolVersion4OptionNumber::BasicSecurity
-					| InternetProtocolVersion4OptionNumber::ExtendedSecurity
-					| InternetProtocolVersion4OptionNumber::CommercialSecurity => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsSecurity { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
+					InternetProtocolVersion4OptionKind::BasicSecurity
+					| InternetProtocolVersion4OptionKind::ExtendedSecurity
+					| InternetProtocolVersion4OptionKind::CommercialSecurity => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsSecurity { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
 					
 					// Options not dealt with above that are registered at IANA but rarely encountered.
 					//
@@ -112,16 +112,14 @@ macro_rules! process_options
 					// Experimental Flow Control (FINN) (Type = 205).
 					// IMI Traffic Descriptor (IMITD) (Type = 144).
 					// Type = 150 (unassigned but previously in use until 2005).
-					InternetProtocolVersion4OptionNumber::ExperimentalMeasurement
-					| InternetProtocolVersion4OptionNumber::ExperimentalFlowControl
-					| InternetProtocolVersion4OptionNumber::ImiTrafficDescriptor
-					| InternetProtocolVersion4OptionNumber::_150 => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsRarelyEncounteredButRegisteredAtIana { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
+					InternetProtocolVersion4OptionKind::ExperimentalMeasurement
+					| InternetProtocolVersion4OptionKind::ExperimentalFlowControl
+					| InternetProtocolVersion4OptionKind::ImiTrafficDescriptor
+					| InternetProtocolVersion4OptionKind::_150 => drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionIsRarelyEncounteredButRegisteredAtIana { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet),
 					
 					// Unknown.
 					option_kind @ _ =>
 					{
-						let option_kind = InternetProtocolVersion4OptionKind(option_kind) ;
-						
 						let class = option_kind.class();
 						if unlikely!(class.is_reserved())
 						{
@@ -187,7 +185,7 @@ impl InternetProtocolVersion4Packet
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, internet_protocol_version_4_check_sum_validated_in_hardware: bool, layer_4_check_sum_validated_in_hardware: bool, now: MonotonicMillisecondTimestamp)
+	pub(crate) fn process<'lifetime, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing, EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>>(&'lifetime self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, packet_processing: &InternetProtocolVersion4PacketProcessing<EINPDO, ICMPV4, TCP, UDP>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, internet_protocol_version_4_check_sum_validated_in_hardware: bool, layer_4_check_sum_validated_in_hardware: bool)
 	{
 		macro_rules! more_header_validation
 		{
@@ -217,7 +215,7 @@ impl InternetProtocolVersion4Packet
 					
 					if unlikely!(!$internet_protocol_version_4_check_sum_validated_in_hardware)
 					{
-						if unlikely!($header.check_sum_is_invalid())
+						if unlikely!($header.check_sum_is_invalid(header_length_including_options))
 						{
 							drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetProtocolCheckSumWhenCalculatedInSoftwareWasInvalid { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
 						}
@@ -230,7 +228,7 @@ impl InternetProtocolVersion4Packet
 					
 					// TODO: IPv4 packet reassembly and RSS logic.
 					// TODO: Overly small fragments, eg fragments smaller than MSS / MTU minima (eg 1280 for IPv6).
-					let packet = match reassemble_fragmented_internet_protocol_version_4_packet($packet, $now, $header, header_length_including_options_as_u16)
+					let packet = match reassemble_fragmented_internet_protocol_version_4_packet()
 					{
 						None => return,
 						Some(packet) => packet,
@@ -273,7 +271,7 @@ impl InternetProtocolVersion4Packet
 			{
 				if is_fragment
 				{
-					drop!(now, InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetControlMessageProtocolPacketsShouldNotBeFragmented { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
+					drop!(now, InternetProtocolVersion4IncomingNetworkPacketDropReason::InternetControlMessageProtocolVersion4PacketsShouldNotBeFragmented { header: header.non_null() }, ethernet_addresses, packet_processing, packet)
 				}
 				
 				let source_address = header.source_address;

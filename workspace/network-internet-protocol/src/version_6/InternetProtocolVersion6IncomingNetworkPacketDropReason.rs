@@ -9,7 +9,7 @@
 /// Salient data is by its nature unlikely to always be completely valid, and should be used only as a source of raw bytes.
 #[derive(Debug)]
 #[derive(Serialize)]
-pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
+pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason<ICMPV6INPDR: IncomingNetworkPacketProcessingDropReason, TCPINPDR: IncomingNetworkPacketProcessingDropReason, UDPINPDR: IncomingNetworkPacketProcessingDropReason>
 {
 	/// Packet is too short.
 	PacketIsTooShort,
@@ -18,7 +18,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	HeaderIsNot6
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -28,7 +28,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FlowLabelIsNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -36,7 +36,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	HopByHopOptionsIsNotFirstExtensionHeader
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -44,7 +44,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	HopByHopOptionsUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -52,7 +52,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	HopByHopOptionsHeaderExtensionLengthOverflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -60,7 +60,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TypeLengthValueOptionTypeUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -68,7 +68,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TypeLengthValueOptionLengthUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -76,7 +76,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TypeLengthValueOptionDataUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -84,7 +84,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TypeLengthValueOptionDiscardPacket
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Option type.
@@ -95,7 +95,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TypeLengthValueOptionShouldNotBeUsedOnTheInternet
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Option type.
@@ -106,7 +106,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	RoutingExtensionHeaderRepeated
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -114,7 +114,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	RoutingExtensionHeaderUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -122,7 +122,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	RoutingExtensionHeaderHasSegmentsLeft
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Routing type.
@@ -136,7 +136,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	RoutingExtensionHeaderRoutingTypeIsDeprecatedExperimentalOrReserved
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Routing type.
@@ -150,7 +150,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FragmentExtensionHeaderRepeated
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -158,7 +158,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FragmentExtensionHeaderUnderflow
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -168,7 +168,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FragmentExtensionHeaderFirstReservedFieldNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Value of the reserved field.
@@ -181,7 +181,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FragmentExtensionHeaderSecondReservedFieldNonZero
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Value of the reserved field.
@@ -194,7 +194,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	FragmentExtensionHeaderOnlyOneFragmentOrLastFragmentIsFirst
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -202,7 +202,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	PacketFragmentNotAMultipleOfEight
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -210,7 +210,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	PacketFragmentWouldMakeReassembledPacketWouldTooLarge
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -220,7 +220,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	PacketFragmentTooSmall
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -230,7 +230,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	EncapulatingSecurityPayloadExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -240,7 +240,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	AuthenticationHeaderExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -248,7 +248,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	NoNextHeaderIsUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -256,7 +256,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MoreThanTwoDestinationOptionsExtensionHeaders
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -264,7 +264,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MobilityExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -272,7 +272,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	HostIdentityProtocolExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -280,7 +280,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	Shim6ProtocolExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -288,7 +288,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	ExperimentationExtensionHeaderUnsupported
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -298,7 +298,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	UnrecognisedExtensionHeaderOrLayer4Protocol
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Next header (extension header type) or layer 4 protocol number.
@@ -310,9 +310,9 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	/// Received a packet with a source address that was the same as the destination address.
 	SourceAndDestinationAddressAreTheSame
 	{
-		/// Internet Protocol (IP) version 4 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason::serialize_non_null")]
-		header: NonNull<InternetProtocolVersion4PacketHeader>,
+		/// Internet Protocol (IP) version 6 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
 	/// Received a packet with a source address that was an invalid unicast address.
@@ -321,7 +321,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	SourceAddressNotValidUnicast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -329,7 +329,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	SourceAddressDenied
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -337,7 +337,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	DestinationAddressDocumentation
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -345,7 +345,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	DestinationAddressLoopback
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -353,7 +353,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	DestinationAddressInterfaceLocal
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -361,7 +361,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	UnicastDestinationIsNotUs
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -369,7 +369,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MulticastAddressIsNotMulticast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -377,7 +377,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MulticastAddressIsNotValidMulticast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 		
 		/// Parsing error.
@@ -388,7 +388,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MulticastAddressMismatchesEthernetAddress
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -396,7 +396,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	EthernetBroadcastShouldNotOccur
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -404,7 +404,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	MulticastAddressDenied
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -412,7 +412,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	DestinationWasLoopbackOrDocumentationAddress
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -420,7 +420,7 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	TransmissionControlProtocolPacketsShouldOnlyBeUnicast
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
@@ -428,28 +428,58 @@ pub enum InternetProtocolVersion6IncomingNetworkPacketDropReason
 	UserDatagramProtocolPacketsMustHaveACheckSumSet
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
 	},
 	
-	/// Occurs during Internet Protocol (IP) version 6 packet processing.
-	InternetControlMessageProtocolPacketsShouldNotBeFragmented
+	/// Internet Control Message Protocol (ICMP) version 6 packets sent over Internet Protocol (IP) version 6 should not be fragmented.
+	InternetControlMessageProtocolVersion6PacketsShouldNotBeFragmented
 	{
 		/// Internet Protocol (IP) version 6 packet header.
-		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason::serialize_non_null")]
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion6PacketHeader>,
+	},
+	
+	/// Wrapper around a problematic Internet Control Message Protocol (ICMP) version 6 packet.
+	ProblematicInternetControlMessageProtocolVersion6Packet
+	{
+		/// Internet Protocol (IP) version 6 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
+		
+		/// Reason
+		reason: ICMPV6INPDR,
+	},
+	
+	/// Wrapper around a problematic Transmission Control Protocol (TCP) packet.
+	ProblematicTransmissionControlProtocolPacket
+	{
+		/// Internet Protocol (IP) version 6 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
+		
+		/// Reason
+		reason: TCPINPDR,
+	},
+	
+	/// Wrapper around a problematic User Datagram Protocol (UDP) packet.
+	ProblematicUserDatagramProtocolPacket
+	{
+		/// Internet Protocol (IP) version 6 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null")]
+		header: NonNull<InternetProtocolVersion6PacketHeader>,
+		
+		/// Reason
+		reason: UDPINPDR,
 	},
 }
 
-impl IncomingNetworkPacketProcessingDropReason for InternetProtocolVersion6IncomingNetworkPacketDropReason
+impl<ICMPV6INPDR: IncomingNetworkPacketProcessingDropReason, TCPINPDR: IncomingNetworkPacketProcessingDropReason, UDPINPDR: IncomingNetworkPacketProcessingDropReason> IncomingNetworkPacketProcessingDropReason for InternetProtocolVersion6IncomingNetworkPacketDropReason<ICMPV6INPDR, TCPINPDR, UDPINPDR>
 {
 }
 
-impl InternetProtocolVersion6IncomingNetworkPacketDropReason
+#[inline(always)]
+fn InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null<S: Serializer>(to_serialize: &NonNull<InternetProtocolVersion6PacketHeader>, serializer: S) -> Result<S::Ok, S::Error>
 {
-	#[inline(always)]
-	fn serialize_non_null<S: Serializer, T: Serialize>(to_serialize: &NonNull<T>, serializer: S) -> Result<S::Ok, S::Error>
-	{
-		unsafe { to_serialize.as_ref().serialize(serializer) }
-	}
+	unsafe { to_serialize.as_ref().serialize(serializer) }
 }

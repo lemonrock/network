@@ -3,7 +3,7 @@
 
 
 /// Layer 4 (eg Transmission Control Protocol (TCP)) packet processing.
-pub trait Layer4PacketProcessing
+pub trait Layer4PacketProcessing: Debug
 {
 	/// Drop reason.
 	type DropReason: IncomingNetworkPacketProcessingDropReason;

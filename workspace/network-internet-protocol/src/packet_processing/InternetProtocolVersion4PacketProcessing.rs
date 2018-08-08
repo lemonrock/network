@@ -24,7 +24,7 @@ pub struct InternetProtocolVersion4PacketProcessing<EINPDO: EthernetIncomingNetw
 	user_datagram_protocol_processing: UDP,
 }
 
-impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing> Layer3PacketProcessing<(bool, bool)> for InternetProtocolVersion4PacketProcessing<EINPDO, ICMPV4, UDP, TCP>
+impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4::DropReason, TCP::DropReason, UDP::DropReason>>, ICMPV4: Layer4PacketProcessing, TCP: Layer4PacketProcessing, UDP: Layer4PacketProcessing> Layer3PacketProcessing for InternetProtocolVersion4PacketProcessing<EINPDO, ICMPV4, TCP, UDP>
 {
 	type DropReason = EINPDO::IPV4INPDR;
 	
@@ -40,7 +40,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtoco
 		
 		let internet_protocol_version_4_packet: &'lifetime InternetProtocolVersion4Packet = layer_3_packet.as_type();
 		
-		internet_protocol_version_4_packet.process(packet, self, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware.0, check_sum_validated_in_hardware.1)
+		internet_protocol_version_4_packet.process(now, packet, self, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware.0, check_sum_validated_in_hardware.1)
 	}
 }
 
@@ -51,6 +51,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV4INPDR=InternetProtoco
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicInternetProtocolVersion4Packet
 		{
+			now,
 			ethernet_addresses,
 			reason,
 		};

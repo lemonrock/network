@@ -9,16 +9,16 @@
 pub enum InternetProtocolVersion4OptionClass
 {
 	/// Control.
-	Control = 0,
+	Control = 0b00,
 	
 	/// Reserved for future use.
-	ReservedForFutureUse1 = 1,
+	ReservedForFutureUse1 = 0b01,
 	
 	/// Debugging and measurement.
-	DebuggingAndMeasurement = 2,
+	DebuggingAndMeasurement = 0b10,
 	
 	/// Reserved for future use.
-	ReservedForFutureUse2 = 3,
+	ReservedForFutureUse2 = 0b11,
 }
 
 impl Into<u8> for InternetProtocolVersion4OptionClass
@@ -27,5 +27,14 @@ impl Into<u8> for InternetProtocolVersion4OptionClass
 	fn into(self) -> u8
 	{
 		self as u8
+	}
+}
+
+impl InternetProtocolVersion4OptionClass
+{
+	#[inline(always)]
+	pub fn is_reserved(self) -> bool
+	{
+		(self as u8) & 0b01 != 0
 	}
 }

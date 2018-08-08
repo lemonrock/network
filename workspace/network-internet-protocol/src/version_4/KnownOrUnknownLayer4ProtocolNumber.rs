@@ -14,6 +14,164 @@ pub union KnownOrUnknownLayer4ProtocolNumber
 	pub unknown: u8,
 }
 
+impl<'deserialize> Deserialize<'deserialize> for KnownOrUnknownLayer4ProtocolNumber
+{
+	#[inline(always)]
+	fn deserialize<D: Deserializer<'deserialize>>(deserializer: D) -> Result<Self, D::Error>
+	{
+		struct SomeVisitor;
+		
+		impl<'deserialize> Visitor<'deserialize> for SomeVisitor
+		{
+			type Value = KnownOrUnknownLayer4ProtocolNumber;
+			
+			#[inline(always)]
+			fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result
+			{
+				formatter.write_str("an unsigned 8-bit integer between 0 and 255")
+			}
+			
+			#[inline(always)]
+			fn visit_u8<E: de::Error>(self, value: u8) -> Result<Self::Value, E>
+			{
+				Ok
+				(
+					KnownOrUnknownLayer4ProtocolNumber
+					{
+						unknown: value,
+					}
+				)
+			}
+			
+			#[inline(always)]
+			fn visit_u16<E: de::Error>(self, value: u16) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as u16
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_u32<E: de::Error>(self, value: u32) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as u32
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_u64<E: de::Error>(self, value: u64) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as u64
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_u128<E: de::Error>(self, value: u128) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as u128
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_i8<E: de::Error>(self, value: i8) -> Result<Self::Value, E>
+			{
+				if value > ::std::i8::MAX as i8
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				if value < 0
+				{
+					return Err(E::custom("too small"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_i16<E: de::Error>(self, value: i16) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as i16
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				if value < 0
+				{
+					return Err(E::custom("too small"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_i32<E: de::Error>(self, value: i32) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as i32
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				if value < 0
+				{
+					return Err(E::custom("too small"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_i64<E: de::Error>(self, value: i64) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as i64
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				if value < 0
+				{
+					return Err(E::custom("too small"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+			
+			#[inline(always)]
+			fn visit_i128<E: de::Error>(self, value: i128) -> Result<Self::Value, E>
+			{
+				if value > ::std::u8::MAX as i128
+				{
+					return Err(E::custom("too large"))
+				}
+				
+				if value < 0
+				{
+					return Err(E::custom("too small"))
+				}
+				
+				self.visit_u8(value as u8)
+			}
+		}
+		
+		deserializer.deserialize_u8(SomeVisitor)
+	}
+}
+
 impl Serialize for KnownOrUnknownLayer4ProtocolNumber
 {
 	#[inline(always)]

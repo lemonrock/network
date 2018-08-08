@@ -231,7 +231,7 @@ impl InternetProtocolVersion4PacketHeader
 	
 	/// Layer 4 protocol number.
 	#[inline(always)]
-	pub fn layer_4(&self) -> Layer4ProtocolNumber
+	pub fn layer_4(&self) -> KnownOrUnknownLayer4ProtocolNumber
 	{
 		self.next_proto_id
 	}
@@ -269,7 +269,7 @@ impl InternetProtocolVersion4PacketHeader
 		}
 		
 		let carry_bits = ((sum & 0xFFFF0000) >> 16) as u16;
-		let sum_without_carry_bits = sum & 0x0000FFFF;
+		let sum_without_carry_bits = (sum & 0x0000FFFF) as u16;
 		let check_sum = sum_without_carry_bits + carry_bits;
 		let ones_complement = !check_sum;
 		

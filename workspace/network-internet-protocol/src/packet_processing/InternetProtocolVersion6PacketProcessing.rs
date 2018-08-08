@@ -50,6 +50,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtoco
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicInternetProtocolVersion6Packet
 		{
+			now,
 			ethernet_addresses,
 			reason,
 		};
