@@ -32,8 +32,9 @@ impl Into<u8> for InternetProtocolVersion4OptionClass
 
 impl InternetProtocolVersion4OptionClass
 {
+	/// Is this a class reserved for future use?
 	#[inline(always)]
-	pub fn is_reserved(self) -> bool
+	pub fn is_reserved_for_future_use(self) -> bool
 	{
 		(self as u8) & 0b01 != 0
 	}

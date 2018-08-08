@@ -107,6 +107,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -126,6 +127,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -137,7 +139,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -153,7 +156,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -172,7 +176,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -188,7 +193,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -204,7 +210,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -220,7 +227,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -236,7 +244,8 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
-	
+		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -251,6 +260,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -265,6 +275,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -279,6 +290,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
 		header: NonNull<InternetProtocolVersion4PacketHeader>,
 		
+		/// Option kind.
 		option_kind: InternetProtocolVersion4OptionKind,
 	},
 	
@@ -357,6 +369,14 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
+	EthernetAddressWasNotUnicast
+	{
+		/// Internet Protocol (IP) version 4 packet header.
+		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
+		header: NonNull<InternetProtocolVersion4PacketHeader>,
+	},
+	
+	/// Occurs during Internet Protocol (IP) version 4 packet processing.
 	MulticastAddressIsNotMulticast
 	{
 		/// Internet Protocol (IP) version 4 packet header.
@@ -381,7 +401,7 @@ pub enum InternetProtocolVersion4IncomingNetworkPacketDropReason<ICMPV4INPDR: In
 	},
 	
 	/// Occurs during Internet Protocol (IP) version 4 packet processing.
-	DestinationWasLoopbackorDocumentationAddress
+	DestinationWasLoopbackOrDocumentationAddress
 	{
 		/// Internet Protocol (IP) version 4 packet header.
 		#[serde(serialize_with = "InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null")]
@@ -426,6 +446,7 @@ impl<ICMPV4INPDR: IncomingNetworkPacketProcessingDropReason, TCPINPDR: IncomingN
 {
 }
 
+#[allow(non_snake_case)]
 #[inline(always)]
 fn InternetProtocolVersion4IncomingNetworkPacketDropReason_serialize_non_null<S: Serializer>(to_serialize: &NonNull<InternetProtocolVersion4PacketHeader>, serializer: S) -> Result<S::Ok, S::Error>
 {

@@ -31,9 +31,9 @@ macro_rules! process_options
 	($now: ident, $header: ident, $header_length_including_options: ident, $ethernet_addresses: ident, $packet_processing: ident, $packet: ident) =>
 	{
 		{
-			let duplicate_options = InternetProtocolVersion4OptionsBitSet::new();
+			let mut duplicate_options = InternetProtocolVersion4OptionsBitSet::new();
 		
-			let header_pointer = unsafe { $header as *const InternetProtocolVersion4PacketHeader as usize };
+			let header_pointer = $header as *const InternetProtocolVersion4PacketHeader as usize;
 			let mut options_pointer = header_pointer + InternetProtocolVersion4PacketHeader::HeaderSize;
 			let end_of_options_pointer = header_pointer + ($header_length_including_options as usize);
 			while options_pointer != end_of_options_pointer
@@ -49,7 +49,7 @@ macro_rules! process_options
 							options_pointer += 1;
 							while options_pointer != end_of_options_pointer
 							{
-								if unlikely!(unsafe { *(options_pointer as *const u8) } != 0x00)
+								if unlikely!(*(options_pointer as *const u8) != 0x00)
 								{
 									drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionsWereNotZeroPadded { header: $header.non_null() }, $ethernet_addresses, $packet_processing, $packet)
 								}
@@ -121,7 +121,7 @@ macro_rules! process_options
 					option_kind @ _ =>
 					{
 						let class = option_kind.class();
-						if unlikely!(class.is_reserved())
+						if unlikely!(class.is_reserved_for_future_use())
 						{
 							drop!($now, InternetProtocolVersion4IncomingNetworkPacketDropReason::OptionHasReservedClass { header: $header.non_null(), option_kind }, $ethernet_addresses, $packet_processing, $packet)
 						}

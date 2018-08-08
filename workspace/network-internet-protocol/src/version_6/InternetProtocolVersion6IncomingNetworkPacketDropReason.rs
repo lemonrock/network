@@ -478,6 +478,7 @@ impl<ICMPV6INPDR: IncomingNetworkPacketProcessingDropReason, TCPINPDR: IncomingN
 {
 }
 
+#[allow(non_snake_case)]
 #[inline(always)]
 fn InternetProtocolVersion6IncomingNetworkPacketDropReason_serialize_non_null<S: Serializer>(to_serialize: &NonNull<InternetProtocolVersion6PacketHeader>, serializer: S) -> Result<S::Ok, S::Error>
 {

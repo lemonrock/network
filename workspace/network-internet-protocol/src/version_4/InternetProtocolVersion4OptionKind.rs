@@ -28,11 +28,11 @@ impl Into<u8> for InternetProtocolVersion4OptionKind
 
 impl InternetProtocolVersion4OptionKind
 {
-	const OneBitCopyField: u8 = 0x1000_0000;
+	const OneBitCopyField: u8 = 0b1000_0000;
 	
-	const TwoBitClassField: u8 = 0x0110_0000;
+	const TwoBitClassField: u8 = 0b0110_0000;
 	
-	const FiveBitNumberField: u8 = 0x0001_1111;
+	const FiveBitNumberField: u8 = 0b0001_1111;
 	
 	/// End of options list.
 	pub const EndOfOptionsList: Self = InternetProtocolVersion4OptionKind(0);

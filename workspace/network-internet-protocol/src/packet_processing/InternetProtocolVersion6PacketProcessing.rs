@@ -39,7 +39,7 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<IPV6INPDR=InternetProtoco
 		
 		let internet_protocol_version_6_packet: &'lifetime InternetProtocolVersion6Packet = layer_3_packet.as_type();
 		
-		internet_protocol_version_6_packet.process(packet, self, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
+		internet_protocol_version_6_packet.process(now, packet, self, layer_3_length, ethernet_addresses, check_sum_validated_in_hardware)
 	}
 }
 
