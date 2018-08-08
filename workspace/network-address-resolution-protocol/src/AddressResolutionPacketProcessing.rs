@@ -18,16 +18,16 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutio
 	type CheckSumsValidated = ();
 	
 	#[inline(always)]
-	fn process<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, check_sum_validated_in_hardware: Self::CheckSumsValidated)
+	fn process<'lifetime>(&self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, layer_3_packet: &'lifetime Layer3Packet, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses, _check_sum_validated_in_hardware: Self::CheckSumsValidated)
 	{
 		if unlikely!(AddressResolutionProtocolPacket::is_packet_length_too_short(layer_3_length))
 		{
-			drop!(PacketIsTooShort, ethernet_addresses, self, packet)
+			drop!(now, PacketIsTooShort, ethernet_addresses, self, packet)
 		}
 		
 		let address_resolution_protocol_packet: &'lifetime AddressResolutionProtocolPacket = layer_3_packet.as_type();
 		
-		address_resolution_protocol_packet.process(packet, self, layer_3_length, ethernet_addresses)
+		address_resolution_protocol_packet.process(now, packet, self, layer_3_length, ethernet_addresses)
 	}
 }
 
@@ -35,10 +35,11 @@ impl<EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutio
 {
 	/// In order to observe dropped packets.
 	#[inline(always)]
-	pub(crate) fn drop<'lifetime>(&self, reason: EINPDO::ARPINPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
+	pub(crate) fn drop<'lifetime>(&self, now: MonotonicMillisecondTimestamp, reason: EINPDO::ARPINPDR, ethernet_addresses: &'lifetime EthernetAddresses, packet: impl EthernetIncomingNetworkPacket)
 	{
 		let reason = EthernetIncomingNetworkPacketDropReason::ProblematicAddressResolutionProtocolPacket
 		{
+			now,
 			ethernet_addresses,
 			reason,
 		};

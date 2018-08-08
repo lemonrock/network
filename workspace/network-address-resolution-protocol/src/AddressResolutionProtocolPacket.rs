@@ -146,18 +146,18 @@ impl AddressResolutionProtocolPacket
 	}
 	
 	#[inline(always)]
-	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
+	pub(crate) fn process<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, layer_3_length: u16, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		if unlikely!(self.is_invalid_for_internet_protocol_version_4(layer_3_length))
 		{
-			drop!(NotSupportedForAnythingOtherThanInternetProtocolVersion4, ethernet_addresses, packet_processing, packet)
+			drop!(now, NotSupportedForAnythingOtherThanInternetProtocolVersion4, ethernet_addresses, packet_processing, packet)
 		}
 		
-		self.process_for_internet_protocol_version_4_payload(packet, packet_processing, ethernet_addresses)
+		self.process_for_internet_protocol_version_4_payload(now, packet, packet_processing, ethernet_addresses)
 	}
 	
 	#[inline(always)]
-	fn process_for_internet_protocol_version_4_payload<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process_for_internet_protocol_version_4_payload<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
@@ -166,23 +166,23 @@ impl AddressResolutionProtocolPacket
 
 		if unlikely!(destination_ethernet_address.is_multicast())
 		{
-			drop!(DestinationEthernetAddressIsMulticast { header }, ethernet_addresses, packet_processing, packet)
+			drop!(now, DestinationEthernetAddressIsMulticast { header }, ethernet_addresses, packet_processing, packet)
 		}
 
 		debug_assert!(destination_ethernet_address.is_valid_unicast() || destination_ethernet_address.is_broadcast(), "destination_ethernet_address '{}' is not valid unicast or broadcast()", destination_ethernet_address);
 
 		match self.header.operation
 		{
-			Operation::Request => self.process_request(packet, packet_processing, ethernet_addresses),
+			Operation::Request => self.process_request(now, packet, packet_processing, ethernet_addresses),
 
-			Operation::Reply => self.process_reply(packet, packet_processing, ethernet_addresses),
+			Operation::Reply => self.process_reply(now, packet, packet_processing, ethernet_addresses),
 
-			_ => drop!(OperationIsUnsupported { header }, ethernet_addresses, packet_processing, packet),
+			_ => drop!(now, OperationIsUnsupported { header }, ethernet_addresses, packet_processing, packet),
 		}
 	}
 
 	#[inline(always)]
-	fn process_request<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process_request<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
@@ -192,7 +192,7 @@ impl AddressResolutionProtocolPacket
 		// Thus an ARP request should be either to a broadcast address (normal behaviour) or to an unicast address.
 		if destination_ethernet_address.is_multicast()
 		{
-			drop!(RequestIsMulticast { header }, ethernet_addresses, packet_processing, packet)
+			drop!(now, RequestIsMulticast { header }, ethernet_addresses, packet_processing, packet)
 		}
 
 		let payload = self.internet_protocol_version_4_payload();
@@ -202,20 +202,20 @@ impl AddressResolutionProtocolPacket
 		{
 			if unlikely!(payload.target_hardware_address.is_not_zero())
 			{
-				drop!(RequestTargetHardwareAddressIsZero { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, RequestTargetHardwareAddressIsZero { header }, ethernet_addresses, packet_processing, packet)
 			}
 		}
 
 		let sender_hardware_address = &payload.sender_hardware_address;
 		if unlikely!(source_ethernet_address != sender_hardware_address)
 		{
-			drop!(HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+			drop!(now, HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
 		}
 
 		let target_protocol_address = payload.target_protocol_address;
 		if unlikely!(target_protocol_address.is_not_valid_unicast())
 		{
-			drop!(HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+			drop!(now, HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
 		}
 
 		let sender_protocol_address = payload.sender_protocol_address;
@@ -231,30 +231,30 @@ impl AddressResolutionProtocolPacket
 			if unlikely!(we_own_the_target_protocol_address_so_reply)
 			{
 				packet_processing.reply_to_probe(packet, ethernet_addresses);
-				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+				drop!(now, ReuseInReply, ethernet_addresses, packet_processing, packet);
 			}
 			else
 			{
-				drop!(ProbeIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, ProbeIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
 			}
 		}
 		else
 		{
 			if destination_ethernet_address.is_not_broadcast()
 			{
-				drop!(RequestIsNotAProbeAndIsNotBroadcast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, RequestIsNotAProbeAndIsNotBroadcast { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(sender_protocol_address.is_not_valid_unicast())
 			{
-				drop!(RequestIsNotAProbeAndSenderProtocolAddressIsNotUnicast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, RequestIsNotAProbeAndSenderProtocolAddressIsNotUnicast { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			let internet_protocol_version_4_host_address_conflict = packet_processing.is_internet_protocol_version_4_host_address_one_of_ours(sender_protocol_address);
 			if internet_protocol_version_4_host_address_conflict
 			{
 				packet_processing.internet_protocol_version_4_host_address_conflict(packet, ethernet_addresses);
-				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+				drop!(now, ReuseInReply, ethernet_addresses, packet_processing, packet);
 			}
 
 			// Also known as a gratuitous ARP request.
@@ -269,15 +269,15 @@ impl AddressResolutionProtocolPacket
 			if we_own_the_target_protocol_address_so_reply
 			{
 				packet_processing.reply_to_broadcast(packet, ethernet_addresses);
-				drop!(ReuseInReply, ethernet_addresses, packet_processing, packet);
+				drop!(now, ReuseInReply, ethernet_addresses, packet_processing, packet);
 			}
 			
-			drop!(BroadcastIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
+			drop!(now, BroadcastIsNotForUs { header }, ethernet_addresses, packet_processing, packet)
 		}
 	}
 	
 	#[inline(always)]
-	fn process_reply<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
+	fn process_reply<'lifetime, EINPDO: EthernetIncomingNetworkPacketDropObserver<ARPINPDR=AddressResolutionProtocolIncomingNetworkPacketDropReason>>(&'lifetime self, now: MonotonicMillisecondTimestamp, packet: impl EthernetIncomingNetworkPacket, packet_processing: &AddressResolutionPacketProcessing<EINPDO>, ethernet_addresses: &'lifetime EthernetAddresses)
 	{
 		let (source_ethernet_address, destination_ethernet_address) = ethernet_addresses.addresses();
 		let header = unsafe { NonNull::new_unchecked(&self.header as *const _ as *mut _) };
@@ -304,39 +304,39 @@ impl AddressResolutionProtocolPacket
 		{
 			if unlikely!(sender_protocol_address.is_not_valid_unicast())
 			{
-				drop!(GratuitousReplyIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, GratuitousReplyIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
 			}
 		}
 		else
 		{
 			if unlikely!(source_ethernet_address != sender_hardware_address)
 			{
-				drop!(HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, HardwareAndPacketSourceEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(destination_ethernet_address != target_hardware_address)
 			{
-				drop!(HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, HardwareAndPacketDestinationEthernetAddressMismatch { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(target_hardware_address.is_not_valid_unicast())
 			{
-				drop!(ReplyTargetHardwareAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, ReplyTargetHardwareAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(sender_and_target_protocol_addresses_are_the_same)
 			{
-				drop!(ReplySourceAndTargetProtocolAddressesAreTheSame { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, ReplySourceAndTargetProtocolAddressesAreTheSame { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(sender_protocol_address.is_not_valid_unicast())
 			{
-				drop!(ReplySenderProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, ReplySenderProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
 			}
 
 			if unlikely!(target_protocol_address.is_not_valid_unicast())
 			{
-				drop!(ReplyTargetProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
+				drop!(now, ReplyTargetProtocolAddressIsNotValidUnicast { header }, ethernet_addresses, packet_processing, packet)
 			}
 		}
 

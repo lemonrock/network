@@ -4,10 +4,10 @@
 
 macro_rules! drop
 {
-	($reason: expr, $ethernet_addresses: ident, $packet_processing: ident, $packet: ident) =>
+	($now: ident, $reason: expr, $ethernet_addresses: ident, $packet_processing: expr, $packet: ident) =>
 	{
 		{
-			$packet_processing.drop($reason, $ethernet_addresses, $packet);
+			$packet_processing.drop($now, $reason, $ethernet_addresses, $packet);
 			return
 		}
 	}
