@@ -2,7 +2,6 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-#[macro_export]
 macro_rules! drop
 {
 	($now: ident, $reason: expr, $ethernet_addresses: ident, $packet_processing: expr, $packet: ident) =>
