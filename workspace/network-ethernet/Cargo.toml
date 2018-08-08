@@ -19,7 +19,7 @@ version = "0.1.5"
 
 [dependencies]
 arrayref = "^0.3"
-dpdk-sys = { version = "0.0.6", optional = true }
+dpdk-sys = { version = "^0.1", optional = true }
 libc = { version = "^0.2", optional = true }
 hyper-thread-random = "^0.4"
 likely = "0.1"
