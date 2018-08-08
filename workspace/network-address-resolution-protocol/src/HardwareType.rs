@@ -82,4 +82,11 @@ impl HardwareType
 	{
 		self.0 != Self::Ethernet2.0
 	}
+	
+	/// To a network endian value.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u16
+	{
+		self.0.to_network_endian()
+	}
 }

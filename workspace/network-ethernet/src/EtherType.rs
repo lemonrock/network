@@ -130,4 +130,11 @@ impl EtherType
 	{
 		self.0 != Self::InternetProtocolVersion4.0
 	}
+	
+	/// To a network endian value.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u16
+	{
+		self.0.to_network_endian()
+	}
 }

@@ -69,4 +69,11 @@ impl Operation
 	
 	/// Reply.
 	pub const Reply: Self = Operation(NetworkEndianU16::from_network_endian([0x00, 0x02]));
+	
+	/// To a network endian value.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u16
+	{
+		self.0.to_network_endian()
+	}
 }

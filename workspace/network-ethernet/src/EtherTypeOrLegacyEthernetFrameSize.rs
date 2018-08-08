@@ -173,4 +173,11 @@ impl EtherTypeOrLegacyEthernetFrameSize
 	{
 		unsafe { transmute(value) }
 	}
+	
+	/// To a network endian value.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u16
+	{
+		(unsafe { self.legacy_ethernet_frame_size }).to_network_endian()
+	}
 }
