@@ -228,11 +228,11 @@ impl InternetProtocolVersion4Packet
 					
 					// TODO: IPv4 packet reassembly and RSS logic.
 					// TODO: Overly small fragments, eg fragments smaller than MSS / MTU minima (eg 1280 for IPv6).
-					let packet = match reassemble_fragmented_internet_protocol_version_4_packet()
+					if reassemble_fragmented_internet_protocol_version_4_packet()
 					{
-						None => return,
-						Some(packet) => packet,
-					};
+						// Was a fragmented packet incapable of further processing.
+						return
+					}
 					
 					$layer_3_length - header_length_including_options_as_u16
 				}
@@ -260,7 +260,7 @@ impl InternetProtocolVersion4Packet
 		
 		let is_fragment = header.is_fragment();
 		
-		fn reassemble_fragmented_internet_protocol_version_4_packet()
+		fn reassemble_fragmented_internet_protocol_version_4_packet() -> bool
 		{
 			panic!();
 		}
