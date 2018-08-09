@@ -3,31 +3,25 @@
 
 
 /// This is a specialized structure designed to represent a buffer of packet data.
-///
-/// See RFC 792.
-///
-/// Example: Destination Unreachable: Internet Header + 64 bits of Original Data Datagram
 #[repr(C, packed)]
-pub union InternetControlMessageProtocolVersion4PacketPayload
+#[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+pub struct InternetControlMessageProtocolVersion6PacketHeader
 {
-	/// Undiscriminated for now.
-	pub other: PhantomData<u8>,
+	/// Type.
+	pub type_: InternetControlMessageProtocolVersion6Type,
+	
+	/// The meaning of code depends on type.
+	pub code: u8,
+	
+	/// The checksum includes the payload.
+	pub checksum: InternetCheckSum,
 }
 
-impl Display for InternetControlMessageProtocolVersion4PacketPayload
+impl Display for InternetControlMessageProtocolVersion6PacketHeader
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
 		Debug::fmt(self, f)
-	}
-}
-
-impl Debug for InternetControlMessageProtocolVersion4PacketPayload
-{
-	#[inline(always)]
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result
-	{
-		write!(f, "(ICMPv4 payload)")
 	}
 }

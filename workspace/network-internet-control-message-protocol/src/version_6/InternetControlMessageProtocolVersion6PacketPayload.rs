@@ -2,36 +2,32 @@
 // Copyright © 2016-2018 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// The source and destination ethernet addresses (MACs) of a packet.
+/// This is a specialized structure designed to represent a buffer of packet data.
 ///
-/// Depending on the PacketProcessingDropReason, these may be invalid, inappropriate, not for our interface, etc.
+/// See RFC 792.
+///
+/// Example: Destination Unreachable: Internet Header + 64 bits of Original Data Datagram
 #[repr(C, packed)]
-#[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
-#[derive(Serialize, Deserialize)]
-pub struct EthernetAddresses
+pub union InternetControlMessageProtocolVersion6PacketPayload
 {
-	/// Destination ethernet address.
-	pub destination: MediaAccessControlAddress,
-	
-	/// Source ethernet address.
-	pub source: MediaAccessControlAddress,
+	/// Undiscriminated for now.
+	pub other: PhantomData<u8>,
 }
 
-impl Display for EthernetAddresses
+impl Display for InternetControlMessageProtocolVersion6PacketPayload
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
-		write!(f, "{}, {}", self.source, self.destination)
+		Debug::fmt(self, f)
 	}
 }
 
-impl EthernetAddresses
+impl Debug for InternetControlMessageProtocolVersion6PacketPayload
 {
-	/// Addresses.
 	#[inline(always)]
-	pub fn addresses(&self) -> (&MediaAccessControlAddress, &MediaAccessControlAddress)
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
-		(&self.source, &self.destination)
+		write!(f, "(ICMPv4 payload)")
 	}
 }

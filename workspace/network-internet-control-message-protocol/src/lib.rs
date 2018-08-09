@@ -30,6 +30,10 @@ extern crate serde;
 pub mod version_4;
 
 
+/// Internet Control Message Protocol (ICMP) version 6.
+pub mod version_6;
+
+
 #[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
 #[cfg(feature = "libc")] use libc::*;
 use ::network_check_sum::InternetCheckSum;

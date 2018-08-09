@@ -2,9 +2,10 @@
 // Copyright © 2016-2018 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Why was an incoming network packet dropped?
-///
-/// Usually implemented as an enum.
-pub trait IncomingNetworkPacketProcessingDropReason: Sized + Debug
-{
-}
+use super::*;
+
+
+include!("InternetControlMessageProtocolVersion6Packet.rs");
+include!("InternetControlMessageProtocolVersion6PacketHeader.rs");
+include!("InternetControlMessageProtocolVersion6PacketPayload.rs");
+include!("InternetControlMessageProtocolVersion6Type.rs");
