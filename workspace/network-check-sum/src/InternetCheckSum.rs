@@ -70,3 +70,13 @@ impl Default for InternetCheckSum
 		InternetCheckSum(NetworkEndianU16::Zero)
 	}
 }
+
+impl InternetCheckSum
+{
+	/// To a network endian value.
+	#[inline(always)]
+	pub fn to_network_endian(self) -> u16
+	{
+		self.0.to_network_endian()
+	}
+}
