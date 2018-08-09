@@ -22,6 +22,31 @@ pub union RestOfHeader
 	pub unused: NetworkEndianU32,
 }
 
+impl Serialize for RestOfHeader
+{
+	#[inline(always)]
+	fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	{
+		(unsafe { self.unused }).serialize(serializer)
+	}
+}
+
+impl<'deserialize> Deserialize<'deserialize> for RestOfHeader
+{
+	#[inline(always)]
+	fn deserialize<D: Deserializer<'deserialize>>(deserializer: D) -> Result<Self, D::Error>
+	{
+		Ok
+		(
+			Self
+			{
+				unused: NetworkEndianU32::deserialize(deserializer)?,
+			}
+		)
+		
+	}
+}
+
 impl Clone for RestOfHeader
 {
 	#[inline(always)]
