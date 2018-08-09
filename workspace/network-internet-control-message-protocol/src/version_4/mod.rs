@@ -3,7 +3,6 @@
 
 
 use super::*;
-#[cfg(feature = "dpdk-sys")] use ::std::convert::TryFrom;
 
 
 include!("InternetControlMessageProtocolVersion4Packet.rs");
