@@ -6,7 +6,8 @@
 ///
 /// This is a specialized structure designed to represent a buffer of packet data.
 #[repr(C, packed)]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
+#[derive(Deserialize, Serialize)]
 pub struct VirtualLanPacketHeader
 {
 	/// Tag Control Information.
