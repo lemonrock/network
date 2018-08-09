@@ -5,6 +5,7 @@
 /// An Internet Control Message Protocol (ICMP) version 6 Neighbor Discovery option.
 #[derive(Debug)]
 #[repr(C, packed)]
+#[derive(Deserialize, Serialize)]
 pub struct InternetControlMessageProtocolVersion6NeighborDiscoveryOption
 {
 	/// 'header'.
