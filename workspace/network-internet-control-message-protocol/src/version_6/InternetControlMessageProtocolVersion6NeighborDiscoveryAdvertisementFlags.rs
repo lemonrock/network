@@ -6,6 +6,7 @@ bitflags!
 {
 	/// RFC 4861 flags for Neighbour Discovery Advertisement messages.
 	#[derive(Deserialize, Serialize)]
+	#[repr(C, packed)]
 	pub struct InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertisementFlags: u8
 	{
 		/// Also known as 'R' and the 'R-bit'.
@@ -36,5 +37,14 @@ impl Default for InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertis
 	fn default() -> Self
 	{
 		Self::empty()
+	}
+}
+
+impl Display for InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertisementFlags
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result
+	{
+		Debug::fmt(self, f)
 	}
 }

@@ -6,6 +6,8 @@ use super::*;
 
 
 include!("InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertisementFlags.rs");
+include!("InternetControlMessageProtocolVersion6NeighborDiscoveryOption.rs");
+include!("InternetControlMessageProtocolVersion6NeighborDiscoveryOptionHeader.rs");
 include!("InternetControlMessageProtocolVersion6Packet.rs");
 include!("InternetControlMessageProtocolVersion6PacketHeader.rs");
 include!("InternetControlMessageProtocolVersion6PacketPayload.rs");
