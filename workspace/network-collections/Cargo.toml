@@ -15,10 +15,10 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.2"
+version = "0.1.3"
 
 [dependencies]
-arrayvec = "^0.4"
+arrayvec = { version = "^0.4", features = ["serde-1"] }
 libc = "^0.2"
 likely = "^0.1"
 network-time = { path = "../network-time", version = "^0.1" }
