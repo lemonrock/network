@@ -8,13 +8,13 @@
 ///
 /// Example: Destination Unreachable: Internet Header + 64 bits of Original Data Datagram
 #[repr(C, packed)]
-pub union InternetControlMessageProtocolPacketPayload
+pub union InternetControlMessageProtocolVersion4PacketPayload
 {
 	/// Undiscriminated for now.
 	pub other: PhantomData<u8>,
 }
 
-impl Display for InternetControlMessageProtocolPacketPayload
+impl Display for InternetControlMessageProtocolVersion4PacketPayload
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -23,11 +23,11 @@ impl Display for InternetControlMessageProtocolPacketPayload
 	}
 }
 
-impl Debug for InternetControlMessageProtocolPacketPayload
+impl Debug for InternetControlMessageProtocolVersion4PacketPayload
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
-		write!(f, "(ICMP payload)")
+		write!(f, "(ICMPv4 payload)")
 	}
 }

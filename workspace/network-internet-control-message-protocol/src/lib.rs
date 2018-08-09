@@ -5,7 +5,7 @@
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
 #![feature(const_fn)]
-#![feature(try_from)]
+#![cfg_attr(feature = "dpdk-sys", feature(try_from))]
 
 
 //! # network-internet-control-message-protocol
@@ -27,6 +27,10 @@ extern crate serde;
 #[macro_use] extern crate serde_derive;
 
 
+/// Internet Control Message Protocol (ICMP) version 4.
+pub mod version_4;
+
+
 #[cfg(feature = "dpdk-sys")] use dpdk_sys::*;
 #[cfg(feature = "libc")] use libc::*;
 use ::network_check_sum::InternetCheckSum;
@@ -34,7 +38,6 @@ use ::network_endian::*;
 use ::network_ethernet::MaximumTransmissionUnitSize;
 use ::network_internet_protocol::version_4::*;
 use ::std::cmp::Ordering;
-use ::std::convert::TryFrom;
 use ::std::fmt;
 use ::std::fmt::Debug;
 use ::std::fmt::Display;
@@ -44,13 +47,3 @@ use ::std::hash::Hasher;
 use ::std::marker::PhantomData;
 #[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::mem::transmute;
 #[cfg(any(feature = "dpdk-sys", feature = "libc"))] use ::std::ptr::NonNull;
-
-
-include!("InternetControlMessageProtocolPacket.rs");
-include!("InternetControlMessageProtocolPacketHeader.rs");
-include!("InternetControlMessageProtocolPacketPayload.rs");
-include!("InternetControlMessageProtocolType.rs");
-include!("IdentAndSequence.rs");
-include!("PathMaximumTransmissionUnit.rs");
-include!("RestOfHeader.rs");
-include!("RouterAdvertisement.rs");

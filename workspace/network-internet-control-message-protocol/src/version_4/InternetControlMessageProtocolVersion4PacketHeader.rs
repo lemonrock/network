@@ -5,10 +5,10 @@
 /// This is a specialized structure designed to represent a buffer of packet data.
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub struct InternetControlMessageProtocolPacketHeader
+pub struct InternetControlMessageProtocolVersion4PacketHeader
 {
 	/// Type.
-	pub type_: InternetControlMessageProtocolType,
+	pub type_: InternetControlMessageProtocolVersion4Type,
 	
 	/// The meaning of code depends on type.
 	pub code: u8,
@@ -20,7 +20,7 @@ pub struct InternetControlMessageProtocolPacketHeader
 	pub rest_of_header: RestOfHeader,
 }
 
-impl Display for InternetControlMessageProtocolPacketHeader
+impl Display for InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -30,7 +30,7 @@ impl Display for InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl Into<icmp_hdr> for InternetControlMessageProtocolPacketHeader
+impl Into<icmp_hdr> for InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> icmp_hdr
@@ -40,7 +40,7 @@ impl Into<icmp_hdr> for InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<&'a icmp_hdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> Into<&'a icmp_hdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> &'a icmp_hdr
@@ -50,37 +50,37 @@ impl<'a> Into<&'a icmp_hdr> for &'a InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<NonNull<icmp_hdr>> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<NonNull<icmp_hdr>> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> NonNull<icmp_hdr>
 	{
-		unsafe { NonNull::new_unchecked(self as *mut InternetControlMessageProtocolPacketHeader as *mut icmp_hdr) }
+		unsafe { NonNull::new_unchecked(self as *mut InternetControlMessageProtocolVersion4PacketHeader as *mut icmp_hdr) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<*const icmp_hdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> Into<*const icmp_hdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> *const icmp_hdr
 	{
-		self as *const InternetControlMessageProtocolPacketHeader as *const _
+		self as *const InternetControlMessageProtocolVersion4PacketHeader as *const _
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<*mut icmp_hdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<*mut icmp_hdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> *mut icmp_hdr
 	{
-		self as *mut InternetControlMessageProtocolPacketHeader as *mut _
+		self as *mut InternetControlMessageProtocolVersion4PacketHeader as *mut _
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> Into<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> &'a mut icmp_hdr
@@ -90,7 +90,7 @@ impl<'a> Into<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolPacket
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl From<icmp_hdr> for InternetControlMessageProtocolPacketHeader
+impl From<icmp_hdr> for InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn from(value: icmp_hdr) -> Self
@@ -100,27 +100,27 @@ impl From<icmp_hdr> for InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> From<&'a icmp_hdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> From<&'a icmp_hdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a icmp_hdr) -> &'a InternetControlMessageProtocolPacketHeader
+	fn from(value: &'a icmp_hdr) -> &'a InternetControlMessageProtocolVersion4PacketHeader
 	{
 		unsafe { transmute(value) }
 	}
 }
 
 #[cfg(feature = "dpdk-sys")]
-impl<'a> From<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> From<&'a mut icmp_hdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a mut icmp_hdr) -> &'a mut InternetControlMessageProtocolPacketHeader
+	fn from(value: &'a mut icmp_hdr) -> &'a mut InternetControlMessageProtocolVersion4PacketHeader
 	{
 		unsafe { transmute(value) }
 	}
 }
 
 #[cfg(feature = "libc")]
-impl Into<icmphdr> for InternetControlMessageProtocolPacketHeader
+impl Into<icmphdr> for InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> icmphdr
@@ -130,7 +130,7 @@ impl Into<icmphdr> for InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "libc")]
-impl<'a> Into<&'a icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> Into<&'a icmphdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> &'a icmphdr
@@ -140,37 +140,37 @@ impl<'a> Into<&'a icmphdr> for &'a InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "libc")]
-impl<'a> Into<NonNull<icmphdr>> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<NonNull<icmphdr>> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> NonNull<icmphdr>
 	{
-		unsafe { NonNull::new_unchecked(self as *mut InternetControlMessageProtocolPacketHeader as *mut icmphdr) }
+		unsafe { NonNull::new_unchecked(self as *mut InternetControlMessageProtocolVersion4PacketHeader as *mut icmphdr) }
 	}
 }
 
 #[cfg(feature = "libc")]
-impl<'a> Into<*const icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> Into<*const icmphdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> *const icmphdr
 	{
-		self as *const InternetControlMessageProtocolPacketHeader as *const _
+		self as *const InternetControlMessageProtocolVersion4PacketHeader as *const _
 	}
 }
 
 #[cfg(feature = "libc")]
-impl<'a> Into<*mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<*mut icmphdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> *mut icmphdr
 	{
-		self as *mut InternetControlMessageProtocolPacketHeader as *mut _
+		self as *mut InternetControlMessageProtocolVersion4PacketHeader as *mut _
 	}
 }
 
 #[cfg(feature = "libc")]
-impl<'a> Into<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> Into<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn into(self) -> &'a mut icmphdr
@@ -180,7 +180,7 @@ impl<'a> Into<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolPacketH
 }
 
 #[cfg(feature = "libc")]
-impl From<icmphdr> for InternetControlMessageProtocolPacketHeader
+impl From<icmphdr> for InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
 	fn from(value: icmphdr) -> Self
@@ -190,20 +190,20 @@ impl From<icmphdr> for InternetControlMessageProtocolPacketHeader
 }
 
 #[cfg(feature = "libc")]
-impl<'a> From<&'a icmphdr> for &'a InternetControlMessageProtocolPacketHeader
+impl<'a> From<&'a icmphdr> for &'a InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a icmphdr) -> &'a InternetControlMessageProtocolPacketHeader
+	fn from(value: &'a icmphdr) -> &'a InternetControlMessageProtocolVersion4PacketHeader
 	{
 		unsafe { transmute(value) }
 	}
 }
 
 #[cfg(feature = "libc")]
-impl<'a> From<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolPacketHeader
+impl<'a> From<&'a mut icmphdr> for &'a mut InternetControlMessageProtocolVersion4PacketHeader
 {
 	#[inline(always)]
-	fn from(value: &'a mut icmphdr) -> &'a mut InternetControlMessageProtocolPacketHeader
+	fn from(value: &'a mut icmphdr) -> &'a mut InternetControlMessageProtocolVersion4PacketHeader
 	{
 		unsafe { transmute(value) }
 	}

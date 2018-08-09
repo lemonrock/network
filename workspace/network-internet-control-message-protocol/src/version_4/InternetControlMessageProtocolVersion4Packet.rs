@@ -5,16 +5,16 @@
 /// This is a specialized structure designed to represent a buffer of packet data.
 #[repr(C, packed)]
 #[derive(Debug)]
-pub struct InternetControlMessageProtocolPacket
+pub struct InternetControlMessageProtocolVersion4Packet
 {
 	/// Header.
-	pub header: InternetControlMessageProtocolPacketHeader,
+	pub header: InternetControlMessageProtocolVersion4PacketHeader,
 
 	/// Payload.
-	pub payload: InternetControlMessageProtocolPacketPayload,
+	pub payload: InternetControlMessageProtocolVersion4PacketPayload,
 }
 
-impl Display for InternetControlMessageProtocolPacket
+impl Display for InternetControlMessageProtocolVersion4Packet
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -23,7 +23,7 @@ impl Display for InternetControlMessageProtocolPacket
 	}
 }
 
-impl InternetControlMessageProtocolPacket
+impl InternetControlMessageProtocolVersion4Packet
 {
 //	/// Processes this packet.
 //	///

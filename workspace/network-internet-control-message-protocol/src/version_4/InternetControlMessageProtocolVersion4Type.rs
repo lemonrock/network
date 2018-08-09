@@ -7,9 +7,9 @@
 /// Deprecated, unassigned, reserved and experimental types are not provided for.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolType(u8);
+pub struct InternetControlMessageProtocolVersion4Type(u8);
 
-impl Display for InternetControlMessageProtocolType
+impl Display for InternetControlMessageProtocolVersion4Type
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
@@ -18,7 +18,7 @@ impl Display for InternetControlMessageProtocolType
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolType
+impl Into<u8> for InternetControlMessageProtocolVersion4Type
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -27,44 +27,44 @@ impl Into<u8> for InternetControlMessageProtocolType
 	}
 }
 
-impl From<u8> for InternetControlMessageProtocolType
+impl From<u8> for InternetControlMessageProtocolVersion4Type
 {
 	#[inline(always)]
 	fn from(value: u8) -> Self
 	{
-		InternetControlMessageProtocolType(value)
+		InternetControlMessageProtocolVersion4Type(value)
 	}
 }
 
-impl InternetControlMessageProtocolType
+impl InternetControlMessageProtocolVersion4Type
 {
 	/// Echo Reply ('pong').
-	pub const EchoReply: Self = InternetControlMessageProtocolType(0);
+	pub const EchoReply: Self = InternetControlMessageProtocolVersion4Type(0);
 	
 	/// Destination Unreachable
-	pub const DestinationUnreachable: Self = InternetControlMessageProtocolType(3);
+	pub const DestinationUnreachable: Self = InternetControlMessageProtocolVersion4Type(3);
 	
 	/// Redirect Message.
-	pub const RedirectMessage: Self = InternetControlMessageProtocolType(5);
+	pub const RedirectMessage: Self = InternetControlMessageProtocolVersion4Type(5);
 	
 	/// Echo Request ('ping').
-	pub const EchoRequest: Self = InternetControlMessageProtocolType(8);
+	pub const EchoRequest: Self = InternetControlMessageProtocolVersion4Type(8);
 	
 	/// Router Advertisement.
-	pub const RouterAdvertisement: Self = InternetControlMessageProtocolType(9);
+	pub const RouterAdvertisement: Self = InternetControlMessageProtocolVersion4Type(9);
 	
 	/// Router Solicitation (request).
-	pub const RouterSolicitation: Self = InternetControlMessageProtocolType(10);
+	pub const RouterSolicitation: Self = InternetControlMessageProtocolVersion4Type(10);
 	
 	/// Time exceeded (TTL).
-	pub const TimeExceeded: Self = InternetControlMessageProtocolType(11);
+	pub const TimeExceeded: Self = InternetControlMessageProtocolVersion4Type(11);
 	
 	/// Bad Internet Protocol (IP) version 4 header.
-	pub const BadInternetProtocolVersion4Header: Self = InternetControlMessageProtocolType(12);
+	pub const BadInternetProtocolVersion4Header: Self = InternetControlMessageProtocolVersion4Type(12);
 	
 	/// Timestamp Request.
-	pub const TimestampRequest: Self = InternetControlMessageProtocolType(13);
+	pub const TimestampRequest: Self = InternetControlMessageProtocolVersion4Type(13);
 	
 	/// Timestamp Reply.
-	pub const TimestampReply: Self = InternetControlMessageProtocolType(14);
+	pub const TimestampReply: Self = InternetControlMessageProtocolVersion4Type(14);
 }
