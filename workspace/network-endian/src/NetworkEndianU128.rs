@@ -6,7 +6,7 @@
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[derive(Deserialize, Serialize)]
 #[repr(C, packed)]
-pub struct NetworkEndianU128([u8; 16]);
+pub struct NetworkEndianU128([u8; NetworkEndianU128::Size]);
 
 impl PartialOrd for NetworkEndianU128
 {
@@ -26,8 +26,36 @@ impl Ord for NetworkEndianU128
 	}
 }
 
+impl Into<[u8; NetworkEndianU128::Size]> for NetworkEndianU128
+{
+	#[inline(always)]
+	fn into(self) -> [u8; NetworkEndianU128::Size]
+	{
+		self.to_bytes()
+	}
+}
+
+impl From<[u8; NetworkEndianU128::Size]> for NetworkEndianU128
+{
+	#[inline(always)]
+	fn from(bytes: [u8; NetworkEndianU128::Size]) -> Self
+	{
+		NetworkEndianU128(bytes)
+	}
+}
+
 impl NetworkEndian for NetworkEndianU128
 {
+	const Size: usize = 16;
+	
+	type Bytes = [u8; 16];
+	
+	#[inline(always)]
+	fn to_bytes(self) -> Self::Bytes
+	{
+		self.0
+	}
+	
 	#[inline(always)]
 	fn bytes(&self) -> &[u8]
 	{

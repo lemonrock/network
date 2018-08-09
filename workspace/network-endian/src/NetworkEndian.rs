@@ -5,6 +5,16 @@
 /// Abstract network endian data.
 pub trait NetworkEndian: Sized + Default + Debug + Copy + Clone + PartialOrd + Ord + PartialEq + Eq + Hash + Display + Serialize + DeserializeOwned
 {
+	/// Size in bytes.
+	const Size: usize;
+	
+	/// Implements `[u8; Self::Size]` but this can not yet be expressed in Rust.
+	type Bytes;
+	
+	/// Convert into bytes.
+	#[inline(always)]
+	fn to_bytes(self) -> Self::Bytes;
+	
 	/// Underlying bytes.
 	#[inline(always)]
 	fn bytes(&self) -> &[u8];
