@@ -17,6 +17,22 @@ pub union ExtensionHeaderTypeOrLayer4ProtocolNumber
 	pub unknown: u8,
 }
 
+impl<'deserialize> Deserialize<'deserialize> for ExtensionHeaderTypeOrLayer4ProtocolNumber
+{
+	#[inline(always)]
+	fn deserialize<D: Deserializer<'deserialize>>(deserializer: D) -> Result<Self, D::Error>
+	{
+		Ok
+		(
+			Self
+			{
+				unknown: u8::deserialize(deserializer)?,
+			}
+		)
+		
+	}
+}
+
 impl Serialize for ExtensionHeaderTypeOrLayer4ProtocolNumber
 {
 	#[inline(always)]
@@ -103,8 +119,4 @@ impl Hash for ExtensionHeaderTypeOrLayer4ProtocolNumber
 	{
 		hasher.write_u8(unsafe { self.unknown })
 	}
-}
-
-impl ExtensionHeaderTypeOrLayer4ProtocolNumber
-{
 }

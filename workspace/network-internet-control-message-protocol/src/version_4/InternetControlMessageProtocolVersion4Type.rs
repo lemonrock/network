@@ -2,7 +2,7 @@
 // Copyright © 2016-2018 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Represents common internet control message protocol (ICMP) types.
+/// Represents common internet control message protocol (ICMP) version 4 types.
 ///
 /// Deprecated, unassigned, reserved and experimental types are not provided for.
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]

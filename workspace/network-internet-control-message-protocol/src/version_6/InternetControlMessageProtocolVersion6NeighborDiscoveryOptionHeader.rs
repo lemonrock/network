@@ -9,7 +9,7 @@
 pub struct InternetControlMessageProtocolVersion6NeighborDiscoveryOptionHeader
 {
 	/// Type.
-	pub type_: u8,
+	pub type_: InternetControlMessageProtocolVersion6NeighborDiscoveryOptionType,
 	
 	/// Length.
 	pub length: u8,
