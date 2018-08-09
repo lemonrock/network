@@ -15,9 +15,10 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.7"
+version = "0.1.8"
 
 [dependencies]
+bitflags = "^1.0"
 dpdk-sys = { version = "^0.1", optional = true }
 libc = { version = "^0.2", optional = true }
 network-check-sum = { path = "../network-check-sum", version = "^0.1" }

@@ -17,6 +17,7 @@
 
 
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
+#[macro_use] extern crate bitflags;
 #[cfg(feature = "libc")] extern crate libc;
 extern crate network_check_sum;
 extern crate network_endian;
