@@ -7,7 +7,7 @@
 #[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Hash)]
 pub struct EthernetPacketHeader
 {
-	/// Source and destination addresses.
+	/// Destination and source addresses.
 	pub ethernet_addresses: EthernetAddresses,
 	
 	/// Ethernet frame size or ether type.

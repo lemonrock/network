@@ -10,11 +10,11 @@
 #[derive(Serialize, Deserialize)]
 pub struct EthernetAddresses
 {
-	/// Source ethernet address.
-	pub source: MediaAccessControlAddress,
-	
 	/// Destination ethernet address.
 	pub destination: MediaAccessControlAddress,
+	
+	/// Source ethernet address.
+	pub source: MediaAccessControlAddress,
 }
 
 impl Display for EthernetAddresses
