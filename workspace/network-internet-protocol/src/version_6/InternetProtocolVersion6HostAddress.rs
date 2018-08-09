@@ -61,14 +61,22 @@ impl Into<[u8; InternetProtocolVersion6HostAddress::Size]> for InternetProtocolV
 
 impl NetworkEndian for InternetProtocolVersion6HostAddress
 {
-	/// Underlying bytes.
+	const Length: usize = NetworkEndianU128::Length;
+	
+	type Bytes = <NetworkEndianU128 as NetworkEndian>::Bytes;
+	
+	#[inline(always)]
+	fn to_bytes(self) -> Self::Bytes
+	{
+		self.0
+	}
+
 	#[inline(always)]
 	fn bytes(&self) -> &[u8]
 	{
 		&self.0
 	}
 	
-	/// Writes to a hasher creating a hash.
 	#[inline(always)]
 	fn write_to_hash<H: Hasher>(&self, hasher: &mut H)
 	{
