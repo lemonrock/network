@@ -4,8 +4,7 @@
 
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![feature(const_fn)]
-#![cfg_attr(feature = "dpdk-sys", feature(try_from))]
+#![feature(const_fn, try_from)]
 
 
 //! # network-internet-control-message-protocol
