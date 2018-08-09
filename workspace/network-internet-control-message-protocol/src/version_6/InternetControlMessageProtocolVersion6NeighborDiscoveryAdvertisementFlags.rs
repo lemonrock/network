@@ -5,6 +5,7 @@
 bitflags!
 {
 	/// RFC 4861 flags for Neighbour Discovery Advertisement messages.
+	#[derive(Deserialize, Serialize)]
 	pub struct InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertisementFlags: u8
 	{
 		/// Also known as 'R' and the 'R-bit'.
