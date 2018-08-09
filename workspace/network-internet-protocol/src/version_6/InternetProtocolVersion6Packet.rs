@@ -9,6 +9,11 @@ pub struct InternetProtocolVersion6Packet
 {
 	/// Header.
 	pub header: InternetProtocolVersion6PacketHeader,
+
+	/// Payload.
+	///
+	/// Can be the start of real payload or an extension header.
+	pub payload: PhantomData<u8>,
 }
 
 impl Display for InternetProtocolVersion6Packet

@@ -5,7 +5,7 @@
 /// This is a specialized structure designed to represent a buffer of packet data.
 #[repr(C, packed)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-#[derive(Serialize)]
+#[derive(Deserialize, Serialize)]
 pub struct InternetProtocolVersion6PacketHeader
 {
 	/// Version, traffic class and flow label bit fields.
@@ -25,9 +25,6 @@ pub struct InternetProtocolVersion6PacketHeader
 	
 	/// Destination address.
 	pub destination_address: InternetProtocolVersion6HostAddress,
-	
-	/// Extension header or payload pointer.
-	pub extension_header_or_payload: PhantomData<u8>,
 }
 
 impl Display for InternetProtocolVersion6PacketHeader
