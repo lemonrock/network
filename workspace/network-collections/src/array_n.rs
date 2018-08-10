@@ -294,5 +294,23 @@ macro_rules! array_n
 				$type([T::default(); $size])
 			}
 		}
+		
+		impl<T> From<[T; $size]> for $type<T>
+		{
+			#[inline(always)]
+			fn from(value: [T; $size]) -> Self
+			{
+				$type(value)
+			}
+		}
+		
+		impl<T> Into<[T; $size]> for $type<T>
+		{
+			#[inline(always)]
+			fn into(self) -> [T; $size]
+			{
+				self.0
+			}
+		}
 	}
 }
