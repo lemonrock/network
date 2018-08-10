@@ -22,5 +22,6 @@ include!("InternetControlMessageProtocolVersion6NeighborDiscoveryOptionType.rs")
 include!("InternetControlMessageProtocolVersion6Packet.rs");
 include!("InternetControlMessageProtocolVersion6PacketHeader.rs");
 include!("InternetControlMessageProtocolVersion6PacketPayload.rs");
+include!("InternetControlMessageProtocolVersion6TypeAndCode.rs");
 include!("KnownInternetControlMessageProtocolVersion6NeighborDiscoveryOptionType.rs");
 

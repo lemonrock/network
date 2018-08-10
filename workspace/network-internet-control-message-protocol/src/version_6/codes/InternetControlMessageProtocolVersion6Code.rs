@@ -10,82 +10,82 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// Destination Unreachable.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::DestinationUnreachable`.
-	destination_unreachable: InternetControlMessageProtocolVersion6CodeDestinationUnreachable,
+	pub destination_unreachable: InternetControlMessageProtocolVersion6CodeDestinationUnreachable,
 	
 	/// Packet too big.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::PacketTooBig`.
-	packet_too_big: InternetControlMessageProtocolVersion6CodePacketTooBig,
+	pub packet_too_big: InternetControlMessageProtocolVersion6CodePacketTooBig,
 	
 	/// Time exceeded.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
-	time_exceeded: InternetControlMessageProtocolVersion6CodeTimeExceeded,
+	pub time_exceeded: InternetControlMessageProtocolVersion6CodeTimeExceeded,
 	
 	/// Parameter problem.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
-	parameter_problem: InternetControlMessageProtocolVersion6CodeParameterProblem,
+	pub parameter_problem: InternetControlMessageProtocolVersion6CodeParameterProblem,
 	
 	/// Echo request ('ping').
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoRequest`.
-	echo_request: InternetControlMessageProtocolVersion6CodeEchoRequest,
+	pub echo_request: InternetControlMessageProtocolVersion6CodeEchoRequest,
 	
 	/// Echo reply ('pong').
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoReply`.
-	echo_reply: InternetControlMessageProtocolVersion6CodeEchoReply,
+	pub echo_reply: InternetControlMessageProtocolVersion6CodeEchoReply,
 	
 	/// Multicast listener query.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerQuery`.
-	multicast_listener_query: InternetControlMessageProtocolVersion6CodeMulticastListenerQuery,
+	pub multicast_listener_query: InternetControlMessageProtocolVersion6CodeMulticastListenerQuery,
 	
 	/// Multicast listener report.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerReport`.
-	multicast_listener_report: InternetControlMessageProtocolVersion6CodeMulticastListenerReport,
+	pub multicast_listener_report: InternetControlMessageProtocolVersion6CodeMulticastListenerReport,
 	
 	/// Multicast listener done.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
-	multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
+	pub multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
 	
 	/// Router solicitation.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterSolicitation`.
-	router_solicitation: InternetControlMessageProtocolVersion6CodeRouterSolicitation,
+	pub router_solicitation: InternetControlMessageProtocolVersion6CodeRouterSolicitation,
 	
 	/// Router advertisement.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterAdvertisement`.
-	router_advertisement: InternetControlMessageProtocolVersion6CodeRouterAdvertisement,
+	pub router_advertisement: InternetControlMessageProtocolVersion6CodeRouterAdvertisement,
 	
 	/// Neighbor solicitation.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborSolicitation`.
-	neighbor_solicitation: InternetControlMessageProtocolVersion6CodeNeighborSolicitation,
+	pub neighbor_solicitation: InternetControlMessageProtocolVersion6CodeNeighborSolicitation,
 	
 	/// Neighbor advertisement.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
-	neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
+	pub neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
 	
 	/// Redirect message.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
-	redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
+	pub redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
 	
 	/// Router renumbering.
 	///
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterRenumbering`.
-	router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering,
+	pub router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering,
 	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.
-	undifferentiated: u8,
+	pub undifferentiated: u8,
 }
 
 impl Serialize for InternetControlMessageProtocolVersion6Code

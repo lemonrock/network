@@ -8,11 +8,8 @@
 #[derive(Deserialize, Serialize)]
 pub struct InternetControlMessageProtocolVersion6PacketHeader
 {
-	/// Type.
-	pub type_: InternetControlMessageProtocolVersion6Type,
-	
-	/// The meaning of code depends on type.
-	pub code: InternetControlMessageProtocolVersion6Code,
+	/// Type and associated code.
+	pub type_and_code: InternetControlMessageProtocolVersion6TypeAndCode,
 	
 	/// The checksum includes the payload.
 	pub checksum: InternetCheckSum,
@@ -33,6 +30,6 @@ impl InternetControlMessageProtocolVersion6PacketHeader
 	#[inline(always)]
 	pub fn message_kind(self) -> InternetControlMessageProtocolVersion6MessageKind
 	{
-		self.type_.message_kind()
+		self.type_and_code.message_kind()
 	}
 }
