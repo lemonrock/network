@@ -9,6 +9,8 @@ include!("InternetControlMessageProtocolVersion6Code.rs");
 include!("InternetControlMessageProtocolVersion6CodeCertificationPathAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeCertificationPathSolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodeDestinationUnreachable.rs");
+include!("InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation.rs");
+include!("InternetControlMessageProtocolVersion6CodeDuplicateAddressRequest.rs");
 include!("InternetControlMessageProtocolVersion6CodeEchoReply.rs");
 include!("InternetControlMessageProtocolVersion6CodeEchoRequest.rs");
 include!("InternetControlMessageProtocolVersion6CodeExperimentalMobilityProtocol.rs");

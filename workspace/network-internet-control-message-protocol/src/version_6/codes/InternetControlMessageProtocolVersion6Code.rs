@@ -172,7 +172,15 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::IdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate`.
 	pub identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update: InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate,
 	
+	/// Duplicate Address Request (RFC 6775).
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::DuplicateAddressRequest`.
+	pub duplicate_address_request: InternetControlMessageProtocolVersion6CodeDuplicateAddressRequest,
 	
+	/// Duplicate Address Confirmation (RFC 6775).
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::DuplicateAddressConfirmation`.
+	pub duplicate_address_confirmation: InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation,
 	
 	
 	

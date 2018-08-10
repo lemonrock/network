@@ -115,12 +115,12 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 	/// Identifier-Locator Network Protocol for Internet Protocol (IP) version 6 (ILNPv6) Locator Update (RFC 6743).
 	fn identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update(&self, identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update: InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate) -> R;
 
-//	/// Duplicate Address Request (RFC 6775).
-//	fn duplicate_address_request(&self, duplicate_address_request: InternetControlMessageProtocolVersion6CodeDuplicateAddressRequest) -> R;
-//
-//	/// Duplicate Address Confirmation (RFC 6775).
-//	fn duplicate_address_confirmation(&self, duplicate_address_confirmation: InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation) -> R;
-//
+	/// Duplicate Address Request (RFC 6775).
+	fn duplicate_address_request(&self, duplicate_address_request: InternetControlMessageProtocolVersion6CodeDuplicateAddressRequest) -> R;
+
+	/// Duplicate Address Confirmation (RFC 6775).
+	fn duplicate_address_confirmation(&self, duplicate_address_confirmation: InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation) -> R;
+
 //	/// MPL Control (RFC 7731).
 //	fn m_p_l_control(&self, m_p_l_control: InternetControlMessageProtocolVersion6CodeMPLControl) -> R;
 
