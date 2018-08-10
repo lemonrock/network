@@ -2,7 +2,7 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Echo request ('ping').
+/// Echo Request ('ping') (RFC 4443).
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
 pub struct InternetControlMessageProtocolVersion6CodeEchoRequest(u8);

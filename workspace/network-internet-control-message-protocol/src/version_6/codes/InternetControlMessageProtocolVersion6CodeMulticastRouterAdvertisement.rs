@@ -2,36 +2,29 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Router Solicitation (RFC 4861).
+/// Multicast Router Advertisement (RFC 4286) interval value.
+///
+/// Note that `try_from` always succeeds; we implement `TryFrom` rather than `From` to maintain an API complementary to other kinds of `InternetControlMessageProtocolVersion6Code*`.
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeRouterSolicitation(u8);
+pub struct InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement(u8);
 
-impl InternetControlMessageProtocolVersion6CodeRouterSolicitation
+impl InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement
 {
-	/// Only known value.
-	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeRouterSolicitation(0);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRouterSolicitation
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement
 {
 	type Error = ();
 	
 	#[inline(always)]
 	fn try_from(value: u8) -> Result<Self, Self::Error>
 	{
-		if value == 0
-		{
-			Ok(InternetControlMessageProtocolVersion6CodeRouterSolicitation(value))
-		}
-		else
-		{
-			Err(())
-		}
+		Ok(InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement(value))
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeRouterSolicitation
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -40,11 +33,21 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeRouterSolicitation
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeRouterSolicitation
+impl Display for InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
 		Debug::fmt(self, f)
+	}
+}
+
+impl InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement
+{
+	/// Inverval.
+	#[inline(always)]
+	pub fn interval(self) -> u8
+	{
+		self.0
 	}
 }

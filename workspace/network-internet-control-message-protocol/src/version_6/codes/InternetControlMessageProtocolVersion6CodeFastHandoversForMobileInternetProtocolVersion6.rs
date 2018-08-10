@@ -2,7 +2,7 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Fast handovers for Mobile Internet Protocol (IP) version 6, aka FMIPv6.
+/// Fast handovers for Mobile Internet Protocol (IP) version 6, aka FMIPv6 (RFC 5568).
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
 pub struct InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6(u8);

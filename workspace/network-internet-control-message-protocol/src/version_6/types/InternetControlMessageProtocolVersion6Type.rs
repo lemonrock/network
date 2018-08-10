@@ -38,136 +38,136 @@ impl From<u8> for InternetControlMessageProtocolVersion6Type
 
 impl InternetControlMessageProtocolVersion6Type
 {
-	/// RFC 4443: Destination Unreachable.
+	/// Destination Unreachable (RFC 4443).
 	pub const DestinationUnreachable: Self = InternetControlMessageProtocolVersion6Type(1);
 	
-	/// RFC 4443: Packet Too Big.
+	/// Packet Too Big (RFC 4443).
 	pub const PacketTooBig: Self = InternetControlMessageProtocolVersion6Type(2);
 	
-	/// RFC 4443: Time Exceeded.
+	/// Time Exceeded (RFC 4443).
 	pub const TimeExceeded: Self = InternetControlMessageProtocolVersion6Type(3);
 	
-	/// RFC 4443: Parameter Problem.
+	/// Parameter Problem (RFC 4443).
 	pub const ParameterProblem: Self = InternetControlMessageProtocolVersion6Type(4);
 	
-	/// RFC 4443: Private error message experiment.
+	/// Private error message experiment (RFC 4443).
 	pub const PrivateErrorMessageExperiment1: Self = InternetControlMessageProtocolVersion6Type(100);
 	
-	/// RFC 4443: Private error message experiment.
+	/// Private error message experiment (RFC 4443).
 	pub const PrivateErrorMessageExperiment2: Self = InternetControlMessageProtocolVersion6Type(101);
 	
-	/// RFC 4443: "reserved for future expansion of the \[error message\] value range if there is a shortage in the future".
+	/// "reserved for future expansion of the \[error message\] value range if there is a shortage in the future" (RFC 4443).
 	pub const ReservedForExpansionOfErrorMessageRange: Self = InternetControlMessageProtocolVersion6Type(127);
 	
 	/// RFC 4443: Echo Request ('ping')
 	pub const EchoRequest: Self = InternetControlMessageProtocolVersion6Type(128);
 	
-	/// RFC 4443: Echo Reply ('pong').
+	/// Echo Reply ('pong') (RFC 4443).
 	pub const EchoReply: Self = InternetControlMessageProtocolVersion6Type(129);
 	
-	/// RFC 2710: Multicast Listener Query.
+	/// Multicast Listener Query (RFC 2710).
 	pub const MulticastListenerQuery: Self = InternetControlMessageProtocolVersion6Type(130);
 	
-	/// RFC 2710: Multicast Listener Report.
+	/// Multicast Listener Report (RFC 2710).
 	pub const MulticastListenerReport: Self = InternetControlMessageProtocolVersion6Type(131);
 	
-	/// RFC 2710: Multicast Listener Done.
+	/// Multicast Listener Done (RFC 2710).
 	pub const MulticastListenerDone: Self = InternetControlMessageProtocolVersion6Type(132);
 	
-	/// RFC 4861: Router Solicitation.
+	/// Router Solicitation (RFC 4861).
 	pub const RouterSolicitation: Self = InternetControlMessageProtocolVersion6Type(133);
 	
-	/// RFC 4861: Router Advertisement.
+	/// Router Advertisement (RFC 4861).
 	pub const RouterAdvertisement: Self = InternetControlMessageProtocolVersion6Type(134);
 	
-	/// RFC 4861: Neighbor Solicitation.
+	/// Neighbor Solicitation (RFC 4861).
 	pub const NeighborSolicitation: Self = InternetControlMessageProtocolVersion6Type(135);
 	
-	/// RFC 4861: Neighbor Advertisement.
+	/// Neighbor Advertisement (RFC 4861).
 	pub const NeighborAdvertisement: Self = InternetControlMessageProtocolVersion6Type(136);
 	
-	/// RFC 4861: Redirect Message.
-	pub const RedirectMessage: Self = InternetControlMessageProtocolVersion6Type(137);
+	/// Redirect (RFC 4861).
+	pub const Redirect: Self = InternetControlMessageProtocolVersion6Type(137);
 	
-	/// RFC 2894: Router Renumbering.
+	/// Router Renumbering (RFC 2894).
 	pub const RouterRenumbering: Self = InternetControlMessageProtocolVersion6Type(138);
 	
-	/// RFC 4620: Node Information Query.
+	/// Node Information Query (RFC 4620).
 	pub const NodeInformationQuery: Self = InternetControlMessageProtocolVersion6Type(139);
 	
-	/// RFC 4620: Node Information Response.
+	/// Node Information Response (RFC 4620).
 	pub const NodeInformationResponse: Self = InternetControlMessageProtocolVersion6Type(140);
 	
-	/// RFC 3122: Inverse Neighbor Discovery Solicitation.
+	/// Inverse Neighbor Discovery Solicitation (RFC 3122).
 	pub const InverseNeighborDiscoverySolicitation: Self = InternetControlMessageProtocolVersion6Type(141);
 	
-	/// RFC 3122: Inverse Neighbor Discovery Advertisement.
+	/// Inverse Neighbor Discovery Advertisement (RFC 3122).
 	pub const InverseNeighborDiscoveryAdvertisement: Self = InternetControlMessageProtocolVersion6Type(142);
 	
-	/// RFC 3810: Version 2 Multicast Listener Report.
+	/// Version 2 Multicast Listener Report (RFC 3810).
 	pub const Version2MulticastListenerReport: Self = InternetControlMessageProtocolVersion6Type(143);
 	
-	/// RFC 6275: Home Agent Address Discovery Request.
+	/// Home Agent Address Discovery Request (RFC 6275).
 	pub const HomeAgentAddressDiscoveryRequest: Self = InternetControlMessageProtocolVersion6Type(144);
 	
-	/// RFC 6275: Home Agent Address Discovery Reply.
+	/// Home Agent Address Discovery Reply (RFC 6275).
 	pub const HomeAgentAddressDiscoveryReply: Self = InternetControlMessageProtocolVersion6Type(145);
 	
-	/// RFC 6275: Mobile Prefix Solicitation.
+	/// Mobile Prefix Solicitation (RFC 6275).
 	pub const MobilePrefixSolicitation: Self = InternetControlMessageProtocolVersion6Type(146);
 	
-	/// RFC 6275: Mobile Prefix Advertisement.
+	/// Mobile Prefix Advertisement (RFC 6275).
 	pub const MobilePrefixAdvertisement: Self = InternetControlMessageProtocolVersion6Type(147);
 	
-	/// RFC 3971: Certification Path Solicitation.
+	/// Certification Path Solicitation (RFC 3971).
 	pub const CertificationPathSolicitation: Self = InternetControlMessageProtocolVersion6Type(148);
 	
-	/// RFC 3971: Certification Path Advertisement.
+	/// Certification Path Advertisement (RFC 3971).
 	pub const CertificationPathAdvertisement: Self = InternetControlMessageProtocolVersion6Type(149);
 	
-	/// RFC 4065: ICMP messages utilized by experimental mobility protocols such as Seamoby.
+	/// Utilized by experimental mobility protocols such as Seamoby (RFC 4065).
 	pub const ExperimentalMobilityProtocol: Self = InternetControlMessageProtocolVersion6Type(150);
 	
-	/// RFC 4286: Multicast Router Advertisement.
+	/// Multicast Router Advertisement (RFC 4286).
 	pub const MulticastRouterAdvertisement: Self = InternetControlMessageProtocolVersion6Type(151);
 	
-	/// RFC 4286: Multicast Router Solicitation.
+	/// Multicast Router Solicitation (RFC 4286).
 	pub const MulticastRouterSolicitation: Self = InternetControlMessageProtocolVersion6Type(152);
 	
-	/// RFC 4286: Multicast Router Termination.
+	/// Multicast Router Termination (RFC 4286).
 	pub const MulticastRouterTermination: Self = InternetControlMessageProtocolVersion6Type(153);
 	
-	/// RFC 5568: Fast handovers for Mobile Internet Protocol (IP) v6, aka FIMPv6.
+	/// Fast handovers for Mobile Internet Protocol (IP) v6, aka FIMPv6 (RFC 5568).
 	pub const FastHandoversForMobileInternetProtocolVersion6: Self = InternetControlMessageProtocolVersion6Type(154);
 	
-	/// RFC 6550: RPL Control.
+	/// RPL Control (RFC 6550).
 	pub const RPLControl: Self = InternetControlMessageProtocolVersion6Type(155);
 	
-	/// RFC 6743: ILNPv6 Locator Update.
+	/// ILNPv6 Locator Update (RFC 6743).
 	pub const ILNPv6LocatorUpdate: Self = InternetControlMessageProtocolVersion6Type(156);
 	
-	/// RFC 6775: Duplicate Address Request.
+	/// Duplicate Address Request (RFC 6775).
 	pub const DuplicateAddressRequest: Self = InternetControlMessageProtocolVersion6Type(157);
 	
-	/// RFC 6775: Duplicate Address Confirmation.
+	/// Duplicate Address Confirmation (RFC 6775).
 	pub const DuplicateAddressConfirmation: Self = InternetControlMessageProtocolVersion6Type(158);
 	
-	/// RFC 7731: RPL Control.
+	/// MPL Control (RFC 7731).
 	pub const MPLControl: Self = InternetControlMessageProtocolVersion6Type(159);
 	
-	/// RFC 8335: Echo Request ('ping')
+	/// Extended Echo Request ('ping') (RFC 8335).
 	pub const ExtendedEchoRequest: Self = InternetControlMessageProtocolVersion6Type(160);
 	
-	/// RFC 8335: Echo Reply ('pong').
+	/// Extended Echo Reply ('pong') (RFC 8335).
 	pub const ExtendedEchoReply: Self = InternetControlMessageProtocolVersion6Type(161);
 	
-	/// RFC 4443: Private informational message experiment.
+	/// Private informational message experiment (RFC 4443).
 	pub const PrivateInformationalMessageExperiment1: Self = InternetControlMessageProtocolVersion6Type(200);
 	
-	/// RFC 4443: Private informational message experiment.
+	/// Private informational message experiment (RFC 4443).
 	pub const PrivateInformationalMessageExperiment2: Self = InternetControlMessageProtocolVersion6Type(201);
 	
-	/// RFC 4443: "reserved for future expansion of the \[informational message\] value range if there is a shortage in the future".
+	/// "reserved for future expansion of the \[informational message\] value range if there is a shortage in the future" (RFC 4443).
 	pub const ReservedForExpansionOfInformationalMessageRange: Self = InternetControlMessageProtocolVersion6Type(255);
 	
 	/// Is this an error message or an informational message?

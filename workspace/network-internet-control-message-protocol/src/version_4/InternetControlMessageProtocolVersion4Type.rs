@@ -45,7 +45,7 @@ impl InternetControlMessageProtocolVersion4Type
 	pub const DestinationUnreachable: Self = InternetControlMessageProtocolVersion4Type(3);
 	
 	/// Redirect Message.
-	pub const RedirectMessage: Self = InternetControlMessageProtocolVersion4Type(5);
+	pub const Redirect: Self = InternetControlMessageProtocolVersion4Type(5);
 	
 	/// Echo Request ('ping').
 	pub const EchoRequest: Self = InternetControlMessageProtocolVersion4Type(8);

@@ -2,18 +2,18 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Redirect message.
+/// Version 2 Multicast Listener Report (RFC 3810).
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeRedirectMessage(u8);
+pub struct InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport(u8);
 
-impl InternetControlMessageProtocolVersion6CodeRedirectMessage
+impl InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport
 {
 	/// Only known value.
-	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeRedirectMessage(0);
+	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport(0);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRedirectMessage
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport
 {
 	type Error = ();
 	
@@ -22,7 +22,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRedirectMessage
 	{
 		if value == 0
 		{
-			Ok(InternetControlMessageProtocolVersion6CodeRedirectMessage(value))
+			Ok(InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport(value))
 		}
 		else
 		{
@@ -31,7 +31,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRedirectMessage
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeRedirectMessage
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -40,7 +40,7 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeRedirectMessage
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeRedirectMessage
+impl Display for InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
