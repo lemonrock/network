@@ -2,18 +2,18 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Echo reply ('pong').
+/// Home agent address discovery reply (RFC 3775).
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeEchoReply(u8);
+pub struct InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply(u8);
 
-impl InternetControlMessageProtocolVersion6CodeEchoReply
+impl InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply
 {
 	/// Only known value.
-	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeEchoReply(0);
+	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply(0);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply
 {
 	type Error = ();
 	
@@ -22,7 +22,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	{
 		if value == 0
 		{
-			Ok(InternetControlMessageProtocolVersion6CodeEchoReply(value))
+			Ok(InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply(value))
 		}
 		else
 		{
@@ -31,7 +31,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -40,7 +40,7 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeEchoReply
+impl Display for InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result

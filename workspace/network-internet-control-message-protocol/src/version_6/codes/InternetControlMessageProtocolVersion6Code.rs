@@ -92,6 +92,46 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NodeInformationResponse`.
 	pub node_information_response: InternetControlMessageProtocolVersion6CodeNodeInformationResponse,
 	
+	/// Inverse neighbor discovery solicitation.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoverySolicitation`.
+	pub inverse_neighbor_discovery_solicitation: InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoverySolicitation,
+	
+	/// Inverse neighbor discovery advertisement.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoveryAdvertisement`.
+	pub inverse_neighbor_discovery_advertisement: InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoveryAdvertisement,
+	
+	/// Home agent address discovery request.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::HomeAgentAddressDiscoveryRequest`.
+	pub home_agent_address_discovery_request: InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryRequest,
+	
+	/// Home agent address discovery reply.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::HomeAgentAddressDiscoveryReply`.
+	pub home_agent_address_discovery_reply: InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply,
+	
+	/// Mobile prefix solicitation.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MobilePrefixSolicitation`.
+	pub mobile_prefix_solicitation: InternetControlMessageProtocolVersion6CodeMobilePrefixSolicitation,
+	
+	/// Mobile prefix advertisement.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MobilePrefixAdvertisement`.
+	pub mobile_prefix_advertisement: InternetControlMessageProtocolVersion6CodeMobilePrefixAdvertisement,
+	
+	/// Extended echo request ('ping').
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::ExtendedEchoRequest`.
+	pub extended_echo_request: InternetControlMessageProtocolVersion6CodeExtendedEchoRequest,
+	
+	/// Extended echo reply ('pong').
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::ExtendedEchoReply`.
+	pub extended_echo_reply: InternetControlMessageProtocolVersion6CodeExtendedEchoReply,
+	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.
