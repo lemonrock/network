@@ -109,9 +109,9 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 	/// Fast handovers for Mobile Internet Protocol (IP) version 6, aka FMIPv6 (RFC 5568).
 	fn fast_handovers_for_mobile_internet_protocol_version_6(&self, fast_handovers_for_mobile_internet_protocol_version_6: InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6) -> R;
 
-//	/// RPL Control (RFC 6550).
-//	fn r_p_l_control(&self, r_p_l_control: InternetControlMessageProtocolVersion6CodeRPLControl) -> R;
-//
+	/// Internet Protocol (IP) version 6 Routing Protocol for Low-Power and Lossy Networks Control (RPL) (RFC 6550).
+	fn routing_protocol_for_low_power_and_lossy_networks_control(&self, routing_protocol_for_low_power_and_lossy_networks_control: InternetControlMessageProtocolVersion6CodeRoutingProtocolForLowPowerAndLossyNetworksControl) -> R;
+
 //	/// ILNPv6 Locator Update (RFC 6743).
 //	fn i_l_n_pv6_locator_update(&self, i_l_n_pv6_locator_update: InternetControlMessageProtocolVersion6CodeILNPv6LocatorUpdate) -> R;
 //

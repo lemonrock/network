@@ -162,6 +162,18 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::FastHandoversForMobileInternetProtocolVersion6`.
 	pub fast_handovers_for_mobile_internet_protocol_version_6: InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6,
 	
+	/// Internet Protocol (IP) version 6 Routing Protocol for Low-Power and Lossy Networks Control (RPL) (RFC 6550).
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RoutingProtocolForLowPowerAndLossyNetworksControl`.
+	pub routing_protocol_for_low_power_and_lossy_networks_control: InternetControlMessageProtocolVersion6CodeRoutingProtocolForLowPowerAndLossyNetworksControl,
+	
+	
+	
+	
+	
+	
+	
+	
 	/// Extended Echo Request ('ping') (RFC 8335).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::ExtendedEchoRequest`.

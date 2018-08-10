@@ -140,8 +140,8 @@ impl InternetControlMessageProtocolVersion6Type
 	/// Fast handovers for Mobile Internet Protocol (IP) v6, aka FIMPv6 (RFC 5568).
 	pub const FastHandoversForMobileInternetProtocolVersion6: Self = InternetControlMessageProtocolVersion6Type(154);
 	
-	/// RPL Control (RFC 6550).
-	pub const RPLControl: Self = InternetControlMessageProtocolVersion6Type(155);
+	/// Internet Protocol (IP) version 6 Routing Protocol for Low-Power and Lossy Networks Control (RPL) (RFC 6550).
+	pub const RoutingProtocolForLowPowerAndLossyNetworksControl: Self = InternetControlMessageProtocolVersion6Type(155);
 	
 	/// ILNPv6 Locator Update (RFC 6743).
 	pub const ILNPv6LocatorUpdate: Self = InternetControlMessageProtocolVersion6Type(156);

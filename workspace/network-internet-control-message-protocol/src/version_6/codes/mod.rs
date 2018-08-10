@@ -37,5 +37,6 @@ include!("InternetControlMessageProtocolVersion6CodeRedirect.rs");
 include!("InternetControlMessageProtocolVersion6CodeRouterAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeRouterRenumbering.rs");
 include!("InternetControlMessageProtocolVersion6CodeRouterSolicitation.rs");
+include!("InternetControlMessageProtocolVersion6CodeRoutingProtocolForLowPowerAndLossyNetworksControl.rs");
 include!("InternetControlMessageProtocolVersion6CodeTimeExceeded.rs");
 include!("InternetControlMessageProtocolVersion6CodeVersion2MulticastListenerReport.rs");
