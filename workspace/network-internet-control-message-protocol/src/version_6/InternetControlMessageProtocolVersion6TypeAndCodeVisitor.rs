@@ -112,9 +112,9 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 	/// Internet Protocol (IP) version 6 Routing Protocol for Low-Power and Lossy Networks Control (RPL) (RFC 6550).
 	fn routing_protocol_for_low_power_and_lossy_networks_control(&self, routing_protocol_for_low_power_and_lossy_networks_control: InternetControlMessageProtocolVersion6CodeRoutingProtocolForLowPowerAndLossyNetworksControl) -> R;
 
-//	/// ILNPv6 Locator Update (RFC 6743).
-//	fn i_l_n_pv6_locator_update(&self, i_l_n_pv6_locator_update: InternetControlMessageProtocolVersion6CodeILNPv6LocatorUpdate) -> R;
-//
+	/// Identifier-Locator Network Protocol for Internet Protocol (IP) version 6 (ILNPv6) Locator Update (RFC 6743).
+	fn identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update(&self, identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update: InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate) -> R;
+
 //	/// Duplicate Address Request (RFC 6775).
 //	fn duplicate_address_request(&self, duplicate_address_request: InternetControlMessageProtocolVersion6CodeDuplicateAddressRequest) -> R;
 //

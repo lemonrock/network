@@ -65,7 +65,7 @@ impl InternetControlMessageProtocolVersion6TypeAndCode
 			InternetControlMessageProtocolVersion6Type::MulticastRouterTermination => visitor.multicast_router_termination(unsafe { self.code.multicast_router_termination }),
 			InternetControlMessageProtocolVersion6Type::FastHandoversForMobileInternetProtocolVersion6 => visitor.fast_handovers_for_mobile_internet_protocol_version_6(unsafe { self.code.fast_handovers_for_mobile_internet_protocol_version_6 }),
 			InternetControlMessageProtocolVersion6Type::RoutingProtocolForLowPowerAndLossyNetworksControl => visitor.routing_protocol_for_low_power_and_lossy_networks_control(unsafe { self.code.routing_protocol_for_low_power_and_lossy_networks_control }),
-//			InternetControlMessageProtocolVersion6Type::ILNPv6LocatorUpdate => visitor.i_l_n_pv6_locator_update(unsafe { self.code.i_l_n_pv6_locator_update }),
+			InternetControlMessageProtocolVersion6Type::IdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate => visitor.identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update(unsafe { self.code.identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update }),
 //			InternetControlMessageProtocolVersion6Type::DuplicateAddressRequest => visitor.duplicate_address_request(unsafe { self.code.duplicate_address_request }),
 //			InternetControlMessageProtocolVersion6Type::DuplicateAddressConfirmation => visitor.duplicate_address_confirmation(unsafe { self.code.duplicate_address_confirmation }),
 //			InternetControlMessageProtocolVersion6Type::MPLControl => visitor.m_p_l_control(unsafe { self.code.m_p_l_control }),

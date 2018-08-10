@@ -143,8 +143,8 @@ impl InternetControlMessageProtocolVersion6Type
 	/// Internet Protocol (IP) version 6 Routing Protocol for Low-Power and Lossy Networks Control (RPL) (RFC 6550).
 	pub const RoutingProtocolForLowPowerAndLossyNetworksControl: Self = InternetControlMessageProtocolVersion6Type(155);
 	
-	/// ILNPv6 Locator Update (RFC 6743).
-	pub const ILNPv6LocatorUpdate: Self = InternetControlMessageProtocolVersion6Type(156);
+	/// Identifier-Locator Network Protocol for Internet Protocol (IP) version 6 (ILNPv6) Locator Update (RFC 6743).
+	pub const IdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate: Self = InternetControlMessageProtocolVersion6Type(156);
 	
 	/// Duplicate Address Request (RFC 6775).
 	pub const DuplicateAddressRequest: Self = InternetControlMessageProtocolVersion6Type(157);
