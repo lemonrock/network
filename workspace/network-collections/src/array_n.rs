@@ -285,5 +285,14 @@ macro_rules! array_n
 				&mut self.0
 			}
 		}
+		
+		impl<T: Default + Copy> Default for $type<T>
+		{
+			#[inline(always)]
+			fn default() -> Self
+			{
+				$type([T::default(); $size])
+			}
+		}
 	}
 }
