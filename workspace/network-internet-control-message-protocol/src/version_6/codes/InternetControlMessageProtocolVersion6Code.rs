@@ -52,6 +52,26 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
 	multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
 	
+	/// Router solicitation.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterSolicitation`.
+	router_solicitation: InternetControlMessageProtocolVersion6CodeRouterSolicitation,
+	
+	/// Router advertisement.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterAdvertisement`.
+	router_advertisement: InternetControlMessageProtocolVersion6CodeRouterAdvertisement,
+	
+	/// Neighbor solicitation.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborSolicitation`.
+	neighbor_solicitation: InternetControlMessageProtocolVersion6CodeNeighborSolicitation,
+	
+	/// Neighbor advertisement.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
+	neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
+	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.

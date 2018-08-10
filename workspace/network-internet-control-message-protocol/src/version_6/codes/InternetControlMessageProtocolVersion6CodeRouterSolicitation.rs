@@ -2,18 +2,18 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Echo reply.
+/// Router solicitation.
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeEchoReply(u8);
+pub struct InternetControlMessageProtocolVersion6CodeRouterSolicitation(u8);
 
-impl InternetControlMessageProtocolVersion6CodeEchoReply
+impl InternetControlMessageProtocolVersion6CodeRouterSolicitation
 {
 	/// Only known value.
-	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeEchoReply(0);
+	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeRouterSolicitation(0);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRouterSolicitation
 {
 	type Error = ();
 	
@@ -22,7 +22,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	{
 		if value == 0
 		{
-			Ok(InternetControlMessageProtocolVersion6CodeEchoReply(value))
+			Ok(InternetControlMessageProtocolVersion6CodeRouterSolicitation(value))
 		}
 		else
 		{
@@ -31,7 +31,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeRouterSolicitation
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -40,7 +40,7 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeEchoReply
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeEchoReply
+impl Display for InternetControlMessageProtocolVersion6CodeRouterSolicitation
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
