@@ -77,6 +77,11 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
 	redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
 	
+	/// Router renumbering.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterRenumbering`.
+	router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering,
+	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.

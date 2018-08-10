@@ -2,39 +2,39 @@
 // Copyright © 2017 The developers of network. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/network/master/COPYRIGHT.
 
 
-/// Time exceeded.
+/// Router renumbering.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeTimeExceeded(u8);
+pub struct InternetControlMessageProtocolVersion6CodeRouterRenumbering(u8);
 
-impl InternetControlMessageProtocolVersion6CodeTimeExceeded
+impl InternetControlMessageProtocolVersion6CodeRouterRenumbering
 {
-	/// Hop limit exceeded in transit.
-	pub const HopLimitExceededInTransit: Self = InternetControlMessageProtocolVersion6CodeTimeExceeded(0);
+	/// Command.
+	pub const Command: Self = InternetControlMessageProtocolVersion6CodeRouterRenumbering(0);
 	
-	/// Fragment reassembly time exceeded.
-	pub const FragmentReassemblyTimeExceeded: Self = InternetControlMessageProtocolVersion6CodeTimeExceeded(1);
+	/// Result.
+	pub const Result: Self = InternetControlMessageProtocolVersion6CodeRouterRenumbering(1);
+	
+	/// Sequence number reset.
+	pub const SequenceNumberReset: Self = InternetControlMessageProtocolVersion6CodeRouterRenumbering(255);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeTimeExceeded
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeRouterRenumbering
 {
 	type Error = ();
 	
 	#[inline(always)]
 	fn try_from(value: u8) -> Result<Self, Self::Error>
 	{
-		if value <= 2
+		match value
 		{
-			Ok(InternetControlMessageProtocolVersion6CodeTimeExceeded(value))
-		}
-		else
-		{
-			Err(())
+			0 | 1 | 255 => Ok(InternetControlMessageProtocolVersion6CodeRouterRenumbering(value)),
+			_ => Err(()),
 		}
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeTimeExceeded
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeRouterRenumbering
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -43,7 +43,7 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeTimeExceeded
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeTimeExceeded
+impl Display for InternetControlMessageProtocolVersion6CodeRouterRenumbering
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
