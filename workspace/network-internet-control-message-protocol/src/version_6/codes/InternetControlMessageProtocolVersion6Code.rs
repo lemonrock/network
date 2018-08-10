@@ -27,6 +27,31 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
 	parameter_problem: InternetControlMessageProtocolVersion6CodeParameterProblem,
 	
+	/// Echo request ('ping').
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoRequest`.
+	echo_request: InternetControlMessageProtocolVersion6CodeEchoRequest,
+	
+	/// Echo reply ('pong').
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoReply`.
+	echo_reply: InternetControlMessageProtocolVersion6CodeEchoReply,
+	
+	/// Multicast listener query.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerQuery`.
+	multicast_listener_query: InternetControlMessageProtocolVersion6CodeMulticastListenerQuery,
+	
+	/// Multicast listener report.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerReport`.
+	multicast_listener_report: InternetControlMessageProtocolVersion6CodeMulticastListenerReport,
+	
+	/// Multicast listener done.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
+	multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
+	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.

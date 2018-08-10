@@ -7,6 +7,11 @@ use super::*;
 
 include!("InternetControlMessageProtocolVersion6Code.rs");
 include!("InternetControlMessageProtocolVersion6CodeDestinationUnreachable.rs");
+include!("InternetControlMessageProtocolVersion6CodeEchoReply.rs");
+include!("InternetControlMessageProtocolVersion6CodeEchoRequest.rs");
+include!("InternetControlMessageProtocolVersion6CodeMulticastListenerDone.rs");
+include!("InternetControlMessageProtocolVersion6CodeMulticastListenerReport.rs");
+include!("InternetControlMessageProtocolVersion6CodeMulticastListenerQuery.rs");
 include!("InternetControlMessageProtocolVersion6CodePacketTooBig.rs");
 include!("InternetControlMessageProtocolVersion6CodeParameterProblem.rs");
 include!("InternetControlMessageProtocolVersion6CodeTimeExceeded.rs");
