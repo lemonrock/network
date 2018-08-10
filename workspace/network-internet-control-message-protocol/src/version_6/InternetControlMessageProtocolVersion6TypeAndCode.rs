@@ -74,12 +74,12 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 	/// Router renumbering.
 	fn router_renumbering(&self, router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering) -> R;
 	
-//	/// Internet Control Message Protocol (ICMP) version 6 node information query.
-//	fn internet_control_message_protocol_node_information_query(&self, internet_control_message_protocol_node_information_query: InternetControlMessageProtocolVersion6CodeInternetControlMessageProtocolNodeInformationQuery) -> R;
-//
-//	/// Internet Control Message Protocol (ICMP) version 6 node information response.
-//	fn internet_control_message_protocol_node_information_response(&self, internet_control_message_protocol_node_information_response: InternetControlMessageProtocolVersion6CodeInternetControlMessageProtocolNodeInformationResponse) -> R;
-//
+	/// Node information query.
+	fn node_information_query(&self, node_information_query: InternetControlMessageProtocolVersion6CodeNodeInformationQuery) -> R;
+
+	/// Node information response.
+	fn node_information_response(&self, node_information_response: InternetControlMessageProtocolVersion6CodeNodeInformationResponse) -> R;
+
 //	/// Inverse neighbor discovery solicitation.
 //	fn inverse_neighbor_discovery_solicitation(&self, inverse_neighbor_discovery_solicitation: InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoverySolicitation) -> R;
 //
@@ -189,8 +189,8 @@ impl InternetControlMessageProtocolVersion6TypeAndCode
 			InternetControlMessageProtocolVersion6Type::NeighborAdvertisement => visitor.neighbor_advertisement(unsafe { self.code.neighbor_advertisement }),
 			InternetControlMessageProtocolVersion6Type::RedirectMessage => visitor.redirect_message(unsafe { self.code.redirect_message }),
 			InternetControlMessageProtocolVersion6Type::RouterRenumbering => visitor.router_renumbering(unsafe { self.code.router_renumbering }),
-//			InternetControlMessageProtocolVersion6Type::InternetControlMessageProtocolNodeInformationQuery => visitor.internet_control_message_protocol_node_information_query(unsafe { self.code.internet_control_message_protocol_node_information_query }),
-//			InternetControlMessageProtocolVersion6Type::InternetControlMessageProtocolNodeInformationResponse => visitor.internet_control_message_protocol_node_information_response(unsafe { self.code.internet_control_message_protocol_node_information_response }),
+			InternetControlMessageProtocolVersion6Type::NodeInformationQuery => visitor.node_information_query(unsafe { self.code.node_information_query }),
+			InternetControlMessageProtocolVersion6Type::NodeInformationResponse => visitor.node_information_response(unsafe { self.code.node_information_response }),
 //			InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoverySolicitation => visitor.inverse_neighbor_discovery_solicitation(unsafe { self.code.inverse_neighbor_discovery_solicitation }),
 //			InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoveryAdvertisement => visitor.inverse_neighbor_discovery_advertisement(unsafe { self.code.inverse_neighbor_discovery_advertisement }),
 //			InternetControlMessageProtocolVersion6Type::Version2MulticastListenerReport => visitor.version2_multicast_listener_report(unsafe { self.code.version2_multicast_listener_report }),
@@ -219,50 +219,3 @@ impl InternetControlMessageProtocolVersion6TypeAndCode
 		}
 	}
 }
-
-/*
-DestinationUnreachable	destination_unreachable
-PacketTooBig	packet_too_big
-TimeExceeded	time_exceeded
-ParameterProblem	parameter_problem
-PrivateErrorMessageExperiment1	private_error_message_experiment1
-PrivateErrorMessageExperiment2	private_error_message_experiment2
-ReservedForExpansionOfErrorMessageRange	reserved_for_expansion_of_error_message_range
-EchoRequest	echo_request
-EchoReply	echo_reply
-MulticastListenerQuery	multicast_listener_query
-MulticastListenerReport	multicast_listener_report
-MulticastListenerDone	multicast_listener_done
-RouterSolicitation	router_solicitation
-RouterAdvertisement	router_advertisement
-NeighborSolicitation	neighbor_solicitation
-NeighborAdvertisement	neighbor_advertisement
-RedirectMessage	redirect_message
-RouterRenumbering	router_renumbering
-InternetControlMessageProtocolNodeInformationQuery	internet_control_message_protocol_node_information_query
-InternetControlMessageProtocolNodeInformationResponse	internet_control_message_protocol_node_information_response
-InverseNeighborDiscoverySolicitation	inverse_neighbor_discovery_solicitation
-InverseNeighborDiscoveryAdvertisement	inverse_neighbor_discovery_advertisement
-Version2MulticastListenerReport	version2_multicast_listener_report
-HomeAgentAddressDiscoveryRequest	home_agent_address_discovery_request
-HomeAgentAddressDiscoveryReply	home_agent_address_discovery_reply
-MobilePrefixSolicitation	mobile_prefix_solicitation
-MobilePrefixAdvertisement	mobile_prefix_advertisement
-CertificationPathSolicitation	certification_path_solicitation
-CertificationPathAdvertisement	certification_path_advertisement
-ExperimentalMobilityProtocol	experimental_mobility_protocol
-MulticastRouterAdvertisement	multicast_router_advertisement
-MulticastRouterSolicitation	multicast_router_solicitation
-MulticastRouterTermination	multicast_router_termination
-FMIPv6Messages	f_m_i_pv6_messages
-RPLControl	r_p_l_control
-ILNPv6LocatorUpdate	i_l_n_pv6_locator_update
-DuplicateAddressRequest	duplicate_address_request
-DuplicateAddressConfirmation	duplicate_address_confirmation
-MPLControl	m_p_l_control
-ExtendedEchoRequest	extended_echo_request
-ExtendedEchoReply	extended_echo_reply
-PrivateInformationalMessageExperiment1	private_informational_message_experiment1
-PrivateInformationalMessageExperiment2	private_informational_message_experiment2
-ReservedForExpansionOfInformationalMessageRange	reserved_for_expansion_of_informational_message_range
-*/

@@ -14,6 +14,8 @@ include!("InternetControlMessageProtocolVersion6CodeMulticastListenerReport.rs")
 include!("InternetControlMessageProtocolVersion6CodeMulticastListenerQuery.rs");
 include!("InternetControlMessageProtocolVersion6CodeNeighborAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeNeighborSolicitation.rs");
+include!("InternetControlMessageProtocolVersion6CodeNodeInformationQuery.rs");
+include!("InternetControlMessageProtocolVersion6CodeNodeInformationResponse.rs");
 include!("InternetControlMessageProtocolVersion6CodePacketTooBig.rs");
 include!("InternetControlMessageProtocolVersion6CodeParameterProblem.rs");
 include!("InternetControlMessageProtocolVersion6CodeRedirectMessage.rs");

@@ -9,78 +9,88 @@ pub union InternetControlMessageProtocolVersion6Code
 {
 	/// Destination Unreachable.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::DestinationUnreachable`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::DestinationUnreachable`.
 	pub destination_unreachable: InternetControlMessageProtocolVersion6CodeDestinationUnreachable,
 	
 	/// Packet too big.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::PacketTooBig`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::PacketTooBig`.
 	pub packet_too_big: InternetControlMessageProtocolVersion6CodePacketTooBig,
 	
 	/// Time exceeded.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
 	pub time_exceeded: InternetControlMessageProtocolVersion6CodeTimeExceeded,
 	
 	/// Parameter problem.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
 	pub parameter_problem: InternetControlMessageProtocolVersion6CodeParameterProblem,
 	
 	/// Echo request ('ping').
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoRequest`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::EchoRequest`.
 	pub echo_request: InternetControlMessageProtocolVersion6CodeEchoRequest,
 	
 	/// Echo reply ('pong').
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::EchoReply`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::EchoReply`.
 	pub echo_reply: InternetControlMessageProtocolVersion6CodeEchoReply,
 	
 	/// Multicast listener query.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerQuery`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerQuery`.
 	pub multicast_listener_query: InternetControlMessageProtocolVersion6CodeMulticastListenerQuery,
 	
 	/// Multicast listener report.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerReport`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerReport`.
 	pub multicast_listener_report: InternetControlMessageProtocolVersion6CodeMulticastListenerReport,
 	
 	/// Multicast listener done.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
 	pub multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
 	
 	/// Router solicitation.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterSolicitation`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterSolicitation`.
 	pub router_solicitation: InternetControlMessageProtocolVersion6CodeRouterSolicitation,
 	
 	/// Router advertisement.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterAdvertisement`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterAdvertisement`.
 	pub router_advertisement: InternetControlMessageProtocolVersion6CodeRouterAdvertisement,
 	
 	/// Neighbor solicitation.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborSolicitation`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NeighborSolicitation`.
 	pub neighbor_solicitation: InternetControlMessageProtocolVersion6CodeNeighborSolicitation,
 	
 	/// Neighbor advertisement.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
 	pub neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
 	
 	/// Redirect message.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
 	pub redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
 	
 	/// Router renumbering.
 	///
-	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RouterRenumbering`.
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterRenumbering`.
 	pub router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering,
+	
+	/// Node information query.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NodeInformationQuery`.
+	pub node_information_query: InternetControlMessageProtocolVersion6CodeNodeInformationQuery,
+	
+	/// Node information response.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NodeInformationResponse`.
+	pub node_information_response: InternetControlMessageProtocolVersion6CodeNodeInformationResponse,
 	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///

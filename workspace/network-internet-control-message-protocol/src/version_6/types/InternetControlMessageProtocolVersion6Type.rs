@@ -92,11 +92,11 @@ impl InternetControlMessageProtocolVersion6Type
 	/// RFC 2894: Router Renumbering.
 	pub const RouterRenumbering: Self = InternetControlMessageProtocolVersion6Type(138);
 	
-	/// RFC 4620: Internet Control Message Protocol Node Information Query.
-	pub const InternetControlMessageProtocolNodeInformationQuery: Self = InternetControlMessageProtocolVersion6Type(139);
+	/// RFC 4620: Node Information Query.
+	pub const NodeInformationQuery: Self = InternetControlMessageProtocolVersion6Type(139);
 	
-	/// RFC 4620: Internet Control Message Protocol Node Information Response.
-	pub const InternetControlMessageProtocolNodeInformationResponse: Self = InternetControlMessageProtocolVersion6Type(140);
+	/// RFC 4620: Node Information Response.
+	pub const NodeInformationResponse: Self = InternetControlMessageProtocolVersion6Type(140);
 	
 	/// RFC 3122: Inverse Neighbor Discovery Solicitation.
 	pub const InverseNeighborDiscoverySolicitation: Self = InternetControlMessageProtocolVersion6Type(141);
