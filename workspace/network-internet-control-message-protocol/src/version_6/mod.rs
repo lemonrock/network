@@ -3,6 +3,16 @@
 
 
 use super::*;
+use self::codes::*;
+use self::types::*;
+
+
+/// Code 'enumerations'.
+pub mod codes;
+
+
+/// Type 'enumerations'.
+pub mod types;
 
 
 include!("InternetControlMessageProtocolVersion6NeighborDiscoveryAdvertisementFlags.rs");
@@ -12,5 +22,5 @@ include!("InternetControlMessageProtocolVersion6NeighborDiscoveryOptionType.rs")
 include!("InternetControlMessageProtocolVersion6Packet.rs");
 include!("InternetControlMessageProtocolVersion6PacketHeader.rs");
 include!("InternetControlMessageProtocolVersion6PacketPayload.rs");
-include!("InternetControlMessageProtocolVersion6Type.rs");
 include!("KnownInternetControlMessageProtocolVersion6NeighborDiscoveryOptionType.rs");
+

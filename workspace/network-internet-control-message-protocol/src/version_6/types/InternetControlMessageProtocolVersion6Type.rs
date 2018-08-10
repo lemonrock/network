@@ -50,11 +50,14 @@ impl InternetControlMessageProtocolVersion6Type
 	/// RFC 4443: Parameter Problem.
 	pub const ParameterProblem: Self = InternetControlMessageProtocolVersion6Type(4);
 	
-	/// RFC 4443: Private Experiment.
-	pub const PrivateExperiment1: Self = InternetControlMessageProtocolVersion6Type(100);
+	/// RFC 4443: Private error message experiment.
+	pub const PrivateErrorMessageExperiment1: Self = InternetControlMessageProtocolVersion6Type(100);
 	
-	/// RFC 4443: Private Experiment.
-	pub const PrivateExperiment2: Self = InternetControlMessageProtocolVersion6Type(101);
+	/// RFC 4443: Private error message experiment.
+	pub const PrivateErrorMessageExperiment2: Self = InternetControlMessageProtocolVersion6Type(101);
+	
+	/// RFC 4443: "reserved for future expansion of the \[error message\] value range if there is a shortage in the future".
+	pub const ReservedForExpansionOfErrorMessageRange: Self = InternetControlMessageProtocolVersion6Type(127);
 	
 	/// RFC 4443: Echo Request ('ping')
 	pub const EchoRequest: Self = InternetControlMessageProtocolVersion6Type(128);
@@ -158,9 +161,28 @@ impl InternetControlMessageProtocolVersion6Type
 	/// RFC 8335: Echo Reply ('pong').
 	pub const ExtendedEchoReply: Self = InternetControlMessageProtocolVersion6Type(161);
 	
-	/// RFC 4443: Private Experiment.
-	pub const PrivateExperiment3: Self = InternetControlMessageProtocolVersion6Type(200);
+	/// RFC 4443: Private informational message experiment.
+	pub const PrivateInformationalMessageExperiment1: Self = InternetControlMessageProtocolVersion6Type(200);
 	
-	/// RFC 4443: Private Experiment.
-	pub const PrivateExperiment4: Self = InternetControlMessageProtocolVersion6Type(201);
+	/// RFC 4443: Private informational message experiment.
+	pub const PrivateInformationalMessageExperiment2: Self = InternetControlMessageProtocolVersion6Type(201);
+	
+	/// RFC 4443: "reserved for future expansion of the \[informational message\] value range if there is a shortage in the future".
+	pub const ReservedForExpansionOfInformationalMessageRange: Self = InternetControlMessageProtocolVersion6Type(255);
+	
+	/// Is this an error message or an informational message?
+	#[inline(always)]
+	pub fn message_kind(self) -> InternetControlMessageProtocolVersion6MessageKind
+	{
+		use self::InternetControlMessageProtocolVersion6MessageKind::*;
+		
+		if self.0 <= 127
+		{
+			Error
+		}
+		else
+		{
+			Informational
+		}
+	}
 }

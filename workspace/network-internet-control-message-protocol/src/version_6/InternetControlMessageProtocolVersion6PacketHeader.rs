@@ -12,7 +12,7 @@ pub struct InternetControlMessageProtocolVersion6PacketHeader
 	pub type_: InternetControlMessageProtocolVersion6Type,
 	
 	/// The meaning of code depends on type.
-	pub code: u8,
+	pub code: InternetControlMessageProtocolVersion6Code,
 	
 	/// The checksum includes the payload.
 	pub checksum: InternetCheckSum,
@@ -24,5 +24,15 @@ impl Display for InternetControlMessageProtocolVersion6PacketHeader
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result
 	{
 		Debug::fmt(self, f)
+	}
+}
+
+impl InternetControlMessageProtocolVersion6PacketHeader
+{
+	/// Is this an error message or an informational message?
+	#[inline(always)]
+	pub fn message_kind(self) -> InternetControlMessageProtocolVersion6MessageKind
+	{
+		self.type_.message_kind()
 	}
 }

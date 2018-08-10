@@ -22,3 +22,13 @@ impl Display for InternetControlMessageProtocolVersion6Packet
 		Debug::fmt(self, f)
 	}
 }
+
+impl InternetControlMessageProtocolVersion6Packet
+{
+	/// Is this an error message or an informational message?
+	#[inline(always)]
+	pub fn message_kind(self) -> InternetControlMessageProtocolVersion6MessageKind
+	{
+		self.header.message_kind()
+	}
+}
