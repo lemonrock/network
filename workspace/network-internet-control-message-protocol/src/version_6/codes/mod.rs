@@ -16,6 +16,7 @@ include!("InternetControlMessageProtocolVersion6CodeNeighborAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeNeighborSolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodePacketTooBig.rs");
 include!("InternetControlMessageProtocolVersion6CodeParameterProblem.rs");
+include!("InternetControlMessageProtocolVersion6CodeRedirectMessage.rs");
 include!("InternetControlMessageProtocolVersion6CodeRouterAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeRouterSolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodeTimeExceeded.rs");

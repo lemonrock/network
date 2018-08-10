@@ -72,6 +72,11 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
 	neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
 	
+	/// Redirect message.
+	///
+	/// `type_` of the packet header is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
+	redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
+	
 	/// Many `type_` values in the packet header are experimental, reserved, obscure or lacking in information.
 	///
 	/// Or their may be just an unexpected code value present.
