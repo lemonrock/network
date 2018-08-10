@@ -63,7 +63,7 @@ impl InternetControlMessageProtocolVersion6TypeAndCode
 //			InternetControlMessageProtocolVersion6Type::MulticastRouterAdvertisement => visitor.multicast_router_advertisement(unsafe { self.code.multicast_router_advertisement }),
 //			InternetControlMessageProtocolVersion6Type::MulticastRouterSolicitation => visitor.multicast_router_solicitation(unsafe { self.code.multicast_router_solicitation }),
 //			InternetControlMessageProtocolVersion6Type::MulticastRouterTermination => visitor.multicast_router_termination(unsafe { self.code.multicast_router_termination }),
-//			InternetControlMessageProtocolVersion6Type::FMIPv6Messages => visitor.f_m_i_pv6_messages(unsafe { self.code.f_m_i_pv6_messages }),
+			InternetControlMessageProtocolVersion6Type::FastHandoversForMobileInternetProtocolVersion6 => visitor.fast_handovers_for_mobile_internet_protocol_version_6(unsafe { self.code.fast_handovers_for_mobile_internet_protocol_version_6 }),
 //			InternetControlMessageProtocolVersion6Type::RPLControl => visitor.r_p_l_control(unsafe { self.code.r_p_l_control }),
 //			InternetControlMessageProtocolVersion6Type::ILNPv6LocatorUpdate => visitor.i_l_n_pv6_locator_update(unsafe { self.code.i_l_n_pv6_locator_update }),
 //			InternetControlMessageProtocolVersion6Type::DuplicateAddressRequest => visitor.duplicate_address_request(unsafe { self.code.duplicate_address_request }),

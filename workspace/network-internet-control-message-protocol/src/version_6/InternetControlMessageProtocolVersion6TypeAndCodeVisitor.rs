@@ -105,10 +105,10 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 //
 //	/// Multicast router termination.
 //	fn multicast_router_termination(&self, multicast_router_termination: InternetControlMessageProtocolVersion6CodeMulticastRouterTermination) -> R;
-//
-//	/// FMIPv6 messages.
-//	fn f_m_i_pv6_messages(&self, f_m_i_pv6_messages: InternetControlMessageProtocolVersion6CodeFMIPv6Messages) -> R;
-//
+
+	/// Fast handovers for Mobile Internet Protocol (IP) version 6, aka FMIPv6.
+	fn fast_handovers_for_mobile_internet_protocol_version_6(&self, fast_handovers_for_mobile_internet_protocol_version_6: InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6) -> R;
+
 //	/// RPL Control.
 //	fn r_p_l_control(&self, r_p_l_control: InternetControlMessageProtocolVersion6CodeRPLControl) -> R;
 //

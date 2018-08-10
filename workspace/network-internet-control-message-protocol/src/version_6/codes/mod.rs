@@ -11,6 +11,7 @@ include!("InternetControlMessageProtocolVersion6CodeEchoReply.rs");
 include!("InternetControlMessageProtocolVersion6CodeEchoRequest.rs");
 include!("InternetControlMessageProtocolVersion6CodeExtendedEchoReply.rs");
 include!("InternetControlMessageProtocolVersion6CodeExtendedEchoRequest.rs");
+include!("InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6.rs");
 include!("InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply.rs");
 include!("InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryRequest.rs");
 include!("InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoveryAdvertisement.rs");

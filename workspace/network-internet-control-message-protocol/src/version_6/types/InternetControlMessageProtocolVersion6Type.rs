@@ -137,8 +137,8 @@ impl InternetControlMessageProtocolVersion6Type
 	/// RFC 4286: Multicast Router Termination.
 	pub const MulticastRouterTermination: Self = InternetControlMessageProtocolVersion6Type(153);
 	
-	/// RFC 5568: FMIPv6 Messages.
-	pub const FMIPv6Messages: Self = InternetControlMessageProtocolVersion6Type(154);
+	/// RFC 5568: Fast handovers for Mobile Internet Protocol (IP) v6, aka FIMPv6.
+	pub const FastHandoversForMobileInternetProtocolVersion6: Self = InternetControlMessageProtocolVersion6Type(154);
 	
 	/// RFC 6550: RPL Control.
 	pub const RPLControl: Self = InternetControlMessageProtocolVersion6Type(155);
@@ -152,7 +152,7 @@ impl InternetControlMessageProtocolVersion6Type
 	/// RFC 6775: Duplicate Address Confirmation.
 	pub const DuplicateAddressConfirmation: Self = InternetControlMessageProtocolVersion6Type(158);
 	
-	/// RFC C7731: RPL Control.
+	/// RFC 7731: RPL Control.
 	pub const MPLControl: Self = InternetControlMessageProtocolVersion6Type(159);
 	
 	/// RFC 8335: Echo Request ('ping')

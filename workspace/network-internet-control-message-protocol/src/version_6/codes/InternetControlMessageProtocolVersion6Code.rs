@@ -7,127 +7,139 @@
 #[repr(C, packed)]
 pub union InternetControlMessageProtocolVersion6Code
 {
-	/// Destination Unreachable.
+	/// Destination Unreachable (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::DestinationUnreachable`.
 	pub destination_unreachable: InternetControlMessageProtocolVersion6CodeDestinationUnreachable,
 	
-	/// Packet too big.
+	/// Packet too big (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::PacketTooBig`.
 	pub packet_too_big: InternetControlMessageProtocolVersion6CodePacketTooBig,
 	
-	/// Time exceeded.
+	/// Time exceeded (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
 	pub time_exceeded: InternetControlMessageProtocolVersion6CodeTimeExceeded,
 	
-	/// Parameter problem.
+	/// Parameter problem (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::TimeExceeded`.
 	pub parameter_problem: InternetControlMessageProtocolVersion6CodeParameterProblem,
 	
-	/// Echo request ('ping').
+	/// Echo request ('ping') (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::EchoRequest`.
 	pub echo_request: InternetControlMessageProtocolVersion6CodeEchoRequest,
 	
-	/// Echo reply ('pong').
+	/// Echo reply ('pong') (RFC 4443).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::EchoReply`.
 	pub echo_reply: InternetControlMessageProtocolVersion6CodeEchoReply,
 	
-	/// Multicast listener query.
+	/// Multicast listener query (RFC 2720).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerQuery`.
 	pub multicast_listener_query: InternetControlMessageProtocolVersion6CodeMulticastListenerQuery,
 	
-	/// Multicast listener report.
+	/// Multicast listener report (RFC 2720).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerReport`.
 	pub multicast_listener_report: InternetControlMessageProtocolVersion6CodeMulticastListenerReport,
 	
-	/// Multicast listener done.
+	/// Multicast listener done (RFC 2720).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastListenerDone`.
 	pub multicast_listener_done: InternetControlMessageProtocolVersion6CodeMulticastListenerDone,
 	
-	/// Router solicitation.
+	/// Router solicitation (RFC 4861).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterSolicitation`.
 	pub router_solicitation: InternetControlMessageProtocolVersion6CodeRouterSolicitation,
 	
-	/// Router advertisement.
+	/// Router advertisement (RFC 4861).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterAdvertisement`.
 	pub router_advertisement: InternetControlMessageProtocolVersion6CodeRouterAdvertisement,
 	
-	/// Neighbor solicitation.
+	/// Neighbor solicitation (RFC 4861).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NeighborSolicitation`.
 	pub neighbor_solicitation: InternetControlMessageProtocolVersion6CodeNeighborSolicitation,
 	
-	/// Neighbor advertisement.
+	/// Neighbor advertisement (RFC 4861).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NeighborAdvertisement`.
 	pub neighbor_advertisement: InternetControlMessageProtocolVersion6CodeNeighborAdvertisement,
 	
-	/// Redirect message.
+	/// Redirect message (RFC 4861).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RedirectMessage`.
 	pub redirect_message: InternetControlMessageProtocolVersion6CodeRedirectMessage,
 	
-	/// Router renumbering.
+	/// Router renumbering (RFC 2894).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::RouterRenumbering`.
 	pub router_renumbering: InternetControlMessageProtocolVersion6CodeRouterRenumbering,
 	
-	/// Node information query.
+	/// Node information query (RFC 4620).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NodeInformationQuery`.
 	pub node_information_query: InternetControlMessageProtocolVersion6CodeNodeInformationQuery,
 	
-	/// Node information response.
+	/// Node information response (RFC 4620).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::NodeInformationResponse`.
 	pub node_information_response: InternetControlMessageProtocolVersion6CodeNodeInformationResponse,
 	
-	/// Inverse neighbor discovery solicitation.
+	/// Inverse neighbor discovery solicitation (RFC 3112).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoverySolicitation`.
 	pub inverse_neighbor_discovery_solicitation: InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoverySolicitation,
 	
-	/// Inverse neighbor discovery advertisement.
+	/// Inverse neighbor discovery advertisement (RFC 3112).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::InverseNeighborDiscoveryAdvertisement`.
 	pub inverse_neighbor_discovery_advertisement: InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoveryAdvertisement,
 	
-	/// Home agent address discovery request.
+	/// Home agent address discovery request (RFC 3775).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::HomeAgentAddressDiscoveryRequest`.
 	pub home_agent_address_discovery_request: InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryRequest,
 	
-	/// Home agent address discovery reply.
+	/// Home agent address discovery reply (RFC 3775).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::HomeAgentAddressDiscoveryReply`.
 	pub home_agent_address_discovery_reply: InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply,
 	
-	/// Mobile prefix solicitation.
+	/// Mobile prefix solicitation (RFC 3775).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MobilePrefixSolicitation`.
 	pub mobile_prefix_solicitation: InternetControlMessageProtocolVersion6CodeMobilePrefixSolicitation,
 	
-	/// Mobile prefix advertisement.
+	/// Mobile prefix advertisement (RFC 3775).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MobilePrefixAdvertisement`.
 	pub mobile_prefix_advertisement: InternetControlMessageProtocolVersion6CodeMobilePrefixAdvertisement,
 	
-	/// Extended echo request ('ping').
+//pub certification_path_solicitation: InternetControlMessageProtocolVersion6CodeCerficationPathSoliciation
+//certification_path_advertisement(unsafe { self.code.certification_path_advertisement }),
+//experimental_mobility_protocol(unsafe { self.code.experimental_mobility_protocol }),
+//multicast_router_advertisement(unsafe { self.code.multicast_router_advertisement }),
+//multicast_router_solicitation(unsafe { self.code.multicast_router_solicitation }),
+//multicast_router_termination(unsafe { self.code.multicast_router_termination }),
+
+	///  Fast handovers for Mobile Internet Protocol (IP) version 6, aka FMIPv6.
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::FastHandoversForMobileInternetProtocolVersion6`.
+	pub fast_handovers_for_mobile_internet_protocol_version_6: InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6,
+	
+	/// Extended echo request ('ping') (RFC 8335).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::ExtendedEchoRequest`.
 	pub extended_echo_request: InternetControlMessageProtocolVersion6CodeExtendedEchoRequest,
 	
-	/// Extended echo reply ('pong').
+	/// Extended echo reply ('pong') (RFC 8335).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::ExtendedEchoReply`.
 	pub extended_echo_reply: InternetControlMessageProtocolVersion6CodeExtendedEchoReply,
