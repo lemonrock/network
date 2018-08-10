@@ -19,7 +19,7 @@ include!("InternetControlMessageProtocolVersion6CodeExtendedEchoRequest.rs");
 include!("InternetControlMessageProtocolVersion6CodeFastHandoversForMobileInternetProtocolVersion6.rs");
 include!("InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryReply.rs");
 include!("InternetControlMessageProtocolVersion6CodeHomeAgentAddressDiscoveryRequest.rs");
-include!("InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate.rs");
+include!("InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate.rs");
 include!("InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoveryAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoverySolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodeMobilePrefixAdvertisement.rs");

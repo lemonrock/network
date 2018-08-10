@@ -5,15 +5,15 @@
 /// Identifier-Locator Network Protocol for Internet Protocol (IP) version 6 (ILNPv6) Locator Update (RFC 6743).
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[derive(Deserialize, Serialize)]
-pub struct InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate(u8);
+pub struct InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate(u8);
 
-impl InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate
+impl InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate
 {
 	/// Only known value.
-	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate(0);
+	pub const Zero: Self = InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate(0);
 }
 
-impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate
+impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate
 {
 	type Error = ();
 	
@@ -22,7 +22,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocator
 	{
 		if value == 0
 		{
-			Ok(InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate(value))
+			Ok(InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate(value))
 		}
 		else
 		{
@@ -31,7 +31,7 @@ impl TryFrom<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocator
 	}
 }
 
-impl Into<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate
+impl Into<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate
 {
 	#[inline(always)]
 	fn into(self) -> u8
@@ -40,7 +40,7 @@ impl Into<u8> for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNet
 	}
 }
 
-impl Display for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate
+impl Display for InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate
 {
 	#[inline(always)]
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result

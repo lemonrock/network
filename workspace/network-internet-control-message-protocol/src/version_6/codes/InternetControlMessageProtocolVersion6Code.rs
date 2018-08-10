@@ -170,7 +170,7 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// Identifier-Locator Network Protocol for Internet Protocol (IP) version 6 (ILNPv6) Locator Update (RFC 6743).
 	///
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::IdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate`.
-	pub identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update: InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate,
+	pub identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update: InternetControlMessageProtocolVersion6CodeIdentifierLocatorNetworkProtocolLocatorUpdate,
 	
 	/// Duplicate Address Request (RFC 6775).
 	///
