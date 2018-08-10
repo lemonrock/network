@@ -4,6 +4,7 @@
 
 /// A bounded hash map, very similar to a regular Rust HashMap but can not become larger than its maximum capacity (plus one); ideal for indexes of network connections, etc in resource constraint aware environments.
 #[derive(Debug)]
+#[derive(Deserialize, Serialize)]
 pub struct BoundedHashMap<K: Hash + Eq, V>
 {
 	map: HashMap<K, V>,

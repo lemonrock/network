@@ -15,13 +15,15 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.4"
+version = "0.1.5"
 
 [dependencies]
 arrayvec = { version = "^0.4", features = ["serde-1"] }
 libc = "^0.2"
 likely = "^0.1"
 network-time = { path = "../network-time", version = "^0.1" }
+serde = "1.0"
+serde_derive = "1.0"
 
 [target.'cfg(any(os = "android", os = "linux"))'.dependencies]
 dpdk-unix = "^0.1"

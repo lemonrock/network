@@ -4,10 +4,7 @@
 
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![feature(allocator_api)]
-#![feature(const_fn)]
-#![feature(core_intrinsics)]
-#![feature(untagged_unions)]
+#![feature(allocator_api, const_fn, core_intrinsics, specialization, untagged_unions)]
 
 
 //! # network-collections
@@ -20,6 +17,11 @@ extern crate arrayvec;
 extern crate libc;
 #[macro_use] extern crate likely;
 extern crate network_time;
+extern crate serde;
+#[macro_use] extern crate serde_derive;
+
+
+include!("array_n.rs");
 
 
 /// An efficient arena allocator.
@@ -35,7 +37,18 @@ pub mod least_recently_used_cache;
 
 
 pub use ::arrayvec::ArrayVec;
+use ::network_time::MillisecondDuration;
+use ::network_time::MonotonicMillisecondTimestamp;
+use ::serde::Deserialize;
+use ::serde::Deserializer;
+use ::serde::Serialize;
+use ::serde::Serializer;
+use ::serde::de::Error as DeserializeError;
+use ::serde::de::SeqAccess;
+use ::serde::de::Visitor;
+use ::serde::ser::SerializeTuple;
 use ::std::collections::HashMap;
+use ::std::cmp::Ordering;
 use ::std::cmp::Eq;
 use ::std::fmt;
 use ::std::fmt::Debug;
@@ -46,13 +59,19 @@ use ::std::mem::align_of;
 use ::std::mem::ManuallyDrop;
 use ::std::mem::size_of;
 use ::std::mem::transmute;
+use ::std::mem::uninitialized;
+use ::std::marker::PhantomData;
+use ::std::ops::Deref;
+use ::std::ops::DerefMut;
 #[allow(unused_imports)] use ::std::os::unix::ffi::OsStrExt;
 use ::std::ptr::NonNull;
 use ::std::ptr::null_mut;
-use ::network_time::MillisecondDuration;
-use ::network_time::MonotonicMillisecondTimestamp;
+use ::std::slice::Iter;
+use ::std::slice::IterMut;
 
 
+include!("Array40.rs");
+include!("Array52.rs");
 include!("BoundedHashMap.rs");
 include!("NonNullUnifiedArrayVecAndVec.rs");
 include!("UnifiedArrayVecAndVec.rs");
