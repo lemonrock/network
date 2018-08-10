@@ -47,6 +47,8 @@ use ::serde::de::Error as DeserializeError;
 use ::serde::de::SeqAccess;
 use ::serde::de::Visitor;
 use ::serde::ser::SerializeTuple;
+use ::std::borrow::Borrow;
+use ::std::borrow::BorrowMut;
 use ::std::collections::HashMap;
 use ::std::cmp::Ordering;
 use ::std::cmp::Eq;

@@ -312,5 +312,23 @@ macro_rules! array_n
 				self.0
 			}
 		}
+		
+		impl<T> Borrow<[T]> for $type<T>
+		{
+			#[inline(always)]
+			fn borrow(&self) -> &[T]
+			{
+				&self.0[..]
+			}
+		}
+
+		impl<T> BorrowMut<[T]> for $type<T>
+		{
+			#[inline(always)]
+			fn borrow_mut(&mut self) -> &mut [T]
+			{
+				&mut self.0
+			}
+		}
 	}
 }
