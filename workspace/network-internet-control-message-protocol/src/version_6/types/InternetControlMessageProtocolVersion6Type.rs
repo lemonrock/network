@@ -152,8 +152,8 @@ impl InternetControlMessageProtocolVersion6Type
 	/// Duplicate Address Confirmation (RFC 6775).
 	pub const DuplicateAddressConfirmation: Self = InternetControlMessageProtocolVersion6Type(158);
 	
-	/// MPL Control (RFC 7731).
-	pub const MPLControl: Self = InternetControlMessageProtocolVersion6Type(159);
+	/// Multicast Protocol for Low-Power and Lossy Networks (MPL) Control (RFC 7731).
+	pub const MulticastProtocolForLowPowerAndLossyNetworksControl: Self = InternetControlMessageProtocolVersion6Type(159);
 	
 	/// Extended Echo Request ('ping') (RFC 8335).
 	pub const ExtendedEchoRequest: Self = InternetControlMessageProtocolVersion6Type(160);

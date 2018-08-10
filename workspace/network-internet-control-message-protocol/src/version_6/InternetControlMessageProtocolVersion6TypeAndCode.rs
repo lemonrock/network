@@ -68,7 +68,7 @@ impl InternetControlMessageProtocolVersion6TypeAndCode
 			InternetControlMessageProtocolVersion6Type::IdentifierLocatorNetworkProtocolForInternetProtocolVersion6LocatorUpdate => visitor.identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update(unsafe { self.code.identifier_locator_network_protocol_for_internet_protocol_version_6_locator_update }),
 			InternetControlMessageProtocolVersion6Type::DuplicateAddressRequest => visitor.duplicate_address_request(unsafe { self.code.duplicate_address_request }),
 			InternetControlMessageProtocolVersion6Type::DuplicateAddressConfirmation => visitor.duplicate_address_confirmation(unsafe { self.code.duplicate_address_confirmation }),
-//			InternetControlMessageProtocolVersion6Type::MPLControl => visitor.m_p_l_control(unsafe { self.code.m_p_l_control }),
+			InternetControlMessageProtocolVersion6Type::MulticastProtocolForLowPowerAndLossyNetworksControl => visitor.multicast_protocol_for_low_power_and_lossy_networks_control(unsafe { self.code.multicast_protocol_for_low_power_and_lossy_networks_control }),
 			InternetControlMessageProtocolVersion6Type::ExtendedEchoRequest => visitor.extended_echo_request(unsafe { self.code.extended_echo_request }),
 			InternetControlMessageProtocolVersion6Type::ExtendedEchoReply => visitor.extended_echo_reply(unsafe { self.code.extended_echo_reply }),
 			InternetControlMessageProtocolVersion6Type::PrivateInformationalMessageExperiment1 => visitor.private_informational_message_experiment1(unsafe { self.code.undifferentiated }),

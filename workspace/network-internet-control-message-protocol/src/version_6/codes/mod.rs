@@ -25,8 +25,9 @@ include!("InternetControlMessageProtocolVersion6CodeInverseNeighborDiscoverySoli
 include!("InternetControlMessageProtocolVersion6CodeMobilePrefixAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeMobilePrefixSolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodeMulticastListenerDone.rs");
-include!("InternetControlMessageProtocolVersion6CodeMulticastListenerReport.rs");
 include!("InternetControlMessageProtocolVersion6CodeMulticastListenerQuery.rs");
+include!("InternetControlMessageProtocolVersion6CodeMulticastListenerReport.rs");
+include!("InternetControlMessageProtocolVersion6CodeMulticastProtocolForLowPowerAndLossyNetworksControl.rs");
 include!("InternetControlMessageProtocolVersion6CodeMulticastRouterAdvertisement.rs");
 include!("InternetControlMessageProtocolVersion6CodeMulticastRouterSolicitation.rs");
 include!("InternetControlMessageProtocolVersion6CodeMulticastRouterTermination.rs");

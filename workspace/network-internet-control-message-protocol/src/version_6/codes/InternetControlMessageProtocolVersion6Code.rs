@@ -182,8 +182,10 @@ pub union InternetControlMessageProtocolVersion6Code
 	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::DuplicateAddressConfirmation`.
 	pub duplicate_address_confirmation: InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation,
 	
-	
-	
+	/// Multicast Protocol for Low-Power and Lossy Networks (MPL) Control (RFC 7731).
+	///
+	/// The `type_` field of the packet header's `type_and_code` field is `InternetControlMessageProtocolVersion6Type::MulticastProtocolForLowPowerAndLossyNetworksControl`.
+	pub multicast_protocol_for_low_power_and_lossy_networks_control: InternetControlMessageProtocolVersion6CodeMulticastProtocolForLowPowerAndLossyNetworksControl,
 	
 	/// Extended Echo Request ('ping') (RFC 8335).
 	///

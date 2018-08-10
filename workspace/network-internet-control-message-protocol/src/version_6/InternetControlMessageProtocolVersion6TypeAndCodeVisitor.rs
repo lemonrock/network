@@ -120,9 +120,9 @@ pub trait InternetControlMessageProtocolVersion6TypeAndCodeVisitor<R>
 
 	/// Duplicate Address Confirmation (RFC 6775).
 	fn duplicate_address_confirmation(&self, duplicate_address_confirmation: InternetControlMessageProtocolVersion6CodeDuplicateAddressConfirmation) -> R;
-
-//	/// MPL Control (RFC 7731).
-//	fn m_p_l_control(&self, m_p_l_control: InternetControlMessageProtocolVersion6CodeMPLControl) -> R;
+	
+	/// Multicast Protocol for Low-Power and Lossy Networks (MPL) Control (RFC 7731).
+	fn multicast_protocol_for_low_power_and_lossy_networks_control(&self, multicast_protocol_for_low_power_and_lossy_networks_control: InternetControlMessageProtocolVersion6CodeMulticastProtocolForLowPowerAndLossyNetworksControl) -> R;
 
 	/// Extended Echo Request (RFC 8335).
 	fn extended_echo_request(&self, extended_echo_request: InternetControlMessageProtocolVersion6CodeExtendedEchoRequest) -> R;
