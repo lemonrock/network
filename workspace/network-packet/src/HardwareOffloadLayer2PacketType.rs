@@ -23,4 +23,7 @@ pub enum HardwareOffloadLayer2PacketType
 	///
 	/// Most drivers, excluding Intel's, do not categorise further.
 	Ethernet(Option<HardwareOffloadCategorisedLayer2PacketType>),
+	
+	/// Invalid or introduced after this code was written.
+	Other,
 }
