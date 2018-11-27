@@ -21,6 +21,12 @@ impl<T> Debug for EntryValue<T>
 impl<T> EntryValue<T>
 {
 	#[inline(always)]
+	fn next_available_slot_index(&self) -> usize
+	{
+		unsafe { self.next_available_slot_index }
+	}
+
+	#[inline(always)]
 	fn set_value_and_return_mutable_reference_to_it(&mut self, value: T) -> &mut T
 	{
 		unsafe

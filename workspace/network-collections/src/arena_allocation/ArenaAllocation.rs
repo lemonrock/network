@@ -58,6 +58,7 @@ impl<T: Sized> ArenaAllocation<T>
 		debug_assert!(!self.is_full(), "full");
 		
 		let entry = self.allocation.entry_mutable_reference(self.next_available_slot_index);
+		self.next_available_slot_index = entry.next_available_slot_index();
 		
 		entry.set_value_and_return_mutable_reference_to_it(value)
 	}
