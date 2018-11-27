@@ -15,7 +15,7 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml"]
 readme = "README.md"
 publish = true
-version = "0.1.8"
+version = "0.1.9"
 
 [dependencies]
 arrayvec = { version = "^0.4", features = ["serde-1"] }
