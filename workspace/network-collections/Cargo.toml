@@ -19,6 +19,7 @@ version = "0.1.9"
 
 [dependencies]
 arrayvec = { version = "^0.4", features = ["serde-1"] }
+hashbrown = { version = "^0.1", features = ["nightly"] }
 libc = "^0.2"
 likely = "^0.1"
 network-time = { path = "../network-time", version = "^0.1" }

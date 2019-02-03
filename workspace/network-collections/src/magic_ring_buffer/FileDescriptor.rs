@@ -3,7 +3,7 @@
 
 
 #[derive(Debug)]
-pub(crate) struct FileDescriptor(i32);
+pub(crate) struct FileDescriptor(RawFd);
 
 impl Drop for FileDescriptor
 {

@@ -21,6 +21,7 @@ version = "0.1.10"
 arrayref = "^0.3"
 digest = "^0.7"
 dpdk-sys = { version = "^0.1", optional = true }
+hashbrown = { version = "^0.1", features = ["nightly"] }
 libc = "^0.2"
 likely = "0.1"
 network-check-sum = { path = "../network-check-sum", version = "^0.1" }

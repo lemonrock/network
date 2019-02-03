@@ -114,7 +114,6 @@ impl MagicRingBuffer
 		unsafe { from_raw_parts_mut(self.write_address().into(), self.available().into()) }
 	}
 	
-	
 	/// Commit a write.
 	#[inline(always)]
 	pub fn write_commit(&mut self, wrote: Bytes)

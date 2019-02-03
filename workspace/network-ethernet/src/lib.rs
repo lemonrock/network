@@ -18,6 +18,7 @@
 
 #[macro_use] extern crate arrayref;
 #[cfg(feature = "dpdk-sys")] extern crate dpdk_sys;
+extern crate hashbrown;
 extern crate hyper_thread_random;
 #[cfg(feature = "libc")] extern crate libc;
 #[macro_use] extern crate likely;
@@ -32,6 +33,8 @@ use self::packet_processing::*;
 use self::packet_processing::EthernetIncomingNetworkPacketDropReason::*;
 use self::virtual_lans::*;
 #[cfg(feature = "dpdk-sys")] use ::dpdk_sys::*;
+use ::hashbrown::HashMap;
+use ::hashbrown::HashSet;
 use ::hyper_thread_random::generate_hyper_thread_safe_random_u64;
 use ::network_endian::NetworkEndian;
 use ::network_endian::NetworkEndianU16;
@@ -43,8 +46,6 @@ use ::serde::Serialize;
 use ::serde::Serializer;
 use ::serde::de;
 use ::serde::de::Visitor;
-use ::std::collections::HashMap;
-use ::std::collections::HashSet;
 use ::std::cmp::Ordering;
 use ::std::convert::TryFrom;
 use ::std::fmt;

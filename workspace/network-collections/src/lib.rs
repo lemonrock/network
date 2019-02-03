@@ -14,6 +14,7 @@
 
 extern crate arrayvec;
 #[cfg(any(os = "android", os = "linux"))] extern crate dpdk_unix;
+extern crate hashbrown;
 extern crate libc;
 #[macro_use] extern crate likely;
 extern crate network_time;
@@ -37,6 +38,7 @@ pub mod least_recently_used_cache;
 
 
 pub use ::arrayvec::ArrayVec;
+use ::hashbrown::HashMap;
 use ::network_time::MillisecondDuration;
 use ::network_time::MonotonicMillisecondTimestamp;
 use ::serde::Deserialize;
@@ -49,7 +51,6 @@ use ::serde::de::Visitor;
 use ::serde::ser::SerializeTuple;
 use ::std::borrow::Borrow;
 use ::std::borrow::BorrowMut;
-use ::std::collections::HashMap;
 use ::std::cmp::Ordering;
 use ::std::cmp::Eq;
 use ::std::fmt;

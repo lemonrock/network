@@ -20,8 +20,9 @@ version = "0.1.9"
 [dependencies]
 arrayref = "^0.3"
 dpdk-sys = { version = "^0.1", optional = true }
-libc = { version = "^0.2", optional = true }
+hashbrown = { version = "^0.1", features = ["nightly"] }
 hyper-thread-random = "^0.4"
+libc = { version = "^0.2", optional = true }
 likely = "0.1"
 network-endian = { path = "../network-endian", version = "^0.1" }
 network-packet = { path = "../network-packet", version = "^0.1" }
