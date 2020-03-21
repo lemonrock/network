@@ -67,7 +67,7 @@ use ::std::str::SplitN;
 include!("drop.rs");
 
 
-/// Virtual LANs (VLANs).
+/// Packet processing.
 pub mod packet_processing;
 
 

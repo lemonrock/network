@@ -236,11 +236,18 @@ impl MonotonicMillisecondTimestamp
 			{
 				return None
 			};
-	
+
+			/// This process needs to have the capability `CAP_SYS_RAWIO` as of Linux 3.7.
 			#[inline(always)]
-			fn read_model_specific_register() -> Result<u64, Box<error::Error + 'static>>
+			fn read_model_specific_register() -> io::Result<u64>
 			{
-				let model_specific_register: u64 = String::from_utf8_lossy(&read("/dev/cpu/0/msr")?).parse()?;
+				const MSR_PLATFORM_INFO: u32 = 0x000000CE;
+
+				let mut file = File::open("/dev/cpu/0/msr")?;
+				file.seek(SeekFrom::Start(PLATFORM_INFO))?;
+				let mut buffer = [u8; 8];
+				file.read_exact(&mut buffer)?;
+				let model_specific_register = unsafe { * (buffer.as_ptr() as *const u64) };
 				Ok(model_specific_register)
 			}
 	
